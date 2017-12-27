@@ -1,0 +1,10 @@
+ <h4 mat-dialog-title>
+  Seleccione una opcion para
+  <br/>
+  <small>{{ data.title | uppercase }}</small>:
+</h4>
+ <mat-nav-list>
+    <a mat-list-item mat-dialog-close [routerLink]="link.route" (click)="onClose()" *ngFor="let link of data.actions">
+      {{link.name}}
+    </a>
+</mat-nav-list>

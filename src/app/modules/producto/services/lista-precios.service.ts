@@ -1,0 +1,48 @@
+import { Injectable } from '@angular/core';
+
+import { Producto, PrecioProducto } from '../models/producto.models';
+import { BaseAjaxService } from '../../base/services/base-ajax.service'
+
+@Injectable()
+export class ListaPreciosService {
+    private catalogID: number = 401;
+    
+    constructor(private _db: BaseAjaxService) {
+
+    }
+
+    getPreciosPreductos(listaPreciosID: number, callback){
+        let params = this._db.createParameter('ECOM0001', 4, { 'V4': listaPreciosID });
+        this._db.getData(params).subscribe(res=>{
+            //TODO: Handle Precio
+            //console.log(res.Table);
+            let precios: PrecioProducto[];
+            if(res.Table1){
+                precios = res.Table1.map(item=>{
+                    let precio = new PrecioProducto(item.C1);
+                    precio.precio = item.C11;
+                    precio.listaPreciosID = listaPreciosID;
+                    return precio;
+                });
+            }
+            callback(precios);
+        });
+    }
+
+    setPreciosProductos(listaPreciosID: number, precios: PrecioProducto[], callback){
+        let productsData = precios.map(p => {
+            return `${p.productoID},${p.precio}`;
+        })
+        console.log('Setting Prices');
+        let params = this._db.createParameter('ECOM0001', 3, { V3: listaPreciosID, V6: `C0,C1~${productsData.join('~')}` });
+        this._db.getData(params).subscribe(res => {
+            console.log(res.Table);
+            callback();
+        });
+        //'C0,C1~';
+        //var qProd = 'C0,C1~' + ConvertToCSV(Enumerable.From($scope.allProductos).Select("x => { A: x['C0'], B: x['Precio'] }").ToArray(), ',', '~');
+        //var qSuc = Enumerable.From($scope.allSucursales.findAll('Aplica', true)).Select(function (v) { return v.C0 }).ToArray();
+        //ajax({ parameters: createParameter('ECOM0001', 3, { 'V3': $scope.DetailID, 'V6': qProd }), callback: function (res) { console.log(res.Table); }, async: false });
+        //ajax({ parameters: createParameter('ECOM0001', 2, { 'V3': $scope.DetailID, 'V6': qSuc.join(',') }), callback: function (res) { console.log(res.Table); $location.
+    }
+}

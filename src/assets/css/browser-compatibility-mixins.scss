@@ -1,0 +1,12 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin height-calc($expression) {
+  min-height: unquote("-webkit-calc( #{$expression})");
+  min-height: unquote("-moz-calc( #{$expression})");
+  min-height: unquote("calc( #{$expression})");
+}

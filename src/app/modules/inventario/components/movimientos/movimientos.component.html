@@ -1,0 +1,95 @@
+<div class="sub-container">
+  <div class="sub-titles">
+      Movimientos de inventario.
+  </div>
+  <table class="os-table highlight">
+    <thead>
+      <tr>
+        <th>
+          <span *ngIf="!showFilters">
+            Categoria
+          </span>
+          <mat-form-field *ngIf="showFilters" class="sm">
+            <mat-select placeholder="Categoria" (change)="onCategoriaChange($event.value)">
+              <mat-option [value]="{nombre: 'All'}">
+                TODAS
+              </mat-option>
+              <mat-option *ngFor="let cat of categorias" [value]="cat">
+                {{cat.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <th> Producto </th>
+        <th>
+          <mat-form-field class="sm">
+            <mat-select (change)="onRangoChanged($event.value)" placeholder="Fecha">
+              <mat-option [value]="1">
+                Hoy
+              </mat-option>
+              <mat-option [value]="2">
+                Ayer
+              </mat-option>
+              <mat-option [value]="3">
+                Ultimos 2 Dias
+              </mat-option>
+              <mat-option [value]="4">
+                Esta Semana
+              </mat-option>
+              <mat-option [value]="5">
+                La semana pasada
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <th>
+          <span *ngIf="!showFilters">
+            Tipo Movimiento
+          </span>
+          <mat-form-field *ngIf="showFilters" class="sm">
+            <mat-select placeholder="Tipo Movimiento" (change)="onTipoMovimientoChange($event.value)">
+              <mat-option [value]="{nombre: 'All'}">
+                TODOS
+              </mat-option>
+              <mat-option *ngFor="let tm of tipoMovimientos" [value]="tm">
+                {{tm.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </th>
+        <th> Cantidad </th>
+        <th>
+          <button mat-icon-button matTooltip="Filtros">
+            <mat-icon (click)="toggleFilters()">{{showFilters ? 'clear' : 'filter_list'}}</mat-icon>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let mov of movimientos">
+          <td>
+              {{mov.producto.categoriaProducto.nombre}}
+          </td>
+          <td>
+              {{mov.producto.nombre}}
+          </td>
+          <td>
+              {{mov.fecha | date: 'dd MMMM yy'}}
+          </td>
+          <td>
+              {{mov.tipoMovimiento.nombre}}
+          </td>
+          <td class="text-center">
+              {{mov.cantidad}}
+          </td>
+        </tr>
+        <tr *ngIf="movimientos?.length <= 0">
+          <td colspan="6">
+            <strong>
+              No hay informacion para mostrar.
+            </strong>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>

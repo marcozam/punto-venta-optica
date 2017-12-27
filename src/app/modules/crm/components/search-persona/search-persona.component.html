@@ -1,0 +1,39 @@
+<form #searchForm="ngForm" *ngIf="!showAdd">
+  <mat-form-field>
+    <input matInput placeholder="Nombre" autofocus required
+        name="nombre" ngModel>
+    <mat-hint>
+      Para la busqueda separe <strong>Nombre(s), Apellido Paterno</strong> por coma.
+    </mat-hint>
+    <mat-error *ngIf="isTextInvalid(searchForm.value.nombre)">
+      Favor de capturar nombre y apellido con al menos 3 caracteres para cada uno.
+    </mat-error>
+  </mat-form-field>
+  <div class="text-right buttons-containers">
+    <button mat-raised-button color="primary" [disabled]="searchForm.invalid || isLoading ||  isTextInvalid(searchForm.value.nombre)"
+      (click)="onSearch(searchForm.value.nombre)">
+      <mat-icon aria-label="Buscar">search</mat-icon>
+      Buscar
+    </button>
+  </div>
+  <mat-list dense class="selection" *ngIf="!isLoading">
+    <mat-list-item *ngFor="let item of resultados" (click)="onItemSelected(item)">
+      <span matLine>
+          {{ item.nombre }}
+      </span>
+    </mat-list-item>
+  </mat-list>
+  <h3 *ngIf="resultados.length === 0 && triggerSearch && !isLoading" class="text-center">
+    Sin resultados
+  </h3>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <div class="text-right buttons-containers" *ngIf="triggerSearch && !isLoading">
+    <button type="button" mat-raised-button color="primary" (click)="onAddClick(searchForm.value.nombre)">
+      <mat-icon aria-label="Agregar">add</mat-icon>
+      Agregar {{catalogName}}
+    </button>
+  </div>
+</form>
+<os-contacto [catalogName]="catalogName" [initialData]="_contacto.persona"
+  (onCancel)="showAdd = false" (onChange)="personaAdded($event)"
+  *ngIf="showAdd"></os-contacto>

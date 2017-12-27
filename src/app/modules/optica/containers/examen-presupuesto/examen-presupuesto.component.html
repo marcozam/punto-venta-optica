@@ -1,0 +1,13 @@
+<app-optica-venta 
+  [clienteID]="clienteID" [listaPrecioID]="listaPrecioID" [esVenta]="false" [detalleVenta]="venta.detalle"
+  (onExamenChanged)="onExamenChanged($event)"
+  (onProdutsChanged)="onOpticaVentaChanged($event)"></app-optica-venta>
+<div class="text-right buttons-containers">
+  <button mat-raised-button color="primary" type="button"
+    (click)="print()">
+    <mat-icon>
+      print
+    </mat-icon>
+    Imprimir
+  </button>
+</div>

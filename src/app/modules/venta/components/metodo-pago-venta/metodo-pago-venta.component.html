@@ -1,0 +1,45 @@
+<form #pagoForm="ngForm" (ngSubmit)="onContinue(pagoForm.value)">
+  <h1 mat-dialog-title class="sub-titles">
+    Pagos
+  </h1>
+  <div mat-dialog-content>
+    <table class="os-table highlight">
+      <thead>
+        <tr>
+          <th class="text-right">
+            Total $ {{venta.sumary.saldo | number:'1.2-2'}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mp of metodosPago">
+          <td class="text-right">
+            <mat-form-field>
+              <span matPrefix>$ &nbsp;</span>
+              <input matInput ngModel class="text-right"
+                placeholder="{{mp.nombre}}" name="{{mp.key}}" type="number" step="10"/>
+            </mat-form-field>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th class="text-right">
+            <span *ngIf="(venta.sumary.saldo - totalPagado) > 0">
+              Saldo
+              $ {{venta.sumary.saldo - totalPagado | number:'1.2-2'}}
+            </span>
+            <span *ngIf="(venta.sumary.saldo - totalPagado) <= 0">
+              Cambio 
+              $ {{totalPagado - venta.sumary.saldo | number:'1.2-2'}}
+            </span>
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div mat-dialog-actions class="end-xs">
+    <button mat-button color="warn" (click)="onCancelar()">Cancelar</button>
+    <button mat-raised-button (click)="onContinue(pagoForm.value)" color="primary">Continuar</button>
+  </div>
+</form>

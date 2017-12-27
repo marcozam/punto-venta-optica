@@ -1,0 +1,25 @@
+@import '~assets/css/global/_variables.scss';
+
+table.os-table{
+    thead{
+        th.item-description{
+            .mat-icon{
+                font-size: 12px;
+                height: 12px;
+                width: 12px;
+                margin-left: 15px;
+            }
+        }
+    }
+    .no-data{
+        font-weight: 700;
+    }
+
+    .loading{
+        .mat-progress-bar{
+            margin: 20px 0;
+        }
+        font-weight: 700;
+        color: $primary-color;
+    }
+}

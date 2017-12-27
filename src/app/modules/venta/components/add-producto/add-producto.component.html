@@ -1,0 +1,43 @@
+<form #formAddProduct="ngForm">
+  <div class="row">
+    <div class="col-xs col-md-1">
+      <mat-form-field>
+        <input matInput placeholder="Cantidad" type="text" class="text-right"
+        #cantidadField name="cantidad" ngModel 
+        (keypress)="onCantidadKeyDown($event)"/>
+      </mat-form-field>
+    </div>
+    <div class="col-xs col-md-3">
+      <mat-form-field>
+        <mat-select placeholder="Categoria" name="categoriaID" ngModel 
+          (change)="onCategoriaChanged($event.value)">
+          <mat-option *ngFor="let c of categorias" [value]="c.productos">
+            {{c.sumary.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-xs col-md-3">
+      <mat-form-field>
+        <mat-select placeholder="Producto" name="productoID" ngModel 
+          (change)="onProductoChange($event.value)">
+          <mat-option *ngFor="let p of productos" [value]="p">
+            {{p.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-xs col-md-1 col-md-offset-2">
+      <mat-form-field>
+        <span matPrefix>$ &nbsp;</span>
+        <input matInput placeholder="Precio Unitario" type="number" readonly  class="text-right"
+        name="precio" [ngModel]="selectedProduct?.precio"/>
+      </mat-form-field>
+    </div>
+    <div class="col-xs col-md-1 col-md-offset-1 text-right">
+      <button mat-icon-button color="accent" matTooltip="Agregar Producto" matTooltipPosition="left" (click)="addProduct(formAddProduct.value.cantidad)">
+        <mat-icon aria-label="Agregar Producto">add_shopping_cart</mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

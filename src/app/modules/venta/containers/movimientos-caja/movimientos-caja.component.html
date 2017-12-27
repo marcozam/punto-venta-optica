@@ -1,0 +1,64 @@
+<div class="sub-container">
+  <div class="sub-titles">
+      Movimientos sin corte de caja.
+  </div>
+  <table class="os-table highlight">
+    <thead>
+      <tr>
+        <th> Orden </th>
+        <th> Fecha </th>
+        <th> Movimiento </th>
+        <th> Cliente </th>
+        <th> Lo Atendio </th>
+        <th> Monto </th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let mov of movimientos">
+            <td>
+                {{mov.ordenVentaID}}
+            </td>
+            <td>
+                {{mov.fecha | date: 'dd MMMM yy'}}
+            </td>
+            <td>
+                <span *ngIf="mov.esPagoInicial">
+                    Venta
+                </span>
+                <span *ngIf="!mov.esPagoInicial">
+                    Abono
+                </span>
+            </td>
+            <td>
+                {{mov.nombreCliente}}
+            </td>
+            <td>
+                {{mov.nombreUsuario}}
+            </td>
+            <td class="text-right">
+                $ {{mov.monto | number: '1.2-2'}}
+            </td>
+            <td class="text-right">
+              <button mat-icon-button matTooltip="Imprimir ticket" matTooltipPosition="below"
+                (click)="onPrintTicket(mov.ordenVentaID, mov.esPagoInicial)">
+                <mat-icon aria-label="Imprimir">
+                  print
+                </mat-icon>
+              </button>
+            </td>
+        </tr>
+    </tbody>
+    <!--
+    <tfoot>
+        <tr>
+            <td colspan="4"></td>
+            <th class="text-right">Total:</th>
+            <th class="text-right">
+                {{Total | currency}}
+            </th>
+            <td></td>
+        </tr>
+    </tfoot>
+    -->
+  </table>
+</div>

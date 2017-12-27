@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "os"
+    "name": "os",
+    "ejected": false
   },
   "apps": [
     {
@@ -19,13 +20,15 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "sale_dev": "environments/environment.sale_dev.ts",
+        "cfc": "environments/environment.cfc.ts",
+        "optika": "environments/environment.optika.ts"
       }
     }
   ],
@@ -51,7 +54,13 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "scss",
+    "component": {
+      "properties": {
+        "spec": {
+          "default": false
+        }
+      }
+    }
   }
 }

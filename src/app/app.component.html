@@ -1,20 +1,54 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxOS4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAyNTAgMjUwIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNTAgMjUwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojREQwMDMxO30NCgkuc3Qxe2ZpbGw6I0MzMDAyRjt9DQoJLnN0MntmaWxsOiNGRkZGRkY7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMTI1LDMwIDEyNSwzMCAxMjUsMzAgMzEuOSw2My4yIDQ2LjEsMTg2LjMgMTI1LDIzMCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAJIi8+DQoJPHBvbHlnb24gY2xhc3M9InN0MSIgcG9pbnRzPSIxMjUsMzAgMTI1LDUyLjIgMTI1LDUyLjEgMTI1LDE1My40IDEyNSwxNTMuNCAxMjUsMjMwIDEyNSwyMzAgMjAzLjksMTg2LjMgMjE4LjEsNjMuMiAxMjUsMzAgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0xMjUsNTIuMUw2Ni44LDE4Mi42aDBoMjEuN2gwbDExLjctMjkuMmg0OS40bDExLjcsMjkuMmgwaDIxLjdoMEwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMUwxMjUsNTIuMQ0KCQlMMTI1LDUyLjF6IE0xNDIsMTM1LjRIMTA4bDE3LTQwLjlMMTQyLDEzNS40eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" href="http://angularjs.blogspot.ca/">Angular blog</a></h2>
-  </li>
-</ul>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.open()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{title}}</span>
+</mat-toolbar>
+
+<mat-sidenav-container class="main-menu-container">
+  <mat-sidenav #sidenav mode="push" class="main-menu-sidenav"> 
+    <mat-nav-list>
+      <a mat-list-item routerLink="home" routerLinkActive="active" (click)="sidenav.close()">Inicio</a>
+      
+      <a mat-list-item routerLink="caja/movimientos" routerLinkActive="active" (click)="sidenav.close()">Movimientos de Caja</a>
+      <a mat-list-item routerLink="venta/entregas" routerLinkActive="active" (click)="sidenav.close()">Ordenes pendientes de entrega</a>
+
+      <a mat-list-item [matMenuTriggerFor]="inventario">Inventario</a>
+      <a mat-list-item [matMenuTriggerFor]="catalogos">Catalogos</a>
+      <a mat-list-item routerLink="lista-precios" routerLinkActive="active" (click)="sidenav.close()">Lista de Precios</a>
+      <!--
+      <a mat-list-item routerLink="facturacion" routerLinkActive="active">Facturacion</a>
+      <a mat-list-item routerLink="facturacion/list" routerLinkActive="active">Lista de Facturas</a>
+      <a mat-list-item routerLink="ventas" routerLinkActive="active">Ventas</a>
+      -->
+    </mat-nav-list>
+
+    <mat-menu #catalogos="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
+      <a mat-menu-item [matMenuTriggerFor]="micas">Micas</a>
+      <a mat-menu-item [matMenuTriggerFor]="armazones">Armazones</a>
+      <a mat-menu-item routerLink="productos" (click)="sidenav.close()">Productos</a>
+    </mat-menu>
+
+    <mat-menu #armazones>
+      <a mat-menu-item routerLink="armazon/modelo" (click)="sidenav.close()">Armazones</a>
+      <a mat-menu-item routerLink="catalogo/999" (click)="sidenav.close()">Categorias de Armazones</a>
+      <a mat-menu-item routerLink="catalogo/998" (click)="sidenav.close()">Marcas</a>
+    </mat-menu>
+
+    <mat-menu #micas>
+      <a mat-menu-item routerLink="catalogo/996" (click)="sidenav.close()">Tipo de Micas</a>
+      <a mat-menu-item routerLink="catalogo/995" (click)="sidenav.close()">Materiales</a>
+      <a mat-menu-item routerLink="catalogo/994" (click)="sidenav.close()">Tratamientos</a>
+    </mat-menu>
+
+    <mat-menu #inventario="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
+      <a mat-menu-item routerLink="inventario/movimientos" (click)="sidenav.close()">Movimientos</a>
+      <a mat-menu-item routerLink="inventario/corte" (click)="sidenav.close()">Realizar Corte</a>
+    </mat-menu>
+  </mat-sidenav>
+  <div class="app-content">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>
+
 

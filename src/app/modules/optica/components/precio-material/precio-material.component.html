@@ -1,0 +1,60 @@
+<form #meterialForm="ngForm">
+  <div class="row">
+    <div class="col-xs col-md-3">
+      <mat-form-field>
+        <mat-select placeholder="Material" name="material" ngModel (change)="onMaterialChange($event.value)" required>
+          <mat-option *ngFor="let material of materialesMicas" [value]="material.key">
+            {{material.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <table class="os-table highlight">
+        <thead>
+          <tr>
+            <th colspan="2">
+              Micas/Tratamientos
+            </th>
+            <th *ngFor="let tratamiento of tratamientosMicas" class="tratamiento-col text-center">
+              {{tratamiento.nombre}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of fields" [formGroup]="f.formGroup">
+            <td>
+              <strong>
+                {{f.nombre}}
+              </strong>
+            </td>
+            <td>
+              <mat-form-field class="sm">
+                <span matPrefix>$ &nbsp;</span>
+                <input matInput type="number" step="50" required formControlName="precioBase" />
+              </mat-form-field>
+            </td>
+            <td *ngFor="let tratamiento of tratamientosMicas" class="text-center">
+              <mat-form-field class="sm">
+                <span matPrefix>$ &nbsp;</span>
+                <input matInput type="number" step="50" required formControlName="{{tratamiento.key}}" />
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs text-right buttons-containers">
+      <button mat-raised-button color="primary"
+        [disabled]="meterialForm.invalid"
+        (click)="onSave(meterialForm.value)">
+        <mat-icon aria-label="Guardar">save</mat-icon>
+        Guardar Precio de Micas
+      </button>
+    </div>
+  </div>
+</form>

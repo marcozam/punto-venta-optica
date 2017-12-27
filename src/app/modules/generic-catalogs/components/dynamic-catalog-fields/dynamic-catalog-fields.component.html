@@ -1,0 +1,64 @@
+<table class="os-table highlight">
+  <thead>
+    <th colspan="5" class="text-right">
+      <button mat-icon-button matTooltip="Agregar campo" matTooltipPosition="before" color="accent"
+        (click)="addNewField()">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+    </th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of workingFields" [formGroup]="f.formGroup">
+      <td>
+        <mat-form-field>
+          <input type="text" placeholder="Nombre" matInput formControlName="nombre" required/>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <input type="text" placeholder="Nombre Corto" matInput formControlName="nombreCorto" required/>
+        </mat-form-field>
+      </td>
+      <td *ngIf="!catalog.dynamic">
+        <mat-form-field>
+          <input type="text" placeholder="Nombre en Tabla" matInput formControlName="fieldName"/>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field>
+          <mat-select placeholder="Tipo" formControlName="tipoCampoID" required>
+            <mat-option *ngFor="let ft of fieldTypes" [value]="ft.key">
+              {{ft.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+      <td class="text-right">
+        <button mat-icon-button (click)="f.value.visible = !f.value.visible" matTooltip="¿Es visible en lista?" matTooltipPosition="after">
+          <mat-icon *ngIf="f.value.visible" color="primary">visibility</mat-icon>
+          <mat-icon *ngIf="!f.value.visible">visibility_off</mat-icon>
+        </button>
+        <button mat-icon-button (click)="f.value.required = !f.value.required" matTooltip="¿Es requerido?" matTooltipPosition="after">
+          <mat-icon *ngIf="f.value.required" color="warn">error</mat-icon>
+          <mat-icon *ngIf="!f.value.required">error_outline</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Eliminar campo" matTooltipPosition="after" color="warn"
+          (click)="onDeleteField(f)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td class="buttons-containers" colspan="5">
+        <!--[disabled]="invalid"-->
+        <button mat-raised-button color="primary" 
+          (click)="onSave()">
+          <mat-icon aria-label="Guardar">save</mat-icon>
+          Guardar Campos
+        </button>
+      </td>
+    </tr>
+  </tfoot>
+</table>

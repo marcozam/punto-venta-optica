@@ -1,0 +1,27 @@
+<div>
+  <mat-checkbox (change)="onArmazonPropioChange($event.checked)">
+    ¿Armazon propio?
+  </mat-checkbox>
+</div>
+
+<mat-form-field *ngIf="esArmazonPropio">
+  <input matInput placeholder="Armazon" (change)="onArmazonChange($event.target.value)">
+</mat-form-field>
+
+<mat-form-field *ngIf="!esArmazonPropio">
+  <mat-select placeholder="Marca" (change)="onMarcaChanged($event.value)">
+    <mat-option *ngFor="let marca of marcasArmazon" [value]="marca">
+      {{marca.nombre}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field *ngIf="!esArmazonPropio">
+  <mat-select placeholder="Modelo" (change)="onModeloChanged($event.value)">
+    <mat-option *ngFor="let modelo of modelosArmazon" [value]="modelo">
+      {{modelo.nombre}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<app-medidas-armazon *ngIf="mostrarMedidas" (onChange)="medidasChange($event)"></app-medidas-armazon>

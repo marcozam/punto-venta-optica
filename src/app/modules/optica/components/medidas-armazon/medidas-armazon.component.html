@@ -1,0 +1,74 @@
+<form #medidasForm="ngForm">
+  <div class="sub-titles">
+    <small>
+      Medidas
+    </small>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field>
+        <input matInput placeholder="Ang. NP D" name="anguloNP_D" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <input matInput placeholder="Ang. NP I" name="anguloNP_I" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field>
+        <input matInput placeholder="Altura" name="altura" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <input matInput placeholder="D. Vertex" name="distanciaVertex" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <input matInput placeholder="Iniciales" name="iniciales" ngModel required/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field>
+        <input matInput placeholder="Ang. Pantoscopico" name="anguloPantoscopico" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field>
+        <input matInput placeholder="Ang. Panoramico" name="anguloPanoramico" type="number" ngModel required/>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field>
+        <input type="number" matInput placeholder="A" name="A" ngModel required>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <input type="number" matInput placeholder="B" name="B" ngModel required>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <input type="number" matInput placeholder="ED" name="ED" ngModel required>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <input type="number" matInput placeholder="DBL" name="DBL" ngModel required>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

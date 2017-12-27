@@ -1,0 +1,11 @@
+.products-list-card {
+    width: 200px;
+    display: inline-block;
+    margin: 5px 10px;
+    .mat-card-actions
+    {
+        display: flex;
+        flex-wrap: no-wrap;
+        justify-content: space-between;
+    }
+}

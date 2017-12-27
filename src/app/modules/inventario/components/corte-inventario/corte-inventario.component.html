@@ -1,0 +1,34 @@
+<ng-template #cantidadTemplate let-item>
+  <mat-form-field class="sm">
+    <input type="number" placeholder="Cantidad" matInput 
+      class="text-right" required
+      [(ngModel)]="item.cantidadFisica"/>
+  </mat-form-field>
+</ng-template>
+<div class="row">
+  <div class="col-md-8">
+    <div class="sub-container">
+      <os-table [dataSource]="dataSource" [loading]="loading" [canEdit]="false" [canAdd]="false" [canDelete]="false">
+        <os-filter uniqueID="categoria">
+          <mat-form-field class="sm">
+            <mat-select placeholder="Categoria" (change)="onCategoriaChange($event.value)">
+              <mat-option [value]="{nombre: 'All'}">
+                TODAS
+              </mat-option>
+              <mat-option *ngFor="let cat of categorias" [value]="cat">
+                {{cat.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </os-filter>
+      </os-table>
+      <div class="text-right buttons-containers">
+        <button mat-raised-button color="primary" [disabled]="loading"
+          (click)="onSave()">
+          <mat-icon>save</mat-icon>
+          {{loading ? 'Espere ...' : 'Guardar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

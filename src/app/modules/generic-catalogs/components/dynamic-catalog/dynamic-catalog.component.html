@@ -1,0 +1,58 @@
+<form #dcForm="ngForm">
+  <div class="row">
+    <div class="col-xs col-md-3 flex-container">
+      <div class="sub-container">
+        <div class="sub-titles text-center">
+            Catalogo
+        </div>
+        <mat-form-field>
+          <input type="text" placeholder="Nombre" name="nombre" matInput [ngModel]="catalog.nombre"/>
+        </mat-form-field>
+        <div>
+          <mat-slide-toggle name="dynamic" [ngModel]="catalog.dynamic" labelPosition="before">Dinamico</mat-slide-toggle>
+        </div>
+        <mat-form-field *ngIf="!dcForm.value.dynamic">
+          <input type="text" placeholder="Tabla" name="tableName" matInput 
+            (ngModelChange)="onTableModelChange($event)"
+            [matAutocomplete]="auto" [ngModel]="catalog.tableName">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onTableSelected($event)">
+            <mat-option *ngFor="let t of tables" [value]="t.name">
+              {{ t.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <!--
+        //TODO SP not support this property yet
+        <div>
+          <mat-slide-toggle name="filterAccount" [ngModel]="catalog.filterAccount" labelPosition="before">Restringir por Cuenta</mat-slide-toggle>
+        </div>
+        -->
+        <div class="buttons-containers">
+          <button mat-button color="warn" type="button" routerLink="/DCG">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+    
+          <button mat-raised-button color="primary" 
+            [disabled]="dcForm.invalid"
+            (click)="onSave(dcForm.value)">
+            <mat-icon aria-label="Guardar">save</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs col-md-9 flex-container">
+      <div class="sub-container">
+        <div class="sub-titles text-center">
+          Campos
+        </div>
+        <app-dynamic-catalog-fields [fieldTypes]="fieldTypes" [catalog]="catalog"
+          (onRequestSave)="saveRequested($event)"></app-dynamic-catalog-fields>
+      </div>
+    </div>
+  </div>
+  
+</form>
+
+{{dcForm.value | json}}

@@ -1,0 +1,24 @@
+<form #formArmazonesPrecios="ngForm">
+  <div class="row middle-xs" *ngFor="let categoria of categoriaArmazon">
+    <div class="col-xs">
+      {{categoria.nombre}}
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="sm">
+        <span matPrefix>$ &nbsp;</span>
+        <input matInput placeholder="Precio" name="precio-{{categoria.key}}" type="number" required class="text-right"
+            #precioControl="ngModel" [ngModel]="categoria.precio"/>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs text-right buttons-containers">
+      <button mat-raised-button color="primary"
+        [disabled]="formArmazonesPrecios.invalid"
+        (click)="onSaveCategoriaArmazones(formArmazonesPrecios.value)">
+        <mat-icon aria-label="Guardar">save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>

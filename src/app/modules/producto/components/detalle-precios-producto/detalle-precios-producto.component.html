@@ -1,0 +1,44 @@
+
+<form #preciosForm="ngForm">
+  <div class="row" ngModelGroup="productos">
+    <div class="col-xs col-md-4" *ngFor="let cat of categorias">
+      <div class="sub-container" ngModelGroup="{{cat.sumary.key}}">
+        <div class="sub-titles text-center">
+            {{cat.sumary.nombre}}
+        </div>
+        <table class="os-table highlight">
+          <thead>
+            <tr>
+              <th>
+                Productos
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let prod of cat.productos" ngModelGroup="{{prod.key}}">
+              <td>
+                {{prod.nombre}}
+              </td>
+              <td>
+                <mat-form-field class="sm">
+                  <span matPrefix>$ &nbsp;</span>
+                  <input matInput class="text-right" placeholder="Precio" name="precio" type="number" required [ngModel]="prod.precio" step="10"/>
+                </mat-form-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs text-right buttons-containers">
+      <button mat-raised-button color="primary"
+        (click)="onSave(preciosForm.value)" [disabled]="preciosForm.invalid">
+        <mat-icon>save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>

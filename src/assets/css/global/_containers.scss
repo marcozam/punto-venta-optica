@@ -1,0 +1,42 @@
+.flex-container{
+    display: flex;
+}
+
+.mat-dialog-container{
+    min-width: 300px;
+}
+
+.sub-container {
+    flex: 1;
+    padding: 10px 20px;
+    background-color: #FFF;
+    border: solid 1px #E0E0E0;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px 0px #E0E0E0;
+    margin-bottom: 10px;
+    overflow: auto;
+}
+
+.buttons-containers{
+    //TODO: On movile full width
+    /*
+    display: flex;
+    flex-wrap: wrap;
+    */
+    padding-top: 10px;
+    margin-bottom: 15px;
+    text-align: right !important;
+    /*
+    button {
+        flex: 1 0 auto;
+    }
+    */
+}
+
+.radio-group-block {
+    display: inline-flex;
+    flex-direction: column;
+    mat-radio-button{
+        margin: 5px;
+    }
+}

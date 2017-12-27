@@ -1,0 +1,11 @@
+@import '~assets/css/global/_variables.scss';
+.pages{
+    line-height: 40px;
+    span{
+        margin: 0 5px;
+        &.active{
+            font-weight: 700;
+            color: $primary-color;
+        }
+    }
+}

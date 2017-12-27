@@ -1,0 +1,58 @@
+<div class="sub-container">
+  <div class="sub-titles text-center">
+    Graduación
+  </div>
+  <table class="os-table striped centered">
+    <thead>
+      <tr>
+        <th></th>
+        <th>O.D.</th>
+        <th>O.I.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-left">Esf. (SpH)</td>
+        <td>
+            {{ examen?.ojoDerecho.esfera | number:'1.2-2' }}
+        </td>
+        <td>
+            {{ examen?.ojoIzquierdo.esfera | number:'1.2-2' }}
+        </td>
+      </tr>
+      <tr>
+        <td class="text-left">Cilindro</td>
+        <td>
+            {{ examen?.ojoDerecho.cilindro | number:'1.2-2' }}
+        </td>
+        <td>
+            {{ examen?.ojoIzquierdo.cilindro | number:'1.2-2' }}
+        </td>
+      </tr>
+      <tr>
+        <td class="text-left">Eje</td>
+        <td>
+            {{ examen?.ojoDerecho.grados | number:'1.0-2' }} °
+        </td>
+        <td>
+            {{ examen?.ojoIzquierdo.grados | number:'1.0-2' }} °
+        </td>
+      </tr>
+      <tr>
+        <td class="text-left">Distancia</td>
+        <td>
+          {{ examen?.ojoDerecho.distanciaInterPupilar | number:'1.0-2' }} <small>mm</small>
+        </td>
+        <td>
+          {{ examen?.ojoIzquierdo.distanciaInterPupilar | number:'1.0-2' }} <small>mm</small>
+        </td>
+      </tr>
+      <tr>
+        <td class="text-left">Adición</td>
+        <td colspan="2">
+          {{ examen?.adicion | number:'1.2-2' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

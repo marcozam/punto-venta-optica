@@ -1,0 +1,44 @@
+<form #marcaArmaconForm="ngForm">
+  <div class="row" *ngIf="isLoading">
+    <div class="col-xs col-sm-4">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-sm-4">
+      <mat-form-field>
+          <input matInput placeholder="Nombre" name="nombre" type="text" required
+              #nombreControl="ngModel" [ngModel]="item.nombre"/>
+        </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-sm-4">
+      <mat-form-field>
+        <mat-select #tipoMicaControl="ngModel" placeholder="Categoria" name="categoria" required [ngModel]="item.categoria">
+          <mat-option *ngFor="let categoria of categoriaArmazon" [value]="categoria">
+            {{categoria.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-sm-4 text-right buttons-containers">
+      <button mat-button color="warn" type="button" routerLink="/catalogo/{{catalogID}}">
+        <mat-icon>cancel</mat-icon>
+        Cancelar
+      </button>
+
+      <button mat-raised-button color="primary" 
+        [disabled]="marcaArmaconForm.invalid"
+        (click)="onSave(marcaArmaconForm.value)">
+        <mat-icon aria-label="Guardar">save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>
+<!--
+<app-precio-categoria-armazon></app-precio-categoria-armazon>
+-->

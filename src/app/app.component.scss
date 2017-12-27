@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+@import '~@angular/material/_theming';
+
+//Project Styles
+@import '../assets/css/browser-compatibility-mixins';
+
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$candy-app-primary: mat-palette($mat-cyan);
+$candy-app-accent:  mat-palette($mat-blue);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme);
+
+$primary-color: #1565c0;
+$primary-dark-color: #003c8f;
+
+body{
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+.app-content
+{
+  margin: 0 25px;
+  padding-top: 20px;
+  @include height-calc('100vh - 134px');
+}
+
+.os-form-container{
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  md-form-field, footer{
+    width: 100%;
+  }
+  
+  footer{
+    display: flex;
+    flex-wrap: wrap;
+    button{
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+  /*
+  @include sm{
+    footer{
+      justify-content: center;
+      flex-direction: row-reverse;
+      button{
+        width: auto;
+        margin-left: 18px;
+      }
+      button:last-of-type{
+        margin-left: 0;
+      }
+    }
+  }
+  */
+}

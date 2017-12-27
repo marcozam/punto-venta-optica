@@ -1,0 +1,48 @@
+<form #productoCategoriaForm="ngForm">
+  <div class="row">
+    <div class="col-xs col-md-4">
+      <mat-form-field>
+        <input matInput name="nombre" placeholder="Nombre" required
+          [ngModel]="item.nombre"/>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-md-4">
+      <mat-form-field>
+        <mat-select name="catalogoID" placeholder="Catalogo" required
+          [ngModel]="item.catalogoID">
+          <mat-option [value]="0">
+            NINGUNO
+          </mat-option>
+          <mat-option *ngFor="let c of catalogos" [value]="c.key">
+            {{c.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row" *ngIf="productoCategoriaForm.value.catalogoID && productoCategoriaForm.value.catalogoID > 0">
+    <div class="col-xs col-md-4">
+      <mat-form-field>
+        <input matInput name="formatoNombre" placeholder="Formato Nombre del Producto" required
+          [ngModel]="item.formatoNombre"/>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-md-4">
+      <mat-checkbox name="usaInventario" [ngModel]="item.usaInventario">Tiene Inventario</mat-checkbox>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs col-md-4 text-right buttons-containers">
+      <button type="button" mat-raised-button color="primary" 
+        [disabled]="productoCategoriaForm.invalid"
+        (click)="onSave(productoCategoriaForm.value)">
+        <mat-icon aria-label="Guardar">save</mat-icon>
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>

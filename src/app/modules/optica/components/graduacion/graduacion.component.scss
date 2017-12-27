@@ -1,0 +1,9 @@
+.examen-container{
+    width: 470px;
+    flex-wrap: wrap;
+    justify-content: center;
+    display: flex;
+    .sub-container{
+        justify-content: center;
+    }
+}

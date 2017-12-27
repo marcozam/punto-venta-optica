@@ -1,0 +1,7 @@
+<form #examenForm="ngForm">
+  <div class="row">
+    <div class="col-md-6">
+      <app-graduacion [listaPrecioID]="1" [pacienteID]="pacienteID" [paciente]="paciente" (onSaved)="onMicaSaved($event, examenForm.value)"></app-graduacion>
+    </div>
+  </div>
+</form>

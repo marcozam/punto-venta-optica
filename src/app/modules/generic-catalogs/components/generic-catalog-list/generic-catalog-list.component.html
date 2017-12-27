@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xs col-md-8">
+    <div class="sub-container">
+      <h3 class="sub-titles">
+        {{workingCatalog.nombre}}
+      </h3>
+      <table class="os-table bordered highlight">
+        <thead>
+          <tr>
+            <th *ngFor="let fld of fields">
+              {{fld.nombre}}
+            </th>
+            <th class="text-right">
+              <button mat-icon-button matTooltip="Nuevo" matTooltipPosition="before" color="accent" routerLink="{{detailURL}}new">
+                <mat-icon aria-label="Nuevo">add_circle_outline</mat-icon>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let element of dataList">
+            <td *ngFor="let fld of fields">
+              {{getFieldValue(element, fld.nombreCorto)}}
+            </td>
+            <td class="text-right">
+              <button mat-icon-button routerLink="{{detailURL}}{{element.key}}" matTooltip="Ediatr" matTooltipPosition="below">
+                <mat-icon aria-label="Editar">edit</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Eliminar" matTooltipPosition="below" color="warn" (click)="onDelete(element)">
+                <mat-icon aria-label="Eliminar">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

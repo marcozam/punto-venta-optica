@@ -1,0 +1,45 @@
+<form #formContacto="ngForm">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="sub-container">
+          <div class="sub-titles">
+            {{catalogName}}
+          </div>
+        <os-persona [catalogName]="catalogName" [initialData]="initialData" (onChange)="onPersonaChanged($event)"></os-persona>  
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="sub-container">
+        <div class="sub-titles">
+          Datos Contacto
+        </div>
+        <mat-form-field class="sm">
+          <mat-icon matSuffix>phone</mat-icon>
+          <input type="tel" maxlength="10" required matInput placeholder="Telefono" name="telefono" ngModel>
+        </mat-form-field>
+        <mat-form-field class="sm">
+          <mat-icon matSuffix>email</mat-icon>
+          <input type="email" maxlength="50" [email]="formContacto.value.email !== ''" matInput placeholder="Email" name="email" ngModel>
+        </mat-form-field>
+        <mat-form-field class="sm">
+          <mat-icon matSuffix>location_on</mat-icon>
+          <input maxlength="50" matInput placeholder="Colonia" name="colonia" ngModel>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="text-right buttons-containers">
+        <button mat-button color="warn" routerLink="/home" (click)="cancel()">
+          <mat-icon>clear</mat-icon>
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" (click)="onSave(formContacto.value)" [disabled]="formContacto.invalid || !isChildValid">
+          <mat-icon aria-label="Guardar">save</mat-icon>
+          Guardar {{catalogName}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-xs col-md-8">
+    <div class="sub-container">
+      <h3 class="sub-titles">
+        Modelo Armazon
+      </h3>
+      <os-table [dataSource]="dataSource" 
+        (onEditFired)="edit($event)" 
+        (onDeleteFired)="delete($event)"
+        (onAddFired)="add()">
+        <os-filter uniqueID="marca">
+          <mat-form-field class="sm">
+            <mat-select placeholder="Marca">
+              <mat-option [value]="{nombre: 'All'}">
+                  TODAS
+              </mat-option>
+              <mat-option *ngFor="let m of marcas" [value]="m">
+                  {{m.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </os-filter>
+      </os-table>
+    </div>
+  </div>
+</div>

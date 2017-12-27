@@ -1,0 +1,33 @@
+<form #ventaForm="ngForm">
+    <h3>
+        Cliente:
+    </h3>
+    <h4>
+        {{venta.sumary.cliente?.nombre}}
+    </h4>
+    <app-optica-venta *ngIf="showOptica" [clienteID]="clienteID" [listaPrecioID]="listaPrecioID" [detalleVenta]="venta.detalle"
+        (onExamenChanged)="onExamenChanged($event)"
+        (onProdutsChanged)="onOpticaVentaChanged($event)"></app-optica-venta>
+
+    <div class="sub-container">
+        <div class="sub-titles text-center">
+            Nuevo Producto
+        </div>
+        <app-add-producto [listaPreciosID]="listaPrecioID" (onProdutoAdded)="onProductoAdded($event)"></app-add-producto>
+
+        <div class="sub-titles text-center">
+            Productos
+        </div>
+        <os-detalle-venta [detalleVenta]="venta.detalle" [sumaryVenta]="venta.sumary" (detalleChanged)="onDetalleChanged($event)"></os-detalle-venta>
+    </div>
+    <div class="row">
+        <div class="col-xs text-right">
+            <button type="button" mat-raised-button color="primary" [disabled]="isVentaInvalid()"
+                (click)="onSaveVenta()">
+                <mat-icon
+                    aria-label="Guardar venta">save</mat-icon>
+                Guardar Venta
+            </button>
+        </div>
+    </div>
+</form>

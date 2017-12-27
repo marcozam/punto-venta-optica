@@ -1,0 +1,152 @@
+// Tables
+$table-border-color: #E0E0E0 !default;
+$table-striped-color: #f2f2f2 !default;
+
+//for flexbox grid
+.striped{
+  > .row {
+    padding-top: 10px;
+    &:nth-child(odd) {
+      background-color: $table-striped-color;
+    }
+  }
+}
+
+table, th, td {
+  border: none;
+  border-collapse: collapse;
+}
+.sub-container{
+  >.os-table{
+    margin-top: 25px;
+  }
+}
+.os-table{
+  width: 100%;
+  @media #{$medium-and-down} {
+    display: block;
+    position: relative;
+    tbody {
+      display: block;
+      width: auto;
+      position: relative;
+      overflow-x: auto;
+      white-space: nowrap;
+
+      tr {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+    th {
+      display: block;
+      text-align: right;
+    }
+    td {
+      display: block;
+      min-height: 1.25em;
+      text-align: left;
+    }
+    tr { 
+      padding: 0 10px; 
+    }
+  }
+
+  thead{
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom: 1px solid $table-border-color;
+    color: #757575;
+  }
+
+  tfoot{
+    border-top: 1px solid #E0E0E0;
+  }
+
+  td, th{
+    padding: 5px 7px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    border-radius: 2px;
+  }
+
+  &.bordered > thead > tr > th,
+  &.bordered > tbody > tr > td {
+    border-bottom: 1px solid $table-border-color;
+  }
+  &.bordered > tbody > tr:last-child td{
+    border-bottom-width: 0;
+  }
+
+  &.striped > tbody {
+    > tr:nth-child(odd) {
+      background-color: $table-striped-color;
+    }
+    > tr > td {
+      border-radius: 0;
+    }
+  }
+
+  &.highlight > tbody > tr {
+    .mat-icon-button{ 
+      visibility: hidden;
+    }
+    transition: background-color .25s ease;
+    &:hover {
+      background-color: $table-striped-color;
+      .mat-icon-button{ 
+        visibility: visible;
+      }
+    }
+    >td, >th{
+      height: 50px;
+    }
+  }
+
+  &.centered {
+    thead tr th, tbody tr td {
+      text-align: center;
+    }
+  }
+}
+ 
+ 
+ // Responsive Table
+ /*
+ @media #{$medium-and-down} {
+ 
+   table.responsive-table {
+     width: 100%;
+     border-collapse: collapse;
+     border-spacing: 0;
+     display: block;
+     position: relative;
+ 
+     td:empty:before {
+       content: '\00a0';
+     }
+ 
+     th,
+     td {
+       margin: 0;
+       vertical-align: top;
+     }
+ 
+     th { text-align: left; }
+     thead {
+       display: block;
+       float: left;
+ 
+       tr {
+         display: block;
+         padding: 0 10px 0 0;
+ 
+         th::before {
+           content: "\00a0";
+         }
+       }
+     }
+    }     
+ }
+ */

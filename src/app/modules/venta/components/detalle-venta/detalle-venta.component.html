@@ -1,0 +1,103 @@
+<table class="os-table highlight">
+  <thead>
+    <tr>
+      <th>Cant.</th>
+      <th>Producto</th>
+      <th class="text-right">Precio</th>
+      <th class="text-right">Descuento</th>
+      <th class="text-right">Importe</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let _detalle of detalleVenta">
+      <td class="text-center col-numerico">
+        <span *ngIf="!_detalle.canEditCantidad">
+          {{ _detalle.cantidad | number:'1.0-2' }}
+        </span>
+        <mat-form-field *ngIf="_detalle.canEditCantidad">
+          <input matInput placeholder="" type="number" class="text-center"
+            [ngModel]="_detalle.cantidad" 
+            (ngModelChange)="onCantidadChange($event, _detalle)"/>
+        </mat-form-field>
+      </td>
+      <td>
+        {{ _detalle.productoVenta.nombre }}
+      </td>
+      <td class="text-right col-numerico">
+        $ {{ _detalle.precioUnitario | number:'1.2-2' }}
+      </td>
+      <td class="text-right col-numerico">
+        $ {{ _detalle.descuento | number:'1.2-2' }}
+      </td>
+      <td class="text-right col-numerico">
+        $ {{ _detalle.importe | number:'1.2-2' }}
+      </td>
+      <td class="text-right col-actions">
+        <!--
+        <button *ngIf="_detalle.canEditCantidad || _detalle.canEditPrecio" mat-icon-button matTooltip="Ediatr" matTooltipPosition="below">
+          <mat-icon aria-label="Editar">edit</mat-icon>
+        </button>
+        -->
+        <button *ngIf="_detalle.canEditCantidad" 
+          mat-icon-button matTooltip="Eliminar" matTooltipPosition="below" color="warn" 
+          (click)="onEliminarProducto(_detalle)">
+          <mat-icon aria-label="Eliminar">
+            remove_shopping_cart
+          </mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Aplicar Descuento" matTooltipPosition="below"
+          (click)="openDescuentoItem(_detalle)">
+          <mat-icon color="primary">
+            %
+          </mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3"></td>
+      <td class="text-right">
+        <strong>
+          Sub-Total
+        </strong>
+      </td>
+      <td class="text-right">
+          $ {{ sumaryVenta.subTotal | number:'1.2-2' }}
+        </td>
+    </tr>
+    <tr>
+      <td colspan="3"></td>
+      <td class="text-right">
+        <strong>
+          Descuento
+        </strong>
+      </td>
+      <td class="text-right">
+          $ {{ sumaryVenta.descuento | number:'1.2-2' }}
+        </td>
+    </tr>
+    <tr>
+      <td colspan="3"></td>
+      <td class="text-right">
+        <strong>
+          Impuestos
+        </strong>
+      </td>
+      <td class="text-right">
+        $ {{ sumaryVenta.impuestos | number:'1.2-2' }}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3"></td>
+      <td class="text-right">
+        <strong>
+          Total
+        </strong>
+      </td>
+      <td class="text-right">
+        $ {{ sumaryVenta.total | number:'1.2-2' }}
+      </td>
+    </tr>
+  </tfoot>
+</table>

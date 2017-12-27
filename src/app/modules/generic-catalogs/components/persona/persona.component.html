@@ -1,0 +1,34 @@
+<form #formPersona="ngForm">
+    <mat-form-field>
+        <input matInput placeholder="Nombre" required autofocus
+            name="nombre" [ngModel]="persona.nombre">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Apellido Paterno" required
+            name="apellidoPaterno" [ngModel]="persona.apellidoPaterno">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Apellido Materno"
+            name="apellidoMaterno" [ngModel]="persona.apellidoMaterno">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Fecha de nacimiento" required
+            [matDatepicker]="picker" name="fechaNacimiento" [ngModel]="persona.fechaNacimiento">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="year"></mat-datepicker>
+        <mat-hint>
+            dd/mm/aaaa
+        </mat-hint>
+    </mat-form-field>
+
+    <mat-radio-group required class="radio-group-block" name="sexo" [ngModel]="persona.sexo">
+        <mat-radio-button value="1">
+            Hombre
+        </mat-radio-button>
+        <mat-radio-button value="2">
+            Mujer
+        </mat-radio-button>
+    </mat-radio-group>
+</form>

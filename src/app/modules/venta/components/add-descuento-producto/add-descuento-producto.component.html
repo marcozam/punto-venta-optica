@@ -1,0 +1,44 @@
+<form #descuentoFrom="ngForm">
+  <h1 mat-dialog-title class="sub-titles">
+    Aplicar Descuento
+  </h1>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <mat-select name="tipoDescuentoID" [ngModel]="detalle.tipoDescuentoID" placeholder="Tipo de Descuento">
+        <mat-option [value]="1">
+          Porcentaje
+        </mat-option>
+        <mat-option [value]="2">
+          Ajuste de Precio
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <span matPrefix *ngIf="descuentoFrom.value.tipoDescuentoID === 2">$ &nbsp;</span>
+      <input type="number" matInput placeholder="Valor" 
+        [ngModel]="detalle.valorDescuento" name="valor"
+        (ngModelChange)="onValueChange($event, descuentoFrom.value.tipoDescuentoID)" />
+      <span matSuffix *ngIf="descuentoFrom.value.tipoDescuentoID === 1">% &nbsp;</span>
+    </mat-form-field>
+    <table class="os-table">
+      <tbody>
+        <tr>
+          <td class="text-right"><strong> Precio de Lista </strong></td>
+          <td class="text-right">$ {{detalle.precioUnitario | number:'1.2-2'}} </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong> Descuento </strong></td>
+          <td class="text-right">$ {{detalle.descuento | number:'1.2-2'}} </td>
+        </tr>
+        <tr>
+          <td class="text-right"><strong> Precio Neto </strong></td>
+          <td class="text-right">$ {{detalle.precioUnitario - detalle.descuento | number:'1.2-2'}} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div mat-dialog-actions class="end-xs">
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onAplicarDescuento()">Aplicar</button>
+  </div>
+</form>

@@ -1,0 +1,13 @@
+<h1 mat-dialog-title class="sub-titles">
+  {{data.title}}
+</h1>
+<div mat-dialog-content>
+  <div class="line" *ngFor="let line of lines">
+    {{line}}
+  </div>
+</div>
+<div mat-dialog-actions class="end-xs">
+  <button mat-button *ngIf="data.showButtons" (click)="onNoClick()" color="warn">No</button>
+  <button mat-button *ngIf="data.showButtons" [mat-dialog-close]="true">Si</button>
+  <button mat-raised-button color="primary" *ngIf="!data.showButtons" mat-dialog-close>Enterado!</button>
+</div>

@@ -1,0 +1,95 @@
+<os-paginator *ngIf="dataSource.pagingSettings.totalPages > 1"
+  [pagingSettings]="dataSource.pagingSettings" [columns]="dataSource.columns.length">
+</os-paginator>
+<table class="os-table highlight">
+  <thead>
+    <tr>
+      <th *ngFor="let col of dataSource.columns" (click)="sort(col)" class="item-description">
+        <ng-container *ngIf="!filterVisible || !col.filterTemplate; else col.filterTemplate">
+          {{col.header}}
+          <ng-container *ngIf="col.sortDirection !== 'none'">
+            <mat-icon>
+              {{col.sortDirection === 'desc' ? 'arrow_downward' : 'arrow_upward'}}
+            </mat-icon>
+            <small>
+              ({{col.sortOrder + 1}})
+            </small>
+          </ng-container>
+        </ng-container>
+      </th>
+      <th class="text-right">
+        <button mat-icon-button matTooltip="Filtros" *ngIf="this._filters.length > 0">
+          <mat-icon (click)="toggleFilters()">
+            {{filterVisible ? 'clear' : 'filter_list'}}
+          </mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Nuevo" color="accent" *ngIf="canAdd"
+          (click)="onAdd()">
+          <mat-icon>
+            add_circle_outline
+          </mat-icon>
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="loading">
+      <td [attr.colspan]="dataSource.columns?.length + 1" class="text-center loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        Cargando, por favor espere ...
+      </td>
+    </tr>
+    <tr>
+      <td *ngIf="dataSource.data?.length === 0 && !loading" 
+        [attr.colspan]="dataSource.columns.length + 1" class="text-center no-data">
+        No hay informacion para mostrar.
+      </td>
+    </tr>
+    <ng-container *ngIf="!loading">
+      <tr *ngFor="let row of dataSource.visibleData">
+        <!--Data-->
+        <td *ngFor="let col of dataSource.columns">
+          <ng-container *ngIf="!col.columnTemplate">
+            {{col.description(row)}}
+          </ng-container>
+          <ng-template [ngIf]="col.columnTemplate" 
+            *ngTemplateOutlet="col.columnTemplate, context: { $implicit: row }">
+          </ng-template>
+        </td>
+        <!--Actions-->
+        <td class="text-right">
+          <button mat-icon-button matTooltip="Ediatr" matTooltipPosition="below" color="primary" 
+            *ngIf="canEdit"
+            (click)="onEdit(row)">
+            <mat-icon aria-label="Editar">edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Eliminar" matTooltipPosition="below" color="warn" 
+            *ngIf="canDelete"
+            (click)="onDelete(row)">
+            <mat-icon aria-label="Eliminar">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td [attr.colspan]="dataSource.columns?.length + 1">
+        <ng-template #totalFilas>
+          <small>
+            Total de filas: <strong>{{dataSource.pagingSettings.itemsCount}}</strong>
+          </small>
+        </ng-template>
+        <ng-template [ngIf]="dataSource.hasFilter" [ngIfElse]="totalFilas">
+          <small>
+            Mostrando: <strong>{{dataSource.pagingSettings.itemsCount}}</strong> de {{dataSource.data.length}}
+          </small>
+        </ng-template>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<os-paginator *ngIf="dataSource.pagingSettings.totalPages > 1" 
+  [pagingSettings]="dataSource.pagingSettings" [columns]="dataSource.columns.length">
+</os-paginator>

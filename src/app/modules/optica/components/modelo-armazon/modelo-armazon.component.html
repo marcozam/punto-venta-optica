@@ -1,0 +1,74 @@
+<form #modeloArmazonForm="ngForm">
+  <div class="row">
+    <div class="col-xs col-md-5">
+      <div class="sub-container">
+        
+        <div *ngIf="isLoading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          Cargando ...
+        </div>
+
+        <mat-form-field>
+          <mat-select placeholder="Marca" name="marca" [ngModel]="item.marca" required>
+            <mat-option *ngFor="let marca of marcaArmazon" [value]="marca">
+              {{marca.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Modelo" name="nombre" type="text" required [ngModel]="item.nombre"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select ngModel placeholder="Tipo Armazon" name="tipoArmazonID" required [ngModel]="item.tipoArmazonID">
+            <mat-option [value]="1">
+              Metal
+            </mat-option>
+            <mat-option [value]="2">
+              Pasta
+            </mat-option>
+            <mat-option [value]="3">
+              Ranurado
+            </mat-option>
+            <mat-option [value]="4">
+              3 Piezas
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="modeloArmazonForm.value.marca?.categoria.nombre">
+          Categoria default: 
+          <strong>
+              {{modeloArmazonForm.value.marca?.categoria.nombre}}
+          </strong>
+        </div>
+        <mat-form-field>
+          <mat-select placeholder="Categoria" name="categoria" [ngModel]="item.categoria">
+            <mat-option [value]="null">
+              DEFAULT
+            </mat-option>
+            <mat-option *ngFor="let categoria of categoriaArmazon" [value]="categoria">
+              {{categoria.nombre}}
+            </mat-option>
+          </mat-select>
+          <mat-hint>
+            <strong>NO</strong> seleccione la categoría al menos que desee sobreescribir la <strong>categoría </strong> por default.
+          </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="sm">
+          <input matInput placeholder="SKU" name="sku" type="text" [ngModel]="item.sku"/>
+        </mat-form-field>
+        <div class="text-right buttons-containers">
+          <button mat-button color="warn" type="button" routerLink="/armazon/modelo">
+            Cancelar
+          </button>
+    
+          <button mat-raised-button color="primary" 
+            [disabled]="modeloArmazonForm.invalid"
+            (click)="onSave(modeloArmazonForm.value)">
+            <mat-icon aria-label="Guardar">save</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
