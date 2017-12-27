@@ -28,7 +28,7 @@ export class ProductosService extends GenericService<Producto> implements Generi
 
     getProductByDetail(ID: number, categoryID: number){
         return this.db.getAllDataFromCatalog(this.catalogID, `40202,${categoryID}~40206,${ID}`)
-            .map((result: any) => result ? this.mapData(result[0]) : new Producto(''));
+            .map((result: any) => result.length > 0 ? this.mapData(result[0]) : new Producto(''));
     }
 
     mapData(r: any) {

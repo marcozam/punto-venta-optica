@@ -55,6 +55,7 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
     }
 
     private createProduct(newValue: ModeloArmazon){
+        console.log(newValue);
         let _producto = new Producto(`ARMAZON ${newValue.marca.nombre} - ${newValue.nombre}`);
         _producto.requireProcesamiento = false;
         _producto.categoriaProductoID = this.categoryID;
@@ -90,6 +91,7 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
             //Add relation to SQL
             let d2s = `${this._fb_fieldID},${retValue.key}`;
             this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
+                console.log(r);
                 retValue.modeloID = r.C0;
                 this.getProduct(retValue.modeloID, (prod: Producto) =>{
                     let _producto = this.createProduct(retValue);

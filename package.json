@@ -6,7 +6,7 @@
     "ng": "ng",
     "build": "webpack",
     "probuild": "ng build --environment=optika --prod",
-    "itgbuild": "ng build --environment=sales_dev --prod",
+    "itgbuild": "ng build --environment=sale_dev --prod",
     "test": "karma start ./karma.conf.js",
     "lint": "ng lint",
     "e2e": "protractor ./protractor.conf.js",
