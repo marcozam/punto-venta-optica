@@ -1,16 +1,18 @@
+
 <form #searchForm="ngForm" *ngIf="!showAdd">
+  {{searchForm.controls.nombre?.error | json}}
   <mat-form-field>
-    <input matInput placeholder="Nombre" autofocus required
+    <input matInput placeholder="Nombre" autofocus required nameValidator
         name="nombre" ngModel>
     <mat-hint>
       Para la busqueda separe <strong>Nombre(s), Apellido Paterno</strong> por coma.
     </mat-hint>
-    <mat-error *ngIf="isTextInvalid(searchForm.value.nombre)">
-      Favor de capturar nombre y apellido con al menos 3 caracteres para cada uno.
+    <mat-error>
+      Favor de capturar al menos 3 caracteres del nombre y apellido.
     </mat-error>
   </mat-form-field>
   <div class="text-right buttons-containers">
-    <button mat-raised-button color="primary" [disabled]="searchForm.invalid || isLoading ||  isTextInvalid(searchForm.value.nombre)"
+    <button mat-raised-button color="primary" [disabled]="searchForm.invalid || isLoading"
       (click)="onSearch(searchForm.value.nombre)">
       <mat-icon aria-label="Buscar">search</mat-icon>
       Buscar

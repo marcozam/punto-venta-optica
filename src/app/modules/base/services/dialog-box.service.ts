@@ -10,7 +10,7 @@ export class DialogBoxService {
   constructor(public dialog: MatDialog){
   }
 
-  openDialog(_title:string, _mensaje:string, _showButtons:boolean, _onClose?: any){
+  openDialog(_title:string, _mensaje:string, _showButtons: boolean = false, _onClose?: any){
     this.isOpen = true;
     let dialogRef = this.dialog.open(DialogBoxComponent, {
       data: { title: _title, mensaje: _mensaje, showButtons: _showButtons }

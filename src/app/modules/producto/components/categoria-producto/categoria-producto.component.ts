@@ -31,7 +31,9 @@ export class CategoriaProductoComponent implements OnInit {
 
   ngOnInit() {
     this.productoID = this.route.snapshot.params['detailID'];
-    this._catalogService.getCatalogList((r => this.catalogos = r));
+    this._catalogService.source$.subscribe(result => this.catalogos = result);
+    this._catalogService.getList();
+    
     if(this.productoID > 0){
       this._categoriaService.getByID(this.productoID)
         .subscribe(r => this.item = r );

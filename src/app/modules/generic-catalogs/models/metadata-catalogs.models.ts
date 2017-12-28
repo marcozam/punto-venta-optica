@@ -26,6 +26,13 @@ export class MetaDataCatalog extends GenericCatalog {
     detailURL?: string;
     //Fields
     fields?: MetaDataField[] = [];
+
+    constructor(){
+        super();
+        this.key = 0;
+        this.tableName = '';
+        this.keysChanges = ['nombre', 'tableName', 'dynamic', 'detailURL']
+    }
 }
 
 export class MetaDataField extends GenericCatalog {

@@ -4,28 +4,21 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { MetaDataCatalog, MetaDataField, MetaDataTable, MetaDataColumn } from '../models/metadata-catalogs.models';
 
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
-import { GenericServiceBase } from './generic.service';
+import { GenericServiceBase, GenericService } from './generic.service';
 
 @Injectable()
-export class CatalogsMetadataService implements GenericServiceBase<MetaDataCatalog> {
-  private catalogID: number = 100;
+export class CatalogsMetadataService extends GenericService<MetaDataCatalog> implements GenericServiceBase<MetaDataCatalog> {
+
   private fieldsCatalogID: number = 104;
   private fieldFilterID: number = 10404;
 
-  constructor(private _osBD: BaseAjaxService) {
-      
-  }
-
-  hasChanges(v1: MetaDataCatalog, v2: MetaDataCatalog){
-    return v1.nombre !== v2.nombre || 
-      v1.filterAccount !== v2.filterAccount ||
-      v1.tableName !== v2.tableName ||
-      v1.dynamic !== v2.dynamic ||
-      v1.fields.length !== v2.fields.length;
+  constructor(_osBD: BaseAjaxService) {
+      super(_osBD);
+      this.catalogID = 100;
   }
 
   save(_currentValue: MetaDataCatalog, _newValue: MetaDataCatalog, callback){
-    if(this.hasChanges(_currentValue, _newValue)){
+    if(_currentValue.hasChanges(_newValue)){
       let idx: number = 0;
       let _table = [];
       _table.push('C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11');
@@ -36,27 +29,20 @@ export class CatalogsMetadataService implements GenericServiceBase<MetaDataCatal
       });
 
       let d2s = {
-        V4: _currentValue.key,  
+        V4: _currentValue.key,
         V5: _newValue.nombre, 
         // Name Tamplate => Deprecated
         V6: '', 
         V7: _newValue.dynamic ? '1' : '0',
-        V8: _newValue.tableName,
+        V8: _newValue.tableName ? _newValue.tableName : '',
         V21: _table.join('&')
       };
-      console.log(d2s.V21);
-      let params = this._osBD.createParameter('DYN0000', 4, d2s);
-      this._osBD.getData(params).subscribe(callback);
+      let params = this.db.createParameter('DYN0000', 4, d2s);
+      this.db.getData(params).subscribe(callback);
     }
     else{
       callback(_currentValue);
     }
-  }
-
-  mapList(r: any[]) {
-    r.map(it=>{
-      return this.mapData(it);
-    })
   }
 
   mapData(r){
@@ -106,43 +92,30 @@ export class CatalogsMetadataService implements GenericServiceBase<MetaDataCatal
     return item;
   }
 
-  getCatalogByID(catalogID: number, callback){
-    this._osBD.getDetailedData(this.catalogID, catalogID)
-      .subscribe(r => callback(this.mapData(r)));
+  getCatalogData(catalogID: number){
+    return this.db.getAllDataFromCatalog(catalogID);
   }
 
-  getCatalogList(callback){
-    this._osBD.getAllDataFromCatalog(this.catalogID)
-      .subscribe((r:any[])=> callback(r.map(it => this.mapData(it))));
+  getFieldsList(catalogID: number){
+    return this.db.getAllDataFromCatalog(this.fieldsCatalogID, `${this.fieldFilterID},${catalogID}`)
+      .map(result => result.map(it => this.mapFieldsData(it)));
   }
 
-  getCatalogData(catalogID: number, callback){
-    this._osBD.getAllDataFromCatalog(catalogID)
-      .subscribe(callback);
+  getDBTables(){
+    return this.db.getData(this.db.createParameter('DYN0003', 1))
+      .map(result => result.Table.map(it => this.mapTablesData(it)));
   }
 
-  getFieldsList(catalogID: number, callback){
-    this._osBD.getAllDataFromCatalog(this.fieldsCatalogID, `${this.fieldFilterID},${catalogID}`)
-      .subscribe((r:any[])=> callback(r.map(it => this.mapFieldsData(it))));
+  getDBColumns(tableName: string){
+    return this.db.getData(this.db.createParameter('DYN0003', 2, { V3: tableName}))
+      .map(result => result.Table.map(it => this.mapColumnData(it)));
   }
 
-  getDBTables(callback){
-    this._osBD.getData(this._osBD.createParameter('DYN0003', 1))
-      .subscribe(r => callback(r.map(it => this.mapTablesData(it))));
-  }
-
-  getDBColumns(tableName: string, callback){
-    this._osBD.getData(this._osBD.createParameter('DYN0003', 2, { V3: tableName}))
-      .subscribe(r => callback(r.map(it => this.mapColumnData(it))));
-  }
-
-  getFieldTypes(callback){
-    this._osBD.getData(this._osBD.createParameter('DYN0000', 1))
-      .subscribe(r => callback(r.map(it => this._osBD.mapGeneric(it))));
+  getFieldTypes(){
+    return this.db.getData(this.db.createParameter('DYN0000', 1))
+      .map(result => result.Table.map(it => this.db.mapGeneric(it)));
   }
 }
-
-
 
 export const _catalogs: MetaDataCatalog[] = [
     {

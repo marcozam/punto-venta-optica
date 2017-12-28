@@ -54,12 +54,12 @@ export class GenericCatalogListComponent implements OnInit {
       else {
         this.dataList = [];
         this.workingCatalog = Object.assign(new MetaDataCatalog(), { nombre: 'Generic'});
-        this._db.getFieldsList(this.catalogID, (r: MetaDataField[]) =>{
-          this.fields = r.filter(f => f.visible );
-          this._db.getCatalogData(this.catalogID, data => {
-            this.dataList = data;
+        this._db.getFieldsList(this.catalogID)
+          .subscribe((r: MetaDataField[]) =>{
+            this.fields = r.filter(f => f.visible );
+            this._db.getCatalogData(this.catalogID)
+              .subscribe((data: any[]) => this.dataList = data);
           });
-        });
       }
     });
   }

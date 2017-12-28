@@ -3,7 +3,7 @@ import { database } from 'firebase';
 export class BaseGenericCatalog {
     key: string | number;
 
-    keysChanges?: string[];
+    keysChanges?: string[] = [];
 
     createdDate: Object;
     createdBy?: string;

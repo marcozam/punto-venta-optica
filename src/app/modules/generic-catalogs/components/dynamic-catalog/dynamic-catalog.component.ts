@@ -1,10 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MetaDataTable, MetaDataField, MetaDataCatalog } from '../../models/metadata-catalogs.models'
-import { CatalogsMetadataService } from '../../services/catalogs-metadata.service'
-import { GenericCatalog } from '../../models/generic-catalogs.models';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+//Services
+import { CatalogsMetadataService } from '../../services/catalogs-metadata.service'
+import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
+//Models
+import { MetaDataTable, MetaDataField, MetaDataCatalog } from '../../models/metadata-catalogs.models'
+import { GenericCatalog } from '../../models/generic-catalogs.models';
+//Constants
+import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/messages.contants';
 
 @Component({
   selector: 'app-dynamic-catalog',
@@ -22,28 +27,37 @@ export class DynamicCatalogComponent implements OnInit {
 
   @ViewChild('dcForm') form: NgForm;
 
-  constructor(private _db: CatalogsMetadataService, private route: ActivatedRoute) { 
+  constructor(
+    private _service: CatalogsMetadataService, 
+    private _dialog: DialogBoxService,
+    private route: ActivatedRoute) { 
     this.catalog = new MetaDataCatalog();
   }
 
+  getInitialData(){
+    this._service.getDBTables().subscribe(result => this.allTables = this.tables = result);
+    this._service.getFieldTypes().subscribe(result => this.fieldTypes = result);
+  }
+
   ngOnInit() {
-    this.catalogID = this.route.snapshot.params['catalogID'];;
-    this._db.getDBTables(r => this.allTables = this.tables = r);
-    this._db.getFieldTypes(r => this.fieldTypes = r);
+    this.catalogID = this.route.snapshot.params['catalogID'];
+
+    this.getInitialData();
+
     if(this.catalogID > 0){
-      this._db.getCatalogByID(this.catalogID, (cat: MetaDataCatalog) => {
-        this._db.getFieldsList(this.catalogID, r => {
-          cat.fields = r;
-          this.catalog = cat;
-        });
+      this._service.getByID(this.catalogID).subscribe((categoria: MetaDataCatalog)=> {
+        this._service.getFieldsList(this.catalogID)
+          .subscribe(result => {
+            categoria.fields = result;
+            this.catalog = categoria;
+          });
       });
     }
   }
 
   onTableSelected(item: MatAutocompleteSelectedEvent){
-    this._db.getDBColumns(item.option.value, r=> {
-      console.log(r);
-    });
+    this._service.getDBColumns(item.option.value)
+      .subscribe(r=> console.log(r));
   }
 
   onTableModelChange(text){
@@ -59,7 +73,10 @@ export class DynamicCatalogComponent implements OnInit {
   }
 
   onSave(data: MetaDataCatalog){
-    this._db.save(this.catalog, data, r=> console.log(r));
+    this._service.save(this.catalog, data, result => { 
+      this._dialog.openDialog(SuccessTitle, SuccessMessage);
+      console.log(result);
+    });
   }
 
   saveRequested(fields: MetaDataField[]){

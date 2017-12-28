@@ -10,22 +10,22 @@
   <tbody>
     <tr *ngFor="let f of workingFields" [formGroup]="f.formGroup">
       <td>
-        <mat-form-field>
+        <mat-form-field class="sm">
           <input type="text" placeholder="Nombre" matInput formControlName="nombre" required/>
         </mat-form-field>
       </td>
       <td>
-        <mat-form-field>
+        <mat-form-field class="sm">
           <input type="text" placeholder="Nombre Corto" matInput formControlName="nombreCorto" required/>
         </mat-form-field>
       </td>
       <td *ngIf="!catalog.dynamic">
-        <mat-form-field>
+        <mat-form-field class="sm">
           <input type="text" placeholder="Nombre en Tabla" matInput formControlName="fieldName"/>
         </mat-form-field>
       </td>
       <td>
-        <mat-form-field>
+        <mat-form-field class="sm">
           <mat-select placeholder="Tipo" formControlName="tipoCampoID" required>
             <mat-option *ngFor="let ft of fieldTypes" [value]="ft.key">
               {{ft.nombre}}

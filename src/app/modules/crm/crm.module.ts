@@ -19,6 +19,7 @@ import { GenericCatalogsModule } from 'app/modules/generic-catalogs/generic-cata
 
 import { ContactoComponent } from './components/contacto/contacto.component';
 import { SearchPersonaComponent } from './components/search-persona/search-persona.component';
+import { NameValidatorDirective } from './directives/name-validator.directive';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { SearchPersonaComponent } from './components/search-persona/search-perso
   ],
   declarations: [
     ContactoComponent,
-    SearchPersonaComponent
+    SearchPersonaComponent,
+    NameValidatorDirective
   ],
   exports: [
     ContactoComponent,

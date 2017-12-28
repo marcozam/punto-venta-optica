@@ -6,11 +6,10 @@ import { Producto } from 'app/modules/producto/models/producto.models';
 import { Subject } from 'rxjs';
 
 export interface GenericServiceBase<T>{
-    hasChanges?(value1: T, value2: T)
     save(_currentValue: T, _newValue: T, callback?)
     mapData(object: any): T
+    mapList?(objects: any[]): T[]
     map2Server?(value: T): any
-    //mapList(objects: any[]): T[]
 }
 
 export abstract class GenericService<T extends BaseGenericCatalog> {
@@ -21,8 +20,10 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 
     protected catalogID: number;
     
-    constructor(protected db: BaseAjaxService) { 
-        //this.source$.map((r => this.mapList(r)))
+    constructor(
+        protected db: BaseAjaxService, 
+        protected storageName?: string, 
+        protected storageTime?: number) {
         this.loading$.subscribe((next: boolean)=> this.isLoading = next);
     }
 
@@ -52,7 +53,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 
     map2Server?(item: T) { }
 
-    getList(callback:any) {
+    getList() {
         this.startLoading();
         this.db.getAllDataFromCatalog(this.catalogID)
             .subscribe((result: any[]) => {
@@ -88,12 +89,8 @@ export class GenericCatalogService extends GenericService<GenericCatalog> implem
         return item;
     }
 
-    hasChanges(value1: GenericCatalog, value2: GenericCatalog){
-        return value1.nombre !== value2.nombre;
-    }
-
     save(_currentValue: GenericCatalog, _newValue: GenericCatalog, callback?){
-        if(this.hasChanges(_currentValue, _newValue))
+        if(_currentValue.hasChanges(_newValue))
         {
             _currentValue = Object.assign(_currentValue, _newValue);
             //TODO

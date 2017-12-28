@@ -1,39 +1,10 @@
 <div class="row">
   <div class="col-xs col-md-8">
     <div class="sub-container">
-      <os-table [dataSource]="dataSource"></os-table>
-
-      <!--
-      <table class="os-table bordered highlight">
-        <thead>
-          <tr>
-            <th>
-              Nombre
-            </th>
-            <th class="text-right">
-              <button mat-icon-button matTooltip="Nuevo Catalogo" matTooltipPosition="before" color="primary">
-                <mat-icon aria-label="Nuevo Catalogo">add_circle_outline</mat-icon>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let c of catalogs">
-            <td>
-              {{c.nombre}}
-            </td>
-            <td class="text-right">
-              <button mat-icon-button routerLink="{{c.key}}" matTooltip="Ediatr Catalogo" matTooltipPosition="below">
-                <mat-icon aria-label="Editar Catalogo">edit</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip="Eliminar Catalogo" matTooltipPosition="below" color="warn" (click)="onDeleteItem(c)">
-                <mat-icon aria-label="Eliminar Catalogo">delete</mat-icon>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      -->
+      <os-table [dataSource]="dataSource" [canDelete]="false"
+        (onEditFired)="onEdit($event)"
+        (onAddFired)="onAdd()">
+      </os-table>
     </div>
   </div>
 </div>

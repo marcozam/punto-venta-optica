@@ -50,19 +50,6 @@ export class SearchPersonaComponent implements OnInit {
     }
   }
 
-  isTextInvalid(_nombre: string){
-    let _rValue: boolean = true;
-    if(_nombre){
-      let _names = _nombre.split(',').map(n=> n.trim());
-      if(_names.length >= 2){
-        if(_names[1].length >= 3){
-          _rValue = false;
-        }
-      }
-    }
-    return _rValue;
-  }
-
   onItemSelected(item: Contacto){
     this.onChange.emit({data: item, exist: true});
   }
