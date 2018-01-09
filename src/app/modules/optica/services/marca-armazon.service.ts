@@ -13,8 +13,12 @@ export class MarcaArmazonService extends FBGenericService implements GenericServ
         super.setListRefURL('armazones/marcas');
     }
 
-    mapData(r){
+    newInstance(){
         return new MarcaArmazon();
+    }
+
+    mapData(r){
+        return this.newInstance();
     }
 
     hasChanges(value1: MarcaArmazon, value2: MarcaArmazon){

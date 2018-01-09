@@ -20,7 +20,7 @@ export class GenericCatalogComponent implements OnInit {
   catalog: MetaDataCatalog;
 
   constructor(
-    private genericService: GenericCatalogService, 
+    private genericService: GenericCatalogService,
     private fbGenericService: FBGenericService,
     private route: ActivatedRoute,
     private router: Router,
@@ -35,12 +35,13 @@ export class GenericCatalogComponent implements OnInit {
     this.catalog = _catalogs.find(c=> c.key === this.catalogID);
     if(this.catalog){
       this.fbGenericService.setListRefURL(this.catalog.referenceURL);
-      if(_detailID !== 'new'){
+      if(_detailID > 0){
         this.fbGenericService.getCatalogItem(_detailID, data=> this.item = data);
       }
     }
     else{
-      if(_detailID !== 'new'){
+      this.genericService.setCatalogID(Number(this.catalogID));
+      if(_detailID > 0){
         this.genericService.getByID(_detailID).subscribe(data=> this.item = data);
       }
     }
@@ -52,7 +53,7 @@ export class GenericCatalogComponent implements OnInit {
       this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
     }
     else{
-      this.genericService.save(this.item, newValue, () =>{
+      this.genericService.save(newValue, () =>{
         this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
       });
     }

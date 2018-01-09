@@ -14,13 +14,16 @@ import {
     MatTooltipModule,
     MatProgressBarModule,
   } from '@angular/material';
-
+  
 //OS Modules
 import { OpticaModule } from '../optica/optica.module';
-
+import { BaseModule } from 'app/modules/base/base.module';
 //Routing
 import { VentaRoutingModule } from './venta-routing.module';
-
+//Services
+import { VentaService } from 'app/modules/venta/services/venta.service';
+import { ContactoService } from 'app/modules/crm/services/contacto.service';
+//Components
 import { VentasComponent } from './containers/ventas/ventas.component';
 import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.component';
 import { AddProductoComponent } from './components/add-producto/add-producto.component';
@@ -28,8 +31,7 @@ import { MetodoPagoVentaComponent } from './components/metodo-pago-venta/metodo-
 import { AddDescuentoProductoComponent } from './components/add-descuento-producto/add-descuento-producto.component';
 import { MovimientosCajaComponent } from './containers/movimientos-caja/movimientos-caja.component';
 import { EntregasAbonosComponent } from './components/entregas-abonos/entregas-abonos.component';
-import { VentaService } from 'app/modules/venta/services/venta.service';
-import { ContactoService } from 'app/modules/crm/services/contacto.service';
+import { RegistrarCorteComponent } from './components/registrar-corte/registrar-corte.component';
 
 @NgModule({
   imports: [
@@ -48,7 +50,8 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
     MatTooltipModule,
     MatProgressBarModule,
     //OS Modules
-    OpticaModule
+    OpticaModule,
+    BaseModule,
   ],
   declarations: [
     VentasComponent,
@@ -57,7 +60,8 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
     MetodoPagoVentaComponent,
     AddDescuentoProductoComponent,
     MovimientosCajaComponent,
-    EntregasAbonosComponent
+    EntregasAbonosComponent,
+    RegistrarCorteComponent
   ],
   exports:[
     VentasComponent,
@@ -65,7 +69,8 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
   ],
   entryComponents: [
     MetodoPagoVentaComponent,
-    AddDescuentoProductoComponent
+    AddDescuentoProductoComponent,
+    RegistrarCorteComponent
   ],
   providers: [
     VentaService,

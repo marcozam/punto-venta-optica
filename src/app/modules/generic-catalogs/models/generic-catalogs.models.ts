@@ -3,7 +3,7 @@ import { database } from 'firebase';
 export class BaseGenericCatalog {
     key: string | number;
 
-    keysChanges?: string[] = [];
+    keysChanges: string[] = [];
 
     createdDate: Object;
     createdBy?: string;
@@ -14,12 +14,16 @@ export class BaseGenericCatalog {
         this.createdDate = database.ServerValue.TIMESTAMP;
     }
 
-    hasChanges?(compareWith: any): boolean{
-        let response: boolean = false;
+    hasChanges(compareWith: any): boolean {
+        let response: boolean = this.keysChanges.length === 0;
         this.keysChanges.forEach(key=>{
             response = this[key] !== compareWith[key] ? true : response;
         })
         return response;
+    }
+
+    getTypeName(){
+        return typeof this;
     }
 }
 
@@ -32,7 +36,7 @@ export class Status extends GenericCatalog {
 }
 
 export class Sucursal extends GenericCatalog {
-    companyName: string = 'ASOCIACION OPTIKA';
+    companyName: string = 'OPTIKA INFANTIL';
 }
 
 export class Empresa extends GenericCatalog {

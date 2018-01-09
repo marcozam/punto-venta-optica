@@ -103,18 +103,23 @@ export class VentasComponent extends VentaOptica implements OnInit {
           rval = this.venta.comentarios.filter(c=> c.moduleID === 995).length === 0;
         }
       }
+      else rval = false;
     }
     return rval;
   }
 
   onSaveVenta(){
-    this.pagosDialog.openDialog(this.venta, res => {
-      if(res){
-        this.venta.pagos = res;
+    this.pagosDialog.openDialog(this.venta, (pagos: DetallePagos[]) => {
+      if(pagos){
+        this.venta.pagos = pagos.map(p=> {
+          p.esPagoInicial = true;
+          return p;
+        });
         this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
           if(newVenta){
             this._printService.venta = this.venta;
             this._printService.examen = this.examen;
+            this._printService.esPagoInicial = true;
             this._printService.print();
             this.router.navigate(['']);
           }

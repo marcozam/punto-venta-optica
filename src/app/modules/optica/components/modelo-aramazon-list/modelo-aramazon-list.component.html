@@ -4,13 +4,13 @@
       <h3 class="sub-titles">
         Modelo Armazon
       </h3>
-      <os-table [dataSource]="dataSource" 
+      <os-table [dataSource]="dataSource"
         (onEditFired)="edit($event)" 
         (onDeleteFired)="delete($event)"
         (onAddFired)="add()">
         <os-filter uniqueID="marca">
           <mat-form-field class="sm">
-            <mat-select placeholder="Marca">
+            <mat-select placeholder="Marca" (change)="onMarcaChange($event.value)">
               <mat-option [value]="{nombre: 'All'}">
                   TODAS
               </mat-option>

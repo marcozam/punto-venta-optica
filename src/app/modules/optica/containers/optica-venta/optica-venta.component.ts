@@ -113,12 +113,13 @@ export class OpticaVentaComponent implements OnInit {
       .subscribe(tm => {
         if(tm){
           this.setValidTratamientos(tm);
-          let _producto: Producto = new Producto(`MICA`);
+          let comentario = `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`;
+          let _producto: Producto = new Producto('MICA');
           _producto.key = 999999;
-          this.addVentaDetail(_producto, this._tipoMicasService.getPrecioMica(this.ultimoExamen, tm))
+          this.addVentaDetail(_producto, this._tipoMicasService.getPrecioMica(this.ultimoExamen, tm), 998, comentario)
           this.comentariosOptica.push({
               productoID: _producto.key, 
-              comentario: `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`, 
+              comentario: comentario, 
               key: 0, 
               moduleID: 998
             });
@@ -133,9 +134,7 @@ export class OpticaVentaComponent implements OnInit {
             this.tempTratamientos = [];
           }
         }
-        else{
-          console.log('Combination not allow');
-        }
+        else console.warn('Combination not allow');
       }
     )
   }
@@ -150,7 +149,6 @@ export class OpticaVentaComponent implements OnInit {
   //Manage Armazon
   onArmazonChanged(event){
     if(event.removed) this.removeVentaDetail(event.removed.key);
-    console.log(event);
     if(event.isComment){
       this.removeComments(event.moduleID);
       this.comentariosOptica = this.comentariosOptica.concat(event.added);
@@ -160,10 +158,11 @@ export class OpticaVentaComponent implements OnInit {
   }
 
   //General Management
-  addVentaDetail(producto: Producto, precio: number, moduleID?: number){
+  addVentaDetail(producto: Producto, precio: number, moduleID: number = 998, comentario?: string){
     let detalleVenta: DetalleVenta = new DetalleVenta(producto, precio);
     detalleVenta.canEditCantidad = false;
-    detalleVenta.moduleID = moduleID ? moduleID : 998;
+    detalleVenta.moduleID = moduleID;
+    detalleVenta.comentario = comentario;
     this.sendChanges([detalleVenta]);
   }
 

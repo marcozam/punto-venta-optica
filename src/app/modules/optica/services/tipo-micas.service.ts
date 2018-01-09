@@ -13,9 +13,13 @@ export class TipoMicasService extends FBGenericService implements GenericService
     super.setListRefURL('micas/tipos');
   }
 
+  newInstance(){
+    return new TipoMica();
+  }
+
   //TODO
   mapData(r){
-    return new TipoMica();
+    return this.newInstance();
   }
 
   setPrecioMicas(listaPreciosID: number, materialID: string, precios: any){

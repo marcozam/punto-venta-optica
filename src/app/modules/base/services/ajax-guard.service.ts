@@ -43,13 +43,12 @@ export class AjaxGuardService{
 
         queuedConnections.push(post);
         post.subscribe((result: any) => {
-                let rr = new AjaxRequestResult(result.Auth ? 1 : 0, result);
-                result.Auth ? response.error(rr) : response.next(rr);
+                let rr = new AjaxRequestResult(result.Auth ? 'AuthError' : 'Success', result);
+                response.next(rr);
             },
             (error:any) => {
-                let rr = new AjaxRequestResult(2, error);
-                console.log(rr);
-                response.error(rr);
+                let rr = new AjaxRequestResult('GeneralError', error);
+                response.next(rr);
             }
         );
         return response;

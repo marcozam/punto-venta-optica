@@ -36,6 +36,9 @@ import { HomeComponent } from './containers/home/home.component';
 //import { FacturaListComponent } from './modules/facturacion/factura-list.component';
 
 //OS Modules
+import { BaseModule } from './modules/base/base.module';
+//Validate if should be here
+import { DevelopmentModule } from './modules/development/development.module';
 import { GenericCatalogsModule } from './modules/generic-catalogs/generic-catalogs.module';
 import { ProductoModule } from './modules/producto/producto.module';
 import { CRMModule } from './modules/crm/crm.module';
@@ -89,6 +92,8 @@ registerLocaleData(localeESMX);
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     //OS Modules
+    BaseModule,
+    DevelopmentModule,
     GenericCatalogsModule,
     CRMModule,
     ProductoModule,

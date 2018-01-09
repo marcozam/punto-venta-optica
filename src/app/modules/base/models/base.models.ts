@@ -2,15 +2,25 @@ import { Subject } from "rxjs/Subject";
 import { TemplateRef } from "@angular/core/src/linker/template_ref";
 
 export type SortDirection = 'asc' | 'desc' | 'none';
+export type ColumnAlign = 'left' | 'center' | 'right';
 
 export class TableColumn {
     sortDirection: SortDirection = 'none';
     sortOrder: number = -1;
+    sum: boolean;
+    align: ColumnAlign = 'left';
     filterTemplate?: TemplateRef<any>;
     columnTemplate?: TemplateRef<any>;
 
-    constructor(public header: string, public uniqueID: string, public description: any){
-
+    constructor(
+        public header: string, 
+        public uniqueID: string, 
+        public description: any,
+        _suma: boolean = false,
+        public sumTemplate?: any)
+    {
+        this.sum = _suma;
+        if(_suma) this.align = 'right';
     }
 }
 
@@ -20,30 +30,29 @@ export class TableSource<T> {
 
     //Method to clear
     filter: any;
+    actionsTemplate?: TemplateRef<any>;
     onDataSourceChange: Subject<any> = new Subject();
 
     get visibleData(): T[]{
         const sIdx = (this.pagingSettings.currentPage - 1) * this.pagingSettings.itemsPerPage;
         const eIdx = Math.min(((this.pagingSettings.currentPage) * this.pagingSettings.itemsPerPage) - 1, this.pagingSettings.itemsCount);
-        return this._filteredData.filter( (item, idx)=>{
-            if(idx >= sIdx && idx <= eIdx){
-                return item;
-            }
+        return this._filteredData.filter( (item, idx)=> {
+            if(idx >= sIdx && idx <= eIdx) return item;
         });
     }
 
-    get data(): T[]{
+    get data(): T[] {
         return this._data;
     }
 
-    get hasFilter(): boolean{
+    get hasFilter(): boolean {
         return this._filteredData.length < this.data.length;
     }
 
     columns: TableColumn[];
     pagingSettings: TablePagingSettings;
 
-    constructor(){
+    constructor() {
         this.columns = [];
         this.pagingSettings = new TablePagingSettings(25, this.data ? this.data.length : 0, 5);
     }
@@ -56,6 +65,18 @@ export class TableSource<T> {
     refresh(){
         this.applySort();
         this.applyFilters();
+    }
+
+    suma(column: TableColumn){
+        let items = this.visibleData;
+        if(items.length > 1){
+            return items.map(item => column.sumTemplate(item))
+                .reduce((p, n) => p + n)
+        }
+        else if(items.length > 0) {
+            return column.sumTemplate(items[0])
+        }
+        else return 0;
     }
 
     //Sorting
@@ -142,7 +163,7 @@ export class TablePagingSettings{
     }
 
     get totalPages(): number{
-        return Math.ceil(this.itemsCount/this.itemsPerPage) || 0;
+        return Math.ceil(this.itemsCount/this.itemsPerPage) || 1;
     }
 
     get pages(): number[]{

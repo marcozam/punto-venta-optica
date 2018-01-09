@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SuccessTitle, SuccessMessage, WarningTitle, LeaveWarningMessage } from 'app/modules/base/constants/messages.contants';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { CategoriaProductoService } from '../../services/categoria-producto.service';
@@ -50,7 +51,7 @@ export class ProductosComponent implements OnInit {
   onCancelar(data: any){
     if(this._service.hasChanges(this.product, data))
     {
-      this.dialog.openDialog('Advertencia!', 'Se perderan los datos capturados.\n ¿Desea continuar?', true, result => { 
+      this.dialog.openDialog(WarningTitle, LeaveWarningMessage, true, result => { 
         if(result){
           this.router.navigate(['/productos']);
         }
@@ -62,9 +63,13 @@ export class ProductosComponent implements OnInit {
   }
 
   onSave(data: Producto){
-    this._service.save(this.product, data, r => {
-      this.router.navigate(['/productos']);
-      this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
-    })    
+    let workingItem = Object.assign(this.product, data);
+    this._service.save(workingItem, 
+      r => {
+        this.router.navigate(['/productos']);
+        this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
+      }, 
+      ()=>{},
+      `os_producto_categoria-${workingItem.categoriaProductoID}`)
   }
 }

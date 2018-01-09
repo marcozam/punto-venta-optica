@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 //Services
@@ -30,7 +30,8 @@ export class DynamicCatalogComponent implements OnInit {
   constructor(
     private _service: CatalogsMetadataService, 
     private _dialog: DialogBoxService,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute,
+    private router: Router) { 
     this.catalog = new MetaDataCatalog();
   }
 
@@ -75,6 +76,7 @@ export class DynamicCatalogComponent implements OnInit {
   onSave(data: MetaDataCatalog){
     this._service.save(this.catalog, data, result => { 
       this._dialog.openDialog(SuccessTitle, SuccessMessage);
+      this.router.navigate(['/DCG']);
       console.log(result);
     });
   }

@@ -37,7 +37,8 @@ export class Producto extends GenericCatalog {
 
   constructor(_nombre: string, _categoria?: CategoriaProductoSumary) {
     super();
-    this.key = '0';
+    this.keysChanges = ['nombre', 'categoriaProductoID', 'descripcion', 'SKU'];
+    this.key = 0;
     this.nombre = _nombre;
     this.categoriaProducto = _categoria;
   }

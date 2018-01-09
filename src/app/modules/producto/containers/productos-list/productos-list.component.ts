@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
   providers: [ProductosService, CategoriaProductoService, DialogBoxService]
 })
 export class ProductosListComponent implements OnInit {
-  productos: Producto[] = [];
+  //productos: Producto[] = [];
   selectedCategory: CategoriaProductoSumary;
   categorias: CategoriaProductoSumary[];
   dataSource: TableSource<Producto>;
@@ -74,23 +74,13 @@ export class ProductosListComponent implements OnInit {
     });
     
     this._service.source$.subscribe((products: Producto[]) =>{
-      //Elimina los productos sin categoria y los que ya existan
+      //Elimina los productos sin categoria
       products = products.filter(p => {
-        let ret: boolean = true;
-        let prod = this.productos.find(prod=> prod.key === p.key);
-        ret = prod ? false : true;
-        if(ret){
-          let cat = this.categorias.find(c=> c.key === p.categoriaProductoID)
-          p.categoriaProducto = cat;
-          ret = cat ? true : false;
-        }
-        return ret;
+        let cat = this.categorias.find(c=> c.key === p.categoriaProductoID);
+        p.categoriaProducto = cat;
+        return cat ? true : false;;
       });
-
-      if(products.length > 0){
-        this.productos = this.productos.concat(products);
-        this.dataSource.updateDataSource(this.productos);
-      }
+      if(products.length > 0) this.dataSource.updateDataSource(products);
     });
   }
 
@@ -104,10 +94,8 @@ export class ProductosListComponent implements OnInit {
   }
 
   onDelete(item: Producto){
-    this._service.delete(Number(item.key)).subscribe(()=>{
-      this.productos.splice(this.productos.findIndex(v=>v.key === item.key), 1);
-      this.dataSource.refresh()
-    });
+    this._service.delete(Number(item.key))
+      .subscribe(()=> this.dataSource.refresh());
   }
 
   onEdit(item: Producto){

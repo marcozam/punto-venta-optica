@@ -23,6 +23,10 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
         super(_db);
         super.setListRefURL('armazones/modelos');
     }
+
+    newInstance(): ModeloArmazon {
+        return new ModeloArmazon();
+    }
     
     mapData(r){
         return new ModeloArmazon()
@@ -55,7 +59,6 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
     }
 
     private createProduct(newValue: ModeloArmazon){
-        console.log(newValue);
         let _producto = new Producto(`ARMAZON ${newValue.marca.nombre} - ${newValue.nombre}`);
         _producto.requireProcesamiento = false;
         _producto.categoriaProductoID = this.categoryID;
@@ -79,40 +82,36 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
     }
 
     save(_currentValue: ModeloArmazon, _newValue: ModeloArmazon, callback){
-        if(this.hasChanges(_currentValue, _newValue))
-        {
-            _currentValue = Object.assign(_currentValue, _newValue);
-            _currentValue.marcaID = _currentValue.marca.key.toString();
-            if(!_currentValue.categoria)
-                _currentValue.categoria = null;
-            if(!_currentValue.sku)
-                _currentValue.sku = '';
-            let retValue: ModeloArmazon = _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
-            //Add relation to SQL
-            let d2s = `${this._fb_fieldID},${retValue.key}`;
-            this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
-                console.log(r);
-                retValue.modeloID = r.C0;
-                this.getProduct(retValue.modeloID, (prod: Producto) =>{
-                    let _producto = this.createProduct(retValue);
-                    _producto.key = prod.key;
-                    this._productoService.save(prod, _producto, data =>{
-                        callback(retValue);
-                    });
+        //if(this.hasChanges(_currentValue, _newValue)) {
+        _currentValue = Object.assign(_currentValue, _newValue);
+        _currentValue.marcaID = _currentValue.marca.key.toString();
+        if(!_currentValue.categoria)
+            _currentValue.categoria = null;
+        if(!_currentValue.sku)
+            _currentValue.sku = '';
+        let retValue: ModeloArmazon = _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
+        //Add relation to SQL
+        let d2s = `${this._fb_fieldID},${retValue.key}~100011,${retValue.nombre}`;
+        this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
+            retValue.modeloID = r.C0;
+            this.getProduct(retValue.modeloID, (prod: Producto) =>{
+                let _producto = this.createProduct(retValue);
+                _producto.key = prod.key;
+                this._productoService.save(_producto, data =>{
+                    callback(retValue);
                 });
             });
+        });
+        /*
         }
-        else{
-            callback(_currentValue);
-        }
+        else callback(_currentValue);
+        */
     }
 
     deleteModelo(modelo: ModeloArmazon, callback){
-        this.getProduct(modelo.modeloID, (prod: Producto) =>{
-            this._productoService.delete(Number(prod.key)).subscribe(() => {
-                this.deleteCatalogItem(modelo.key);
-                callback();
-            });
+        this._productoService.delete(modelo.modeloID).subscribe(() => {
+            this.deleteCatalogItem(modelo.key);
+            callback();
         });
     }
 }

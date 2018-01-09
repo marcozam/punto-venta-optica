@@ -4,7 +4,8 @@
 <table class="os-table highlight">
   <thead>
     <tr>
-      <th *ngFor="let col of dataSource.columns" (click)="sort(col)" class="item-description">
+      <th *ngFor="let col of dataSource.columns" class="item-description text-{{col.align}}"
+        (click)="sort(col)">
         <ng-container *ngIf="!filterVisible || !col.filterTemplate; else col.filterTemplate">
           {{col.header}}
           <ng-container *ngIf="col.sortDirection !== 'none'">
@@ -48,7 +49,7 @@
     <ng-container *ngIf="!loading">
       <tr *ngFor="let row of dataSource.visibleData">
         <!--Data-->
-        <td *ngFor="let col of dataSource.columns">
+        <td *ngFor="let col of dataSource.columns" class="text-{{col.align}}">
           <ng-container *ngIf="!col.columnTemplate">
             {{col.description(row)}}
           </ng-container>
@@ -58,6 +59,9 @@
         </td>
         <!--Actions-->
         <td class="text-right">
+          <ng-template [ngIf]="dataSource.actionsTemplate"
+            *ngTemplateOutlet="dataSource.actionsTemplate, context: { $implicit: row }">
+          </ng-template>
           <button mat-icon-button matTooltip="Ediatr" matTooltipPosition="below" color="primary" 
             *ngIf="canEdit"
             (click)="onEdit(row)">
@@ -73,6 +77,14 @@
     </ng-container>
   </tbody>
   <tfoot>
+    <tr>
+      <th *ngFor="let col of dataSource.columns" class="text-{{col.align}}">
+        <ng-container *ngIf="col.sum">
+          $ {{dataSource.suma(col) | number : '1.2-2'}}
+        </ng-container>
+      </th>
+      <td></td>
+    </tr>
     <tr>
       <td [attr.colspan]="dataSource.columns?.length + 1">
         <ng-template #totalFilas>

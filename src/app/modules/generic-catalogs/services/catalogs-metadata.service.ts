@@ -92,10 +92,6 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
     return item;
   }
 
-  getCatalogData(catalogID: number){
-    return this.db.getAllDataFromCatalog(catalogID);
-  }
-
   getFieldsList(catalogID: number){
     return this.db.getAllDataFromCatalog(this.fieldsCatalogID, `${this.fieldFilterID},${catalogID}`)
       .map(result => result.map(it => this.mapFieldsData(it)));
@@ -117,51 +113,51 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
   }
 }
 
+const categoriaProucto = new MetaDataCatalog();
+categoriaProucto.key = '100';
+categoriaProucto.nombre = 'Categoria de Productos';
+categoriaProucto.referenceURL = 'productos/categorias';
+categoriaProucto.detailURL = '/producto/categoria/';
+
+const categoriaArmazon = new MetaDataCatalog();
+categoriaArmazon.key = '999';
+categoriaArmazon.nombre = 'Categorias de Armazones';
+categoriaArmazon.referenceURL = 'armazones/categorias';
+
+const marcaProducto = new MetaDataCatalog();
+marcaProducto.key = '998';
+marcaProducto.nombre = 'Marca Productos';
+marcaProducto.referenceURL = 'armazones/marcas';
+marcaProducto.detailURL = '/armazon/marca/'
+
+const modeloArmazon = new MetaDataCatalog();
+modeloArmazon.key = '997';
+modeloArmazon.nombre = 'Modelo Armazones';
+modeloArmazon.referenceURL = 'armazones/modelos';
+modeloArmazon.detailURL = '/armazon/modelo/';
+
+const tipoMicas = new MetaDataCatalog();
+tipoMicas.key = '996';
+tipoMicas.nombre = 'Tipo de Micas';
+tipoMicas.referenceURL = 'micas/tipos';
+tipoMicas.detailURL = '/mica/tipo/';
+
+const materialMicas = new MetaDataCatalog();
+materialMicas.key = '995';
+materialMicas.nombre = 'Material de Micas';
+materialMicas.referenceURL = 'micas/materiales';
+
+const tratamientoMicas = new MetaDataCatalog();
+tratamientoMicas.key = '994';
+tratamientoMicas.nombre = 'Tratamiento de Micas';
+tratamientoMicas.referenceURL = 'micas/tratamientos';
+
 export const _catalogs: MetaDataCatalog[] = [
-    {
-      key: '100',
-      nombre: 'Categoria de Productos',
-      referenceURL : 'productos/categorias',
-      createdDate: 1,
-      detailURL: '/producto/categoria/'
-    },
-    {
-      key: '999',
-      nombre: 'Categorias de Armazones',
-      referenceURL : 'armazones/categorias',
-      createdDate: 1,
-    },
-    {
-      key: '998',
-      nombre: 'Marca Productos',
-      referenceURL : 'armazones/marcas',
-      createdDate: 1,
-      detailURL: '/armazon/marca/'
-    },
-    {
-      key: '997',
-      nombre: 'Modelo Armazones',
-      referenceURL : 'armazones/modelos',
-      createdDate: 1,
-      detailURL: '/armazon/modelo/'
-    },
-    {
-      key: '996',
-      nombre: 'Tipo de Micas',
-      referenceURL : 'micas/tipos',
-      createdDate: 1,
-      detailURL: '/mica/tipo/'
-    },
-    {
-      key: '995',
-      nombre: 'Material de Micas',
-      referenceURL : 'micas/materiales',
-      createdDate: 1,
-    },
-    {
-      key: '994',
-      nombre: 'Tratamiento de Micas',
-      referenceURL : 'micas/tratamientos',
-      createdDate: 1,
-    }
-  ];
+  categoriaProucto,
+  categoriaArmazon,
+  marcaProducto,
+  modeloArmazon,
+  tipoMicas,
+  materialMicas,
+  tratamientoMicas
+];

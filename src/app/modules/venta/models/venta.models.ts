@@ -87,6 +87,7 @@ export class SumaryVenta extends BaseGenericCatalog {
     subTotal: number;
     descuento: number = 0;
     totalPagado: number;
+    totalRecibido?: number;
     impuestos: number;
     fecha: Date;
 
@@ -100,6 +101,7 @@ export class SumaryVenta extends BaseGenericCatalog {
 
     constructor(){
         super();
+        this.key = 0;
         this.cliente = new Contacto();
         this.cliente.persona = new Persona();
         this.sucursal = new Sucursal();
@@ -167,9 +169,15 @@ export class DetalleVenta extends BaseGenericCatalog {
     }
 }
 
+//MOVE SOMEWHERE ELSE
 export class MetodoPago extends GenericCatalog {
     codigo: string;
     enVenta: boolean;
     enCorte: boolean;
     utilizaReferencia: boolean;
+
+    constructor(nombre?: string){
+        super();
+        this.nombre = nombre ? nombre : '';
+    }
 }

@@ -19,6 +19,7 @@ export class ModeloAramazonListComponent implements OnInit {
 
   categoriaArmazon: GenericCatalog[];
   marcas: MarcaArmazon[];
+  selectedMarca: MarcaArmazon;
 
   dataSource: TableSource<ModeloArmazon>;
 
@@ -28,22 +29,18 @@ export class ModeloAramazonListComponent implements OnInit {
     private _marca: MarcaArmazonService,
     private router: Router) { 
     this.dataSource = new TableSource();
+    //Define filter function
+    this.dataSource.filter = () =>{
+      return this.selectedMarca ?
+        this.selectedMarca.nombre === 'All' ? 
+        this.dataSource.data : 
+        this.dataSource.data.filter(item => item.marcaID === this.selectedMarca.key) :
+        this.dataSource.data;
+    }
     this.dataSource.columns = [
-      new TableColumn(
-        'Categoria',
-        'categoria',
-        (item: ModeloArmazon) => { return item.categoria ? item.categoria.nombre : item.marca.categoria.nombre }
-      ),
-      new TableColumn(
-        'Marca',
-        'marca',
-        (item: ModeloArmazon) => { return item.marca.nombre }
-      ),
-      new TableColumn(
-        'Modelo',
-        'modelo',
-        (item: ModeloArmazon)=>{ return item.nombre }
-      )
+      new TableColumn('Categoria', 'categoria', (item) => item.categoria ? item.categoria.nombre : item.marca.categoria.nombre ),
+      new TableColumn('Marca', 'marca', (item) => item.marca.nombre ),
+      new TableColumn('Modelo', 'modelo', (item)=> item.nombre )
     ]
     //Default Sorts
     this.dataSource.columns[0].sortOrder = 0;
@@ -57,6 +54,11 @@ export class ModeloAramazonListComponent implements OnInit {
     this._marca.getCatalogList((res)=> this.marcas = res);
   }
 
+  onMarcaChange(marca: MarcaArmazon){
+    this.selectedMarca = marca;
+    this.dataSource.applyFilters();
+  }
+
   add(){
     this.router.navigate(['/armazon/modelo/new']);
   }
@@ -66,6 +68,6 @@ export class ModeloAramazonListComponent implements OnInit {
   }
 
   delete(item: ModeloArmazon){
-    //this.service.deleteModelo(item, ()=>{ })
+    //this.service.deleteModelo(item, () =>{ })
   }
 }

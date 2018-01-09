@@ -1,0 +1,35 @@
+<h1 mat-dialog-title class="sub-titles">
+  Registrar Corte
+</h1>
+<div mat-dialog-content>
+  <table class="os-table highlight">
+    <thead>
+      <tr>
+        <th>
+          Recibido
+        </th>
+        <th>
+          Esperado
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of detalle">
+        <td>
+          <mat-form-field class="sm">
+            <input type="number" [placeholder]="d.metodoPago.nombre" min="0" matInput
+              class="text-right" required
+              [(ngModel)]="d.montoRecibido"/>
+          </mat-form-field>
+        </td>
+        <td class="text-right">
+          $ {{d.montoEsperado | number : '1.2-2'}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions class="end-xs">
+  <button mat-button color="warn" (click)="onCancelar()">Cancelar</button>
+  <button mat-raised-button (click)="onContinue()" color="primary">Continuar</button>
+</div>

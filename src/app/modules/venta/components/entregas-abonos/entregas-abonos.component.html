@@ -1,62 +1,10 @@
+<ng-template #actionsTemplate let-item>
+    <button *ngIf="item.sumary.saldo > 0" mat-icon-button matTooltip="Realizar abono" 
+        matTooltipPosition="below" (click)="generarPago(item)">
+        <mat-icon> attach_money </mat-icon>
+    </button>
+</ng-template>
 
 <div class="sub-container">
-  <div class="sub-titles">
-      Ordenes de venta pendientes de entrega
-  </div>
-  <table class="os-table highlight">
-    <thead>
-      <tr>
-        <th> Orden </th>
-        <th> Fecha </th>
-        <th> Cliente </th>
-        <th> Status </th>
-        <th class="text-right"> Total </th>
-        <th class="text-right"> Total Pagado </th>
-        <th class="text-right"> Saldo </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let ov of ordenesPendienteEntrega">
-            <td>
-                {{ov.sumary.key}}
-            </td>
-            <td>
-                {{ov.sumary.fecha | date: 'dd MMMM yy'}}
-            </td>
-            <td>
-              {{ov.sumary.status.nombre}}
-            </td>
-            <td>
-                {{ov.sumary.cliente.nombre}}
-            </td>
-            <td class="text-right">
-                $ {{ov.sumary.total | number: '1.2-2'}}
-            </td>
-            <td class="text-right">
-                $ {{ov.sumary.totalPagado | number: '1.2-2'}}
-            </td>
-            <td class="text-right">
-                $ {{ov.sumary.saldo | number: '1.2-2'}}
-            </td>
-            <td class="text-right">
-                <button *ngIf="ov.sumary.saldo > 0" 
-                    mat-icon-button matTooltip="Realizar pago" matTooltipPosition="below"
-                    (click)="generarPago(ov)">
-                    <mat-icon>
-                      attach_money
-                    </mat-icon>
-                </button>
-              <!--
-              <button *ngIf="mov.esPagoInicial" mat-icon-button matTooltip="Imprimir ticket" matTooltipPosition="below"
-                (click)="onPrintTicket(mov.ordenVentaID)">
-                <mat-icon aria-label="Imprimir">
-                  print
-                </mat-icon>
-              </button>
-              -->
-            </td>
-        </tr>
-    </tbody>
-  </table>
+  <os-table [dataSource]="dataSource" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
 </div>

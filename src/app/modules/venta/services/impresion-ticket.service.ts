@@ -52,7 +52,9 @@ export abstract class ImpresionTicketService {
     return `<table>
       <thead>
         <tr>
-          <th style="font-size:13pt;" colspan="4">${sucursal.companyName}</th>
+          <th style="font-size:13pt;" colspan="4">
+            <h2>${sucursal.companyName}</h2>
+          </th>
         </tr>
         <tr>
           <th colspan="4">

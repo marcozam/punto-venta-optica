@@ -1,7 +1,7 @@
 <form #formAddProduct="ngForm">
   <div class="row">
     <div class="col-xs col-md-1">
-      <mat-form-field>
+      <mat-form-field class="sm">
         <input matInput placeholder="Cantidad" type="text" class="text-right"
         #cantidadField name="cantidad" ngModel 
         (keypress)="onCantidadKeyDown($event)"/>

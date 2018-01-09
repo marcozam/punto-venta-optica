@@ -30,7 +30,6 @@ export class MedidasArmazonComponent implements OnInit {
   }
 
   emitChanges(value: MedidasArmazon){
-    console.log(value);
     if(this.medidas !== value){
       this.medidas = value;
       this.onChange.emit(this.medidas);

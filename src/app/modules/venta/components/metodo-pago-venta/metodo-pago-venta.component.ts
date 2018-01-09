@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MetodoPago, DetallePagos, Venta } from 'app/modules/venta/models/venta.models';
-import { MetodosPagoService } from 'app/modules/venta/services/formas-pago.service';
+import { MetodosPagoService } from 'app/modules/venta/services/metodos-pago.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
@@ -33,10 +33,10 @@ export class MetodoPagoVentaComponent implements OnInit {
         this.totalPagado = pagos.map(p=> p.totalRecibido).reduce((p, c) => p + c);
       }
     })  
+    this._metodoPagoService.getList();
 
-    this._metodoPagoService.getList((res: MetodoPago[]) => { 
-      this.metodosPago = res.filter(item => item.enVenta); 
-    });
+    this._metodoPagoService.source$
+      .subscribe(result => this.metodosPago = result.filter(item => item.enVenta));
   }
 
   onContinue(value){

@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 
-import { environment } from './../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 import { AjaxGuardService } from './ajax-guard.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 import { Subject } from 'rxjs/Subject';
+import { WarningTitle, AuthErrorMessage, ErrorTitle, ErrorMessage, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';
 
 @Injectable()
 export class BaseAjaxService{
@@ -19,7 +20,7 @@ export class BaseAjaxService{
     {
         this.guard.online$.subscribe((isOnline)=>{
             this.online = isOnline;
-            if(!isOnline) this._dialog.openDialog('Error', 'Se perdio la conexion a internet', false);
+            if(!isOnline) this.openDialog(ErrorTitle, 'Se perdio la conexion a internet');
         })
     }
 
@@ -56,17 +57,30 @@ export class BaseAjaxService{
             this.guard.getData(environment.webServiceURL, data)
                 .subscribe(
                     (result: AjaxRequestResult) => {
-                        response.next(result.data);
-                    },
-                    (result: AjaxRequestResult) =>{
-                        response.next({Table: []});
-                        if(!this._dialog.isOpen){
-                            this._dialog.openDialog('Error', result.code === 1 ? 'Problema de Autenticacion' : 'Ha ocurrido un error', false);
+                        switch(result.code){
+                            case 'Success':
+                                response.next(result.data);
+                                break;
+                            case 'AuthError':
+                                this.openDialog(WarningTitle, AuthErrorMessage);
+                                //response.next();
+                                break;
+                            //General Error
+                            default:
+                                this.openDialog(ErrorTitle, InternalServerErrorMessage);
+                                //response.next();
+                                break;
                         }
                     });
         }
-        else if(!this._dialog.isOpen) this._dialog.openDialog('Error', 'No hay conexion', false);
+        else this.openDialog(ErrorTitle, 'No hay conexion')
         return response;
+    }
+
+    private openDialog(title: string, message: string){
+        if(!this._dialog.isOpen){
+            this._dialog.openDialog(title, message)
+        }
     }
 
     getDetailedData<T>(CatalogoID: number, DetailID: any) {

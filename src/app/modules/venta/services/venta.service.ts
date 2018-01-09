@@ -24,9 +24,9 @@ export class VentaService {
 
     mapDetallePagos2Server(detalle: DetallePagos[]){
         let arr = detalle.map(dp => {
-            return `${dp.metodoPago.key},${dp.monto}`
+            return `${dp.metodoPago.key},${dp.monto},${dp.totalRecibido}`
         })
-        arr = ['C0,C1', ...arr];
+        arr = ['C0,C1,C2', ...arr];
         return arr.join('&');
     }
 
@@ -66,16 +66,14 @@ export class VentaService {
         return venta;
     }
 
-    registarPago(ventaID: number, pagos: DetallePagos[], callback){
+    registarPago(ventaID: number, pagos: DetallePagos[]){
         let total = pagos.map(p=> p.monto).reduce((p, n) => p + n);
         let params = this._osBD.createParameter('ECOM0002', 6, {
             'V3': ventaID,
             'V4': total,
             'V6': this.mapDetallePagos2Server(pagos)
         });
-        this._osBD.getData(params).subscribe(res => {
-            callback(res.Table.length > 0);
-        });
+        return this._osBD.getData(params);
     }
 
     saveVenta(venta: Venta, sucursalID: number, callback){
@@ -113,11 +111,10 @@ export class VentaService {
         let params = this._osBD.createParameter('ECOM0003', 2, { V3: ID });
         this._osBD.getData(params).subscribe(data => {
             let header = data.Table[0];
-
             let venta = this.mapData(header);
-
             venta.updateDetalleVenta(data.Table1.map( row => {
                 let dv = new DetalleVenta(new Producto(row.C2));
+                dv.productoVenta.key =  row.C0;
                 dv.cantidad = row.C1;
                 dv.precioUnitario = row.C3;
                 dv.comentario = row.C10;
@@ -131,6 +128,7 @@ export class VentaService {
                 dp.metodoPago = new MetodoPago();
                 dp.metodoPago.nombre = row.C1;
                 dp.monto = row.C2;
+                dp.totalRecibido = row.C6;
                 dp.esPagoInicial = row.C4;
                 dp.corteID = row.C5;
                 return dp;

@@ -29,7 +29,7 @@ export class VentaTicketService extends ImpresionTicketService implements Generi
   }
 
   getServerData(key: number){
-    this.service.getByID(key, (data: Venta) => { 
+    this.service.getByID(key, (data: Venta) => {
       this.venta = data;
       //Exclusivo Optica
       this.serviceExamen.getLastExamen(this.venta.sumary.cliente.key).subscribe((examen: Examen) => {
@@ -147,12 +147,9 @@ export class VentaTicketService extends ImpresionTicketService implements Generi
           <td class="text-center">
             ${dPro.cantidad}
           </td>
-          <td>
+          <td colspan="2">
             ${dPro.productoVenta.nombre}
             ${dPro.comentario ? `<br/><small>(${dPro.comentario})</small>`: ''}
-          </td>
-          <td class="text-right">
-            ${this._decimal.transform(dPro.precioUnitario, '1.2-2')}
           </td>
           <td class="text-right">
             ${this._decimal.transform(dPro.importe, '1.2-2')}
@@ -255,6 +252,9 @@ export class VentaTicketService extends ImpresionTicketService implements Generi
       }
     );
 
+    let totalRecibido: number = pagos.length > 0 ? 
+        pagos.map(p=> p.totalRecibido).reduce((p, c)=> p +c) : 0;
+
     let anticipo: number = 0;
 
     if(!this.esPagoInicial){
@@ -264,50 +264,41 @@ export class VentaTicketService extends ImpresionTicketService implements Generi
         .reduce((p, c)=> p +c);
 
       footer.push(`<tr>
-          <td colspan="2">
+          <td colspan="3">
             Anticipo
           </td>
-          <td colspan="2" class="text-right">
+          <td class="text-right">
             $ ${this._decimal.transform(anticipo, '1.2-2')}
           </td>
         </tr>`);
-        anticipo = 0;
     }
-    else{
-      let iniPayments = this.venta.pagos
-        .filter(p=> !p.esPagoInicial)
-        .map(p=> p.monto);
-
-      if(iniPayments.length > 0){
-        anticipo = iniPayments.reduce((p, c)=> p +c);
-      }
-    }
+    totalRecibido += anticipo;
 
     footer = footer.concat(
       pagos
       .map( dPag => {
         return `<tr>
-          <td colspan="2">
+          <td colspan="3">
             ${dPag.metodoPago.nombre}
           </td>
-          <td colspan="2" class="text-right">
-            $ ${ this._decimal.transform(dPag.monto, '1.2-2')}
+          <td class="text-right">
+            $ ${ this._decimal.transform(dPag.totalRecibido, '1.2-2')}
           </td>
         </tr>`
       })
     );
 
     footer.push(`<tr>
-      <td colspan="2">
+      <td colspan="3">
         <strong>
           ${ this.venta.sumary.total > this.venta.sumary.totalPagado ? 'Saldo Actual' : 'Su Cambio'}
         </strong>
       </td>
-      <td colspan="2" class="text-right">
+      <td class="text-right">
         $ ${ this._decimal.transform(
             this.venta.sumary.total <= this.venta.sumary.totalPagado ? 
-            (this.venta.sumary.totalPagado - anticipo - this.venta.sumary.total) : 
-            (this.venta.sumary.total + anticipo - this.venta.sumary.totalPagado),
+            (totalRecibido - this.venta.sumary.total) : 
+            (this.venta.sumary.total - totalRecibido),
             '1.2-2')
         }
       </td>

@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { BaseGenericCatalog, GenericCatalog } from '../../models/generic-catalogs.models';
-import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
-
+import { ActivatedRoute, Router } from '@angular/router';
+//Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { GenericCatalogService } from 'app/modules/generic-catalogs/services/generic.service';
 import { _catalogs, CatalogsMetadataService } from 'app/modules/generic-catalogs/services/catalogs-metadata.service';
 import { FBGenericService } from 'app/modules/generic-catalogs/services/fb-generic.service';
+//Models
+import { BaseGenericCatalog, GenericCatalog } from '../../models/generic-catalogs.models';
+import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-generic-catalog-list',
@@ -17,50 +20,76 @@ import { FBGenericService } from 'app/modules/generic-catalogs/services/fb-gener
 })
 export class GenericCatalogListComponent implements OnInit {
   catalogID: any;
-  dataList: GenericCatalog[];
+  workingCatalog: MetaDataCatalog;
   detailURL: string = '';
 
-  fields: MetaDataField[];
-  workingCatalog: MetaDataCatalog;
+  loading$: Observable<boolean>;
+  loading: boolean = false;
+  dataSource: TableSource<any>;
 
   constructor(
-    private genericService: GenericCatalogService, 
+    private _genericService: GenericCatalogService, 
+    private _metaDataService: CatalogsMetadataService,
     private fbGenericService: FBGenericService,
-    private _db: CatalogsMetadataService,
     private route: ActivatedRoute, 
+    private router: Router,
     public dialog: DialogBoxService) { 
   }
 
   ngOnInit() { 
+    //Observer when app is retriving data
+    this.loading$ = Observable.merge(this._metaDataService.loading$);
+
+    this.createSubscriptions();
+
     this.route.params.subscribe((params)=>{
-      this.detailURL = '';
       this.catalogID = params['catalogID'];
+      this.cleanData();
+
       this.workingCatalog = _catalogs.find(c=> c.key === this.catalogID);
       //Se Trabaja con FireBase
       if(this.workingCatalog){
-        let _fld = new MetaDataField();
-        _fld.nombre = 'Nombre';
-        _fld.nombreCorto = 'nombre';
-        this.fields = [_fld];
-        if(this.workingCatalog.detailURL){
-          this.detailURL = this.workingCatalog.detailURL
-        }
+        this.dataSource.columns = [ new TableColumn('Nombre', 'nombre', (item: GenericCatalog)=> item.nombre)];
+        if(this.workingCatalog.detailURL) this.detailURL = this.workingCatalog.detailURL;
         this.fbGenericService.setListRefURL(this.workingCatalog.referenceURL);
-        this.fbGenericService.getCatalogList(r=>{
-          this.dataList = r;
-        }, true)
+        this.fbGenericService.getCatalogList(result => this.dataSource.updateDataSource(result), true)
       }
       //Trabajar con SQL
-      else {
-        this.dataList = [];
-        this.workingCatalog = Object.assign(new MetaDataCatalog(), { nombre: 'Generic'});
-        this._db.getFieldsList(this.catalogID)
-          .subscribe((r: MetaDataField[]) =>{
-            this.fields = r.filter(f => f.visible );
-            this._db.getCatalogData(this.catalogID)
-              .subscribe((data: any[]) => this.dataList = data);
+      else this.loadCatalogData();
+    });
+  }
+
+  cleanData(){
+    this.detailURL = `/catalogo/${this.catalogID}/`;
+    this.dataSource = new TableSource();
+  }
+
+  loadCatalogData(){
+    this._genericService.setCatalogID(this.catalogID);
+    this._metaDataService.getByID(this.catalogID)
+      .subscribe(catalog =>{
+        this.workingCatalog = catalog;
+        //IF has detail URL updated
+
+        //Loads Data
+        //It doesn't get GenericService since Type is unknown
+        this._genericService.getList(false);
+
+        //Gets Columns
+        this._metaDataService.getFieldsList(this.catalogID)
+          .subscribe((fields: MetaDataField[]) =>{
+            this.dataSource.columns = fields.filter(f => f.visible )
+              .map(fld => new TableColumn(fld.nombre, fld.nombreCorto, item => item[fld.nombreCorto]));
+            this.dataSource.refresh();
           });
-      }
+      });
+  }
+
+  createSubscriptions(){
+    this.loading$.subscribe((isLoading: boolean) => this.loading = this._metaDataService.isLoading);
+    this._genericService.source$.subscribe((data: any[]) => { 
+      console.log('Updating Data:', data);
+      this.dataSource.updateDataSource(data)
     });
   }
 
@@ -68,7 +97,18 @@ export class GenericCatalogListComponent implements OnInit {
     return item[property];
   }
 
-  onDelete(item: GenericCatalog){
-    //this.workingCatalog.referenceURL ? this.fbGenericService.deleteCatalogItem(Number(item.key)) : this.genericService.delete(Number(item.key))
+  onDelete(item: GenericCatalog | any){
+    console.log('Current Data:', this.dataSource.data);
+    this.workingCatalog.referenceURL ? 
+      this.fbGenericService.deleteCatalogItem(Number(item.key)) : 
+      this._genericService.delete(Number(item.key ? item.key : item.C0))
+  }
+
+  onEdit(item: GenericCatalog | any){
+    this.router.navigate([`${this.detailURL}/${item.key ? item.key : item.C0}`]);
+  }
+
+  onAdd(){
+    this.router.navigate([`${this.detailURL}/0`]);
   }
 }

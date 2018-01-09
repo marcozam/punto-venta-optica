@@ -9,8 +9,12 @@ import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs
 export class CategoriaProductoService extends GenericService<CategoriaProductoSumary> implements GenericServiceBase<CategoriaProductoSumary> {
     
     constructor(private _db: BaseAjaxService) { 
-        super(_db);
+        super(_db, 'os_categoria_producto', 360);
         this.catalogID = 403;
+    }
+
+    newInstance(){
+        return new CategoriaProductoSumary('');
     }
 
     mapData(r: any){
@@ -23,21 +27,19 @@ export class CategoriaProductoService extends GenericService<CategoriaProductoSu
     }
 
     getStandAloneCategories(){
-        this.startLoading();
-        this._db.getAllDataFromCatalog(this.catalogID, '40302,0')
-            .subscribe((result: any[]) => {
-                this.finishLoading();
-                this.source$.next(this.mapList(result));
-            })
+        let storageName = 'os_standalone_categoria_producto';
+        this.getBaseList(()=>{
+            this._db.getAllDataFromCatalog(this.catalogID, '40302,0')
+                .subscribe((result: any[]) => this.setData(this.mapList(result), false, storageName));
+        }, storageName);
     }
 
     getStockCategories(){
-        this.startLoading();
-        this._db.getAllDataFromCatalog(this.catalogID, '40304,1')
-            .subscribe((result: any[]) => {
-                this.finishLoading();
-                this.source$.next(this.mapList(result))
-            });
+        let storageName = 'os_stock_categoria_producto';
+        this.getBaseList(()=>{
+            this._db.getAllDataFromCatalog(this.catalogID, '40304,1')
+                .subscribe((result: any[]) => this.setData(this.mapList(result), false, storageName));
+        }, storageName);
     }
 
     save(item: CategoriaProductoSumary, callback){

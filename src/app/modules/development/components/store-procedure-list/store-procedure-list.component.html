@@ -1,0 +1,20 @@
+<ng-template #actionsTemplate let-item>
+    <button mat-icon-button matTooltip="Mostrar Opciones" matTooltipPosition="below"
+        (click)="onShowOption(item)">
+        <mat-icon> print </mat-icon>
+    </button>
+</ng-template>
+
+<div class="row">
+  <div class="col-md-8 col-xs">
+    <div class="sub-container">
+      <os-table *ngIf="!showOptions" [dataSource]="dataSource" [canAdd]="false" [canEdit]="false" [canDelete]="false">
+      </os-table>
+
+      <ng-container *ngIf="showOptions">
+        {{selectedItem.options | json}}
+      </ng-container>
+
+    </div>
+  </div>
+</div>
