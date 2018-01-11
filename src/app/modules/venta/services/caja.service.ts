@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
 import { MovimientoCaja, CorteCaja, DetalleCorteCaja } from 'app/modules/venta/models/caja.models';
-import { MetodoPago } from 'app/modules/venta/models/venta.models';
+import { MetodoPago, Usuario } from 'app/modules/venta/models/venta.models';
 
 @Injectable()
 export class CajaService extends GenericService<CorteCaja> implements GenericServiceBase<CorteCaja>  {
@@ -11,8 +11,24 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
     super(_osBD);
   }
 
+  newInstance(){
+    return new CorteCaja(0, 0);
+  }
+
+  mapData(item: any) {
+    let c = new CorteCaja(item.C2, item.C1);
+    c.key = item.C0;
+    c.usuario.nombre = item.R1;
+    c.sucursal.nombre = item.R2;
+    c.fechaCorte = item.C3;
+    c.totalEsperado = item.C4;
+    c.totalRecibido = 0;
+    return c;
+  }
+
   mapDataMovimientos(item: any) {
     let mc = new MovimientoCaja();
+    mc.key = item.C4;
     mc.ordenVentaID = item.C0;
     mc.nombreCliente = item.R1;
     mc.fecha = moment(item.C1).toDate();;
@@ -24,6 +40,14 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
     return mc;
   }
 
+  mapDataDetalle(item: any){
+    let dcc = new DetalleCorteCaja(item.C0, item.C2);
+    dcc.metodoPago = new MetodoPago(item.C1);
+    dcc.metodoPago.key = dcc.metodoPagoID;
+    dcc.montoRecibido = item.C3 ? item.C3 : 0;
+    return dcc;
+  }
+
   map2Server(item: CorteCaja){
     //'C0,C1,C2'
     let result = ['C0,C1,C2'];
@@ -32,17 +56,35 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
     return result.join('&');
   }
 
-  mapDataDetalle(item: any){
-    let dcc = new DetalleCorteCaja(item.C0, item.C2);
-    dcc.metodoPago = new MetodoPago(item.C1);
-    dcc.metodoPago.key = dcc.metodoPagoID;
-    return dcc;
-  }
-
-  getMovimientosSinCorte(sucursalID: number){
-    let params = this.db.createParameter('ECOM0003', 4, { V4: sucursalID});
+  getMovimientosCorte(sucursalID: number, corteID: number){
+    let params = this.db.createParameter('ECOM0006', 4, { V4: sucursalID, V5: corteID});
     return this.db.getData(params)
       .map(result => result.Table.map(row=> this.mapDataMovimientos(row)));
+  }
+
+  deleteMovimientoCaja(item: MovimientoCaja){
+    let params: any;
+    if(item.esPagoInicial){
+      console.log('Cancelar Venta');
+    }
+    else{
+      params = this.db.createParameter('ECOM0006', 2, { V3: item.key });
+      return this.db.getData(params);
+    }
+  }
+
+  getCortes(sucursalID: number) {
+    let params = this.db.createParameter('ECOM0006', 1, { V4: sucursalID});
+    return this.db.getData(params)
+      .map(result => this.mapList(result.Table));
+  }
+
+  getDetalleCorte(corteID: number) {
+    let params = this.db.createParameter('ECOM0006', 3, { V5: corteID});
+    return this.db.getData(params)
+      .map(result => {
+        return result.Table.map(row => this.mapDataDetalle(row));
+      });
   }
 
   getSummaryCortePendiente(sucursalID: number){

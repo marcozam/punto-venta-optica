@@ -107,6 +107,19 @@ export class VentaService {
         });
     }
 
+    changeStatus(ID: number, status: number, internal: boolean = false){
+        let params = this._osBD.createParameter('ECOM0002', 2, { 
+            V3: internal ? 1 : 0,
+            V4: ID,
+            V5: status
+        });
+        return this._osBD.getData(params);
+    }
+
+    cancelOrder(ID: number){
+        this.changeStatus(ID, 40102, true);
+    }
+
     getByID(ID: number, callback){
         let params = this._osBD.createParameter('ECOM0003', 2, { V3: ID });
         this._osBD.getData(params).subscribe(data => {

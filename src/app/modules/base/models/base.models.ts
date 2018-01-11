@@ -68,7 +68,7 @@ export class TableSource<T> {
     }
 
     suma(column: TableColumn){
-        let items = this.visibleData;
+        let items = this.data;
         if(items.length > 1){
             return items.map(item => column.sumTemplate(item))
                 .reduce((p, n) => p + n)

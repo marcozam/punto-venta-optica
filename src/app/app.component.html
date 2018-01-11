@@ -10,12 +10,14 @@
     <mat-nav-list>
       <a mat-list-item routerLink="home" routerLinkActive="active" (click)="sidenav.close()">Inicio</a>
       
-      <a mat-list-item routerLink="caja/movimientos" routerLinkActive="active" (click)="sidenav.close()">Movimientos de Caja</a>
+      <a mat-list-item routerLink="caja/movimientos" routerLinkActive="active" (click)="sidenav.close()">Movimientos sin Corte</a>
       <a mat-list-item routerLink="venta/entregas" routerLinkActive="active" (click)="sidenav.close()">Ordenes pendientes de entrega</a>
 
       <a mat-list-item [matMenuTriggerFor]="inventario">Inventario</a>
-      <a mat-list-item [matMenuTriggerFor]="catalogos">Catalogos</a>
       <a mat-list-item routerLink="lista-precios" routerLinkActive="active" (click)="sidenav.close()">Lista de Precios</a>
+      
+      <a mat-list-item [matMenuTriggerFor]="reportes">Reportes</a>
+      <a mat-list-item [matMenuTriggerFor]="catalogos">Catalogos</a>
       <!--
       <a mat-list-item routerLink="facturacion" routerLinkActive="active">Facturacion</a>
       <a mat-list-item routerLink="facturacion/list" routerLinkActive="active">Lista de Facturas</a>
@@ -44,6 +46,10 @@
     <mat-menu #inventario="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
       <a mat-menu-item routerLink="inventario/movimientos" (click)="sidenav.close()">Movimientos</a>
       <a mat-menu-item routerLink="inventario/corte" (click)="sidenav.close()">Realizar Corte</a>
+    </mat-menu>
+
+    <mat-menu #reportes="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
+      <a mat-menu-item routerLink="caja/cortes" (click)="sidenav.close()">Cortes de Caja</a>
     </mat-menu>
   </mat-sidenav>
   <div class="app-content">

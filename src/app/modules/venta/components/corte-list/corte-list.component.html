@@ -1,0 +1,41 @@
+<ng-template #actionsTemplate let-item>
+  <button mat-icon-button matTooltip="Mostar Movimientos" color="primary" 
+      (click)="mostarMovimientos(item)">
+    <mat-icon>compare_arrows</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Mostar Detalle" color="primary" 
+      (click)="mostarDetalle(item)">
+    <mat-icon>more_horiz</mat-icon>
+  </button>
+</ng-template>
+<div class="row" *ngIf="!showMovimeintos">
+  <div class="col-md-7">
+      <div class="sub-container">
+        <os-table [dataSource]="dataSource" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
+      </div>
+  </div>
+  <div class="col-md-5" *ngIf="showDetails">
+    <div class="sub-container">
+      <div class="sub-titles">
+        Detalle del Corte # {{selectedCorte?.key}} <br/>
+        <small>{{selectedCorte?.fechaCorte | date : 'dd MMM yyyy HH:mm'}}</small>
+      </div>
+      <os-table [loading]="loadingDetail" [dataSource]="detailsDataSource" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="showMovimeintos">
+  <div class="col-md-12">
+    <div class="sub-container">
+        <button mat-icon-button color="primary" (click)="showMovimeintos = false">
+          <mat-icon>chevron_left</mat-icon>
+          Regresar a lista de cortes
+        </button>
+        <div class="sub-titles">
+          Movimientos del Corte # {{selectedCorte?.key}} <br/>
+          <small>{{selectedCorte?.fechaCorte | date : 'dd MMM yyyy HH:mm'}}</small>
+        </div>
+      <app-movimientos-caja [corteID]="selectedCorte?.key" [sucursalID]="sucursalID"></app-movimientos-caja>
+    </div>
+  </div>
+</div>

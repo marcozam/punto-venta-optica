@@ -13,6 +13,7 @@ export class StoreProcedureListComponent implements OnInit, AfterViewInit {
 
   dataSource: TableSource<StoreProcedureMetaData>;
   showOptions: boolean = false;
+  selectedItem: StoreProcedureMetaData;
 
   @ViewChild("actionsTemplate") 
   actionsTemplate: TemplateRef<any>;
@@ -45,7 +46,6 @@ export class StoreProcedureListComponent implements OnInit, AfterViewInit {
 
   createSubscriptions(){
     this._service.source$.subscribe((list: StoreProcedureMetaData[]) => {
-      console.log(list);
       if(list.length > 0) this.dataSource.updateDataSource(list);
     })
   }
@@ -53,6 +53,7 @@ export class StoreProcedureListComponent implements OnInit, AfterViewInit {
   onShowOption(item: StoreProcedureMetaData){
     console.log(item);
     this.showOptions = true;
+    this.selectedItem = item;
     this._service.getOptionsList(Number(item.key))
       .subscribe((list: StoreProcedureOptionMetaData[]) => {
         item.options = list;

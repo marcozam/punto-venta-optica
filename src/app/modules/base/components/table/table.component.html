@@ -9,7 +9,11 @@
         <ng-container *ngIf="!filterVisible || !col.filterTemplate; else col.filterTemplate">
           {{col.header}}
           <ng-container *ngIf="col.sortDirection !== 'none'">
-            <mat-icon>
+            <!--
+              <mat-icon color="accent" 
+                [svgIcon]="col.sortDirection === 'desc' ? 'sort-descending' : 'sort-ascending'"></mat-icon>
+            -->
+            <mat-icon color="accent">
               {{col.sortDirection === 'desc' ? 'arrow_downward' : 'arrow_upward'}}
             </mat-icon>
             <small>
@@ -19,9 +23,8 @@
         </ng-container>
       </th>
       <th class="text-right">
-        <button mat-icon-button matTooltip="Filtros" *ngIf="this._filters.length > 0">
-          <mat-icon (click)="toggleFilters()">
-            {{filterVisible ? 'clear' : 'filter_list'}}
+        <button mat-icon-button matTooltip="Filtros" *ngIf="this._filters.length > 0" color="primary">
+          <mat-icon (click)="toggleFilters()" [svgIcon]="filterVisible ? 'filter-remove' : 'filter'">
           </mat-icon>
         </button>
         <button mat-icon-button matTooltip="Nuevo" color="accent" *ngIf="canAdd"

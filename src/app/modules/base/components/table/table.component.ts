@@ -18,6 +18,7 @@ import { TableSource, TablePagingSettings, TableColumn, SortDirection } from 'ap
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
+import { WarningTitle } from 'app/modules/base/constants/messages.contants';
 
 @Component({
   selector: 'os-table',
@@ -81,7 +82,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   onDelete(item){
-    this.dialogService.openDialog('Advertencia', 
+    this.dialogService.openDialog(WarningTitle, 
     `Esta seguro que desea eliminar:.${item.nombre}.No podran revertir sus cambios`, true, (r)=>{
       if(r){
         this.onDeleteFired.emit(item);

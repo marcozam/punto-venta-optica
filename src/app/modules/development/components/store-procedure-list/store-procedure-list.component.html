@@ -1,7 +1,7 @@
 <ng-template #actionsTemplate let-item>
     <button mat-icon-button matTooltip="Mostrar Opciones" matTooltipPosition="below"
         (click)="onShowOption(item)">
-        <mat-icon> print </mat-icon>
+        <mat-icon> expand_more </mat-icon>
     </button>
 </ng-template>
 
@@ -12,7 +12,21 @@
       </os-table>
 
       <ng-container *ngIf="showOptions">
-        {{selectedItem.options | json}}
+        <button mat-icon-button matTooltip="Regresar" matTooltipPosition="below"
+          (click)="showOptions = false">
+          <mat-icon> chevron_left </mat-icon>
+        </button>
+        <strong>{{selectedItem.nombre}}</strong>
+        <br/>
+        <small>
+          {{selectedItem.description}}
+        </small>
+        <ul>
+          <li *ngFor="let opt of selectedItem?.options">
+            <strong>{{opt.opcion}}</strong> - {{opt.description}}
+          </li>
+        </ul>
+
       </ng-container>
 
     </div>

@@ -1,4 +1,4 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, Title, DomSanitizer } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeESMX from '@angular/common/locales/es-MX';
@@ -16,6 +16,7 @@ import { environment } from '../environments/environment';
 //Material2 Modules
 import { 
   MatIconModule, 
+  MatIconRegistry,
   MatListModule, 
   MatButtonModule, 
   MatMenuModule, 
@@ -23,7 +24,8 @@ import {
   MatToolbarModule, 
   MatTabsModule,
   MatSelectModule,
-  MatDialogModule } from '@angular/material';
+  MatDialogModule,
+} from '@angular/material';
 
 //Material Tokens for Date format
 import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
@@ -113,4 +115,8 @@ registerLocaleData(localeESMX);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer){
+    matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg'));
+  }
+}

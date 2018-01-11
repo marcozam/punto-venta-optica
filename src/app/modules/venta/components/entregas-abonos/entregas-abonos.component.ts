@@ -60,12 +60,31 @@ export class EntregasAbonosComponent implements OnInit, AfterViewInit {
 
   generarPago(venta: Venta){
     this.pagosDialog.openDialog(venta, (dp: DetallePagos[]) =>{
-      this.ventaService.registarPago(Number(venta.sumary.key), dp)
-        .subscribe(result =>{
-          this._printVentaService.esPagoInicial = false;
-          this._printVentaService.corteID = 0;
-          this._printVentaService.getServerData(Number(venta.sumary.key));
-        });
+      if(dp.length > 0){
+        this.ventaService.registarPago(Number(venta.sumary.key), dp)
+          .subscribe(result =>{
+            let totalAbono = dp[0].monto;
+            if(dp.length > 1) {
+              totalAbono = dp.map(item => item.monto).reduce((p, c)=> p +c);
+            }
+            venta.sumary.totalPagado = venta.sumary.totalPagado + totalAbono;
+            this._printVentaService.esPagoInicial = false;
+            this._printVentaService.corteID = 0;
+            this._printVentaService.getServerData(Number(venta.sumary.key));
+            if(venta.sumary.saldo === 0 && venta.sumary.status.key === 40203){
+              this.dataSource.updateDataSource(this.dataSource.data.filter(vta=> vta.sumary.key !== venta.sumary.key));
+            }
+            else this.dataSource.refresh();
+          });
+      }
     });
   }
+
+  entregarOrden(venta: Venta){
+    this.ventaService.changeStatus(Number(venta.sumary.key), 40203)
+      .subscribe(()=>{
+        this.dataSource.updateDataSource(this.dataSource.data.filter(vta=> vta.sumary.key !== venta.sumary.key));
+      });
+  }
+
 }

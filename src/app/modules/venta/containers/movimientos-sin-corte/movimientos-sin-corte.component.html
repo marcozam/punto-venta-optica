@@ -1,0 +1,11 @@
+<div class="sub-container">
+    <div class="buttons-containers">
+        <button mat-raised-button color="primary" (click)="openDialog()" [disabled]="this.corte.detalle.length === 0">
+            <mat-icon aria-label="Imprimir">
+                account_balance_wallet
+            </mat-icon>
+            Registrar Corte
+        </button>
+    </div>
+    <app-movimientos-caja [sucursalID]="sucursalID"></app-movimientos-caja>
+</div>

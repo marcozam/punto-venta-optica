@@ -1,7 +1,11 @@
 <ng-template #actionsTemplate let-item>
-    <button *ngIf="item.sumary.saldo > 0" mat-icon-button matTooltip="Realizar abono" 
-        matTooltipPosition="below" (click)="generarPago(item)">
-        <mat-icon> attach_money </mat-icon>
+    <button *ngIf="item.sumary.saldo > 0" mat-icon-button matTooltip="Realizar abono" color="primary" 
+        (click)="generarPago(item)">
+        <mat-icon svgIcon="cash-multiple"></mat-icon>
+    </button>
+    <button *ngIf="item.sumary.saldo <= 0" mat-icon-button matTooltip="Entregar Orden" color="primary" 
+        (click)="entregarOrden(item)">
+        <mat-icon svgIcon="truck-delivery"></mat-icon>
     </button>
 </ng-template>
 

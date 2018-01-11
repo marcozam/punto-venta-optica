@@ -18,6 +18,10 @@ export class StoreProceduresService extends GenericService<StoreProcedureMetaDat
     throw new Error("Method not implemented.");
   }
   
+  newInstance(){
+    return new StoreProcedureMetaData();
+  }
+
   mapData(object: any, instantiate?: boolean): StoreProcedureMetaData {
     let item = new StoreProcedureMetaData();
     if(object){
