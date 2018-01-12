@@ -10,7 +10,7 @@ import { Venta, DetalleVenta, DetallePagos, MetodoPago } from '../../models/vent
 import { VentaService } from '../../services/venta.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
-import { DialogPagosService } from '../../services/dialog-pagos.service';
+import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 
 import { Examen } from 'app/modules/optica/models/examen.models';

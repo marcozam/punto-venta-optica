@@ -45,8 +45,10 @@ import { GenericCatalogsModule } from './modules/generic-catalogs/generic-catalo
 import { ProductoModule } from './modules/producto/producto.module';
 import { CRMModule } from './modules/crm/crm.module';
 import { VentaModule } from './modules/venta/venta.module';
+import { PagosModule } from './modules/pagos/pagos.module';
 import { InventarioModule } from './modules/inventario/inventario.module';
 import { OpticaModule } from './modules/optica/optica.module';
+
 
 
 import { routing } from './app.routing';
@@ -100,6 +102,7 @@ registerLocaleData(localeESMX);
     CRMModule,
     ProductoModule,
     VentaModule,
+    PagosModule,
     InventarioModule,
     OpticaModule,
   ],

@@ -21,10 +21,6 @@ export class BaseGenericCatalog {
         })
         return response;
     }
-
-    getTypeName(){
-        return typeof this;
-    }
 }
 
 export class GenericCatalog extends BaseGenericCatalog {

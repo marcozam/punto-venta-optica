@@ -5,11 +5,11 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 
 //Services
-import { CajaService } from 'app/modules/venta/services/caja.service';
+import { CajaService } from '../../services/caja.service';
 //Models
-import { MovimientoCaja, CorteCaja } from 'app/modules/venta/models/caja.models';
+import { MovimientoCaja, CorteCaja } from '../../models/caja.models';
 
-import { RegistrarCorteComponent } from 'app/modules/venta/components/registrar-corte/registrar-corte.component';
+import { RegistrarCorteComponent } from '../../components/registrar-corte/registrar-corte.component';
 
 import { Observable } from 'rxjs/Observable';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';

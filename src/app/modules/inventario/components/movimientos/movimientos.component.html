@@ -24,20 +24,8 @@
         <th>
           <mat-form-field class="sm">
             <mat-select (change)="onRangoChanged($event.value)" placeholder="Fecha">
-              <mat-option [value]="1">
-                Hoy
-              </mat-option>
-              <mat-option [value]="2">
-                Ayer
-              </mat-option>
-              <mat-option [value]="3">
-                Ultimos 2 Dias
-              </mat-option>
-              <mat-option [value]="4">
-                Esta Semana
-              </mat-option>
-              <mat-option [value]="5">
-                La semana pasada
+              <mat-option *ngFor="let p of _periodos" [value]="p">
+                {{p.nombre}}
               </mat-option>
             </mat-select>
           </mat-form-field>

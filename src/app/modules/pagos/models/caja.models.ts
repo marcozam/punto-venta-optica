@@ -46,4 +46,6 @@ export class MovimientoCaja extends BaseGenericCatalog {
     esPagoInicial: boolean;
     nombreUsuario: string;
     corteID: number;
+    
+    metodoPago: MetodoPago;
 }

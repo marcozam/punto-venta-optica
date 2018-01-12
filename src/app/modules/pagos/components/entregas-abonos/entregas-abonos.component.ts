@@ -1,11 +1,11 @@
 import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
 //Services
+import { DialogPagosService } from '../../services/dialog-pagos.service';
 import { VentaService } from 'app/modules/venta/services/venta.service';
-import { DialogPagosService } from 'app/modules/venta/services/dialog-pagos.service';
 import { VentaTicketService } from 'app/modules/venta/services/venta-ticket.service';
 //Models
 import { Venta, DetallePagos, SumaryVenta } from 'app/modules/venta/models/venta.models';
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 import { Observable } from 'rxjs/Observable';
 import { DecimalPipe, DatePipe } from '@angular/common';
 

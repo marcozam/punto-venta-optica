@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 
 import { FilterComponent } from 'app/modules/base/components/filter/filter.component';
-import { TableSource, TablePagingSettings, TableColumn, SortDirection } from 'app/modules/base/models/base.models';
+import { TableSource, TablePagingSettings, TableColumn, SortDirection } from 'app/modules/base/models/data-source.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';

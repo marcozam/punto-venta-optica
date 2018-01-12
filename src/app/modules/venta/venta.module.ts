@@ -29,11 +29,6 @@ import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.
 import { AddProductoComponent } from './components/add-producto/add-producto.component';
 import { MetodoPagoVentaComponent } from './components/metodo-pago-venta/metodo-pago-venta.component';
 import { AddDescuentoProductoComponent } from './components/add-descuento-producto/add-descuento-producto.component';
-import { MovimientosSinCorteComponent } from './containers/movimientos-sin-corte/movimientos-sin-corte.component';
-import { EntregasAbonosComponent } from './components/entregas-abonos/entregas-abonos.component';
-import { RegistrarCorteComponent } from './components/registrar-corte/registrar-corte.component';
-import { CorteListComponent } from './components/corte-list/corte-list.component';
-import { MovimientosCajaComponent } from './components/movimientos-caja/movimientos-caja.component';
 
 @NgModule({
   imports: [
@@ -61,11 +56,6 @@ import { MovimientosCajaComponent } from './components/movimientos-caja/movimien
     AddProductoComponent,
     MetodoPagoVentaComponent,
     AddDescuentoProductoComponent,
-    MovimientosSinCorteComponent,
-    EntregasAbonosComponent,
-    RegistrarCorteComponent,
-    CorteListComponent,
-    MovimientosCajaComponent
   ],
   exports:[
     VentasComponent,
@@ -73,8 +63,7 @@ import { MovimientosCajaComponent } from './components/movimientos-caja/movimien
   ],
   entryComponents: [
     MetodoPagoVentaComponent,
-    AddDescuentoProductoComponent,
-    RegistrarCorteComponent
+    AddDescuentoProductoComponent
   ],
   providers: [
     VentaService,

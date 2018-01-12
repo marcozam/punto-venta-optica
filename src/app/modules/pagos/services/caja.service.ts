@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
-import { MovimientoCaja, CorteCaja, DetalleCorteCaja } from 'app/modules/venta/models/caja.models';
+import { MovimientoCaja, CorteCaja, DetalleCorteCaja } from '../models/caja.models';
 import { MetodoPago, Usuario } from 'app/modules/venta/models/venta.models';
 
 @Injectable()
@@ -37,6 +37,9 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
     mc.esPagoInicial = item.C10;
     mc.totalVenta = item.R2;
     mc.nombreUsuario = item.R5;
+    let mp = new MetodoPago(item.R3);
+    mp.key = item.C5;
+    mc.metodoPago = mp;
     return mc;
   }
 

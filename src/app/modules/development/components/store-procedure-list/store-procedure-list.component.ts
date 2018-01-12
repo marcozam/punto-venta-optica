@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { StoreProceduresService } from 'app/modules/development/services/store-procedures.service';
 import { StoreProcedureMetaData, StoreProcedureOptionMetaData } from 'app/modules/development/models/store-procedure.models';
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 
 @Component({
   selector: 'app-store-procedure-list',

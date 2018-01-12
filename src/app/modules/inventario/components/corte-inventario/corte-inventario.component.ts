@@ -6,7 +6,7 @@ import { CategoriaProductoService } from 'app/modules/producto/services/categori
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
 import { CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 import { Observable } from 'rxjs/Observable';
 
 @Component({

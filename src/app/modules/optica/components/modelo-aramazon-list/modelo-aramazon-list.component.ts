@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 import { ModeloArmazon, MarcaArmazon } from 'app/modules/optica/models/armazon.models';
 
 import { ModeloArmazonService } from 'app/modules/optica/services/modelo-armzaon.service';

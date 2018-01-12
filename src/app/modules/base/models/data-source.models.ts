@@ -79,6 +79,12 @@ export class TableSource<T> {
         else return 0;
     }
 
+    deleteItem(item: T){
+        let idx = this._data.indexOf(item);
+        this._data.splice(idx, 1);
+        this.refresh();
+    }
+
     //Sorting
     togleSort(column: TableColumn){
         let newDirection: SortDirection;

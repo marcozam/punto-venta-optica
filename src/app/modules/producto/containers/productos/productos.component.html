@@ -1,35 +1,37 @@
-<form #productForm="ngForm">
-  <div class="row">
-    <div class="col-xs col-lg-6">
-      <mat-form-field>
-        <mat-select name="categoriaProductoID" placeholder="Categoria" required
-          [ngModel]="product?.categoriaProductoID">
-          <mat-option *ngFor="let c of categorias" [value]="c.key">
-            {{c.nombre}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
 
-      <mat-form-field>
-        <input matInput name="nombre" placeholder="Nombre" required [ngModel]="product?.nombre"/>
-      </mat-form-field>
+<div class="row">
+  <div class="col-lg-4 col-md-5 col-sm-7 col-xs">
+    <div class="sub-container">
+      <form #productForm="ngForm">
+        <mat-form-field>
+          <mat-select name="categoriaProductoID" placeholder="Categoria" required
+            [ngModel]="product?.categoriaProductoID">
+            <mat-option *ngFor="let c of categorias" [value]="c.key">
+              {{c.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <input matInput name="SKU" placeholder="SKU" required [ngModel]="product?.SKU"/>
-      </mat-form-field>
+        <mat-form-field>
+          <input matInput name="nombre" placeholder="Nombre" required [ngModel]="product?.nombre"/>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput name="SKU" placeholder="SKU" required [ngModel]="product?.SKU"/>
+        </mat-form-field>
+
+        <div class="text-right buttons-containers">
+          <button mat-button color="warn" (click)="onCancelar(productForm.value)">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" [disabled]="productForm.invalid"
+            (click)="onSave(productForm.value)">
+            <mat-icon>save</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs col-lg-6 text-right buttons-containers">
-      <button mat-button color="warn" class="col-xs col-sm-2 col-md-3" (click)="onCancelar(productForm.value)">
-        <mat-icon>cancel</mat-icon>
-        Cancelar
-      </button>
-      <button mat-raised-button color="primary" class="col-xs col-sm-2 col-md-3"
-        (click)="onSave(productForm.value)" [disabled]="productForm.invalid">
-        <mat-icon>save</mat-icon>
-        Guardar
-      </button>
-    </div>
-  </div>
-</form>
+</div>

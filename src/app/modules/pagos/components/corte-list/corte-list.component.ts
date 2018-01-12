@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angul
 
 import { DecimalPipe, DatePipe } from '@angular/common';
 
-import { CajaService } from 'app/modules/venta/services/caja.service';
+import { CajaService } from '../../services/caja.service';
 
-import { CorteCaja, DetalleCorteCaja } from 'app/modules/venta/models/caja.models';
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { CorteCaja, DetalleCorteCaja } from '../../models/caja.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 
 @Component({
   selector: 'app-corte-list',

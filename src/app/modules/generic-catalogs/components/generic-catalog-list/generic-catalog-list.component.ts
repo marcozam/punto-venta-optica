@@ -8,7 +8,7 @@ import { FBGenericService } from 'app/modules/generic-catalogs/services/fb-gener
 //Models
 import { BaseGenericCatalog, GenericCatalog } from '../../models/generic-catalogs.models';
 import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
-import { TableSource, TableColumn } from 'app/modules/base/models/base.models';
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 
 import { Observable } from 'rxjs/Observable';
 

@@ -1,6 +1,6 @@
 import { MatDialog } from '@angular/material';
 import { Injectable } from '@angular/core';
-import { MetodoPagoVentaComponent } from '../components/metodo-pago-venta/metodo-pago-venta.component';
+import { MetodoPagoVentaComponent } from 'app/modules/venta/components/metodo-pago-venta/metodo-pago-venta.component';
 import { Venta } from 'app/modules/venta/models/venta.models';
 
 @Injectable()

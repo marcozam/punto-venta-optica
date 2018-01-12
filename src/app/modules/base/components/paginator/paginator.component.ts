@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TablePagingSettings } from 'app/modules/base/models/base.models';
+import { TablePagingSettings } from 'app/modules/base/models/data-source.models';
 
 @Component({
   selector: 'os-paginator',

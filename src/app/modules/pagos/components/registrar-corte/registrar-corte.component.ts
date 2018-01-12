@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { DetalleCorteCaja } from 'app/modules/venta/models/caja.models';
+import { DetalleCorteCaja } from '../../models/caja.models';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({

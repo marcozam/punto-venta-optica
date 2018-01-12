@@ -5,6 +5,7 @@ import { CategoriaProductoService } from 'app/modules/producto/services/categori
 
 import { MovimientoInventario, TipoMovimientoInventario } from 'app/modules/inventario/models/inventario.models';
 import { CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
+import { Periodo, periodos } from 'app/modules/base/models/time-frame.models';
 
 @Component({
   selector: 'app-movimientos',
@@ -25,6 +26,8 @@ export class MovimientosComponent implements OnInit {
   showFilters: boolean = false;
   selectedCategory: CategoriaProductoSumary;
   selectedTipoMovimiento: TipoMovimientoInventario;
+
+  _periodos: Periodo[] = periodos;
 
   constructor(private service: MovimientosInventarioService,
     private _categoriaService: CategoriaProductoService
@@ -61,33 +64,13 @@ export class MovimientosComponent implements OnInit {
     this.applyFilters();
   }
 
-  onRangoChanged(option: number){
-    let fechaInicio = moment(new Date());
-    let fechaFin = moment(fechaInicio);
-
-    switch(option){
-      case 2:
-        fechaInicio.subtract(1, 'days');
-        fechaFin.subtract(1, 'days');
-        break;
-      case 3:
-        fechaInicio.subtract(2, 'days');
-        fechaFin.subtract(1, 'days');
-        break;
-      case 4:
-        fechaInicio.startOf('isoWeek');
-        fechaFin = moment(fechaInicio).add(6, 'days');
-        break;
-      case 5:
-        fechaInicio.subtract('week', 1).startOf('isoWeek');
-        fechaFin = moment(fechaInicio).add(6, 'days');
-        break;
-    }
+  onRangoChanged(option: Periodo){
+    let _periodo = option.getTimeFrame();
 
     this.service.getMovimientos(
       this.sucursalID,
-      fechaInicio.toDate(), 
-      fechaFin.toDate(), 
+      _periodo.start, 
+      _periodo.end, 
       (res: MovimientoInventario[])=> {
         this.movimientos = this.movimientosFull = res;
       });
