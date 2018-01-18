@@ -15,10 +15,12 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
 import { TableComponent } from './components/table/table.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { PersonaComponent } from './components/persona/persona.component';
 
 //Services
 import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
+import { PersonasService } from './services/personas.service';
 
 @NgModule({
   imports: [
@@ -35,6 +37,7 @@ import { AjaxGuardService } from './services/ajax-guard.service';
     DialogBoxComponent,
     PaginatorComponent,
     FilterComponent,
+    PersonaComponent,
   ],
   entryComponents:[
     DialogBoxComponent
@@ -42,11 +45,13 @@ import { AjaxGuardService } from './services/ajax-guard.service';
   exports:[
     TableComponent,
     FilterComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    PersonaComponent,
   ],
   providers: [
     AjaxGuardService,
-    DialogBoxService
+    DialogBoxService,
+    PersonasService,
   ]
 })
 export class BaseModule { }

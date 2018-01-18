@@ -1,4 +1,4 @@
-import { BaseGenericCatalog, GenericCatalog } from '../../generic-catalogs/models/generic-catalogs.models';
+import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 
 export class TipoMica extends GenericCatalog {
     tipoMica: string;

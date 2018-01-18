@@ -4,9 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Contacto } from 'app/modules/crm/models/crm.models';
 
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
-import { VentaTicketService } from 'app/modules/venta/services/venta-ticket.service';
+import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 import { VentaOptica } from 'app/modules/optica/models/venta-optica';
 import { Venta } from 'app/modules/venta/models/venta.models';
+import { Examen } from 'app/modules/optica/models/examen.models';
 
 @Component({
   selector: 'app-examen-presupuesto',
@@ -14,7 +15,7 @@ import { Venta } from 'app/modules/venta/models/venta.models';
   styleUrls: ['./examen-presupuesto.component.scss'],
   providers: [
     ContactoService,
-    VentaTicketService
+    VentaOptikaTicketService
   ]
 })
 export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {
@@ -23,10 +24,11 @@ export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {
   sucursalID: number;
   clienteID: number;
   venta: Venta;
+  loading: boolean = true;
 
   constructor(
     private _contactoService: ContactoService,
-    private _printService: VentaTicketService,
+    private _printService: VentaOptikaTicketService,
     private route: ActivatedRoute) { 
     super();
   }
@@ -52,5 +54,9 @@ export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {
     this._printService.examen = this.examen;
     this._printService.esPresupuesto = true;
     this._printService.print();
+  }
+
+  onExamenChanged(examen: Examen){
+    this.loading = examen ? false: true;
   }
 }

@@ -1,8 +1,8 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 //Services
 import { DialogPagosService } from '../../services/dialog-pagos.service';
 import { VentaService } from 'app/modules/venta/services/venta.service';
-import { VentaTicketService } from 'app/modules/venta/services/venta-ticket.service';
+import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 //Models
 import { Venta, DetallePagos, SumaryVenta } from 'app/modules/venta/models/venta.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
@@ -10,17 +10,24 @@ import { Observable } from 'rxjs/Observable';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-entregas-abonos',
-  templateUrl: './entregas-abonos.component.html',
-  styleUrls: ['./entregas-abonos.component.scss'],
-  providers: [VentaService, DialogPagosService, VentaTicketService]
+  selector: 'app-lista-ventas',
+  templateUrl: './lista-ventas.component.html',
+  styleUrls: ['./lista-ventas.component.scss'],
+  providers: [VentaService, DialogPagosService, VentaOptikaTicketService]
 })
-export class EntregasAbonosComponent implements OnInit, AfterViewInit {
+export class ListaVentasComponent implements OnInit, AfterViewInit {
 
+  @Input()
   sucursalID: number;
+
+  @Input()
+  clienteID: number = 0;
+
+  @Input()
+  opcion: string = '';
+
   ordenesPendienteEntrega: Venta[];
   dataSource: TableSource<Venta>;
-  loading$: Observable<boolean>;
   loading: boolean = false;
 
   @ViewChild("actionsTemplate") 
@@ -28,7 +35,7 @@ export class EntregasAbonosComponent implements OnInit, AfterViewInit {
 
   constructor(
     private ventaService: VentaService,
-    private _printVentaService: VentaTicketService,
+    private _printVentaService: VentaOptikaTicketService,
     private pagosDialog: DialogPagosService,
     private _decimal: DecimalPipe, 
     private _date: DatePipe,
@@ -47,10 +54,21 @@ export class EntregasAbonosComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.sucursalID = 1;
-    this.ventaService.getOrdenesPendientesEntrega(this.sucursalID, result => {
-      this.dataSource.updateDataSource(result);
-    });
+    this.loading = true;
+    if(this.opcion === 'pendientes-entrega') {
+      this.ventaService.getOrdenesPendientesEntrega(this.sucursalID, this.clienteID)
+        .subscribe(result => {
+          this.dataSource.updateDataSource(result);
+          this.loading = false;
+        });
+    }
+    else if(this.opcion === 'historial'){
+      this.ventaService.getHistorialCompras(this.clienteID)
+        .subscribe(result => {
+          this.dataSource.updateDataSource(result);
+          this.loading = false;
+        });
+    }
   }
 
   ngAfterViewInit(){
@@ -86,5 +104,4 @@ export class EntregasAbonosComponent implements OnInit, AfterViewInit {
         this.dataSource.updateDataSource(this.dataSource.data.filter(vta=> vta.sumary.key !== venta.sumary.key));
       });
   }
-
 }

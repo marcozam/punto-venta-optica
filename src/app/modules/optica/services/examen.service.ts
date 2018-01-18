@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 //Models
-import { GenericCatalog } from '../../generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import * as ExamenModels from '../models/examen.models';
 import { Producto } from '../../producto/models/producto.models';
 import { DetalleVenta } from '../../venta/models/venta.models';

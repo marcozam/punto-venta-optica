@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
-import { PersonasService } from 'app/modules/generic-catalogs/services/personas.service';
+import { PersonasService } from 'app/modules/base/services/personas.service';
 
 import { TipoDatosContacto, Contacto, DatoContacto } from 'app/modules/crm/models/crm.models';
-import { Persona } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Persona } from 'app/modules/base/models/base.models';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()

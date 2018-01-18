@@ -1,16 +1,11 @@
 import { Subject } from 'rxjs/Subject';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
-import { 
-    BaseGenericCatalog, 
-    GenericCatalog, 
-    Persona, 
-    Sucursal, 
-    Status 
-} from '../../generic-catalogs/models/generic-catalogs.models';
+import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
+import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 
 
-export class Venta {  
+export class Venta {
     private _detalle: DetalleVenta[] = [];
     
     get detalle(): DetalleVenta[]{ return this._detalle; }

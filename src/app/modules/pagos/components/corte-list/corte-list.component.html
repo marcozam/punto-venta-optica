@@ -7,14 +7,18 @@
       (click)="mostarDetalle(item)">
     <mat-icon>more_horiz</mat-icon>
   </button>
+  <button mat-icon-button matTooltip="Imprimir Corte" color="primary" 
+      (click)="printTicket(item)">
+    <mat-icon>print</mat-icon>
+  </button>
 </ng-template>
 <div class="row" *ngIf="!showMovimeintos">
-  <div class="col-md-7">
+  <div class="col-md-8">
       <div class="sub-container">
         <os-table [dataSource]="dataSource" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
       </div>
   </div>
-  <div class="col-md-5" *ngIf="showDetails">
+  <div class="col-md-4" *ngIf="showDetails">
     <div class="sub-container">
       <div class="sub-titles">
         Detalle del Corte # {{selectedCorte?.key}} <br/>

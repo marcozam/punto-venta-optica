@@ -1,8 +1,4 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
-import { Examen } from 'app/modules/optica/models/examen.models';
-import { Venta } from 'app/modules/venta/models/venta.models';
-import { GenericTicketService } from 'app/modules/venta/services/generic-ticket-service';
+import { GeneralTicket } from 'app/modules/base/services/tickets/general-ticket';
 import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 
 export abstract class ImpresionTicketService {
@@ -105,7 +101,7 @@ export abstract class ImpresionTicketService {
     </table>`;
   }
 
-  print(service: GenericTicketService, sucursal: Sucursal){
+  print(service: GeneralTicket, sucursal: Sucursal){
     let ticket: string = this.createTicket(
       this.createTicketHeader(sucursal, service.createHeader()),
       this.createTicketContent(service.createContent(), service.createFooter())

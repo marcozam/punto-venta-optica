@@ -83,7 +83,7 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
   }
 
   getDetalleCorte(corteID: number) {
-    let params = this.db.createParameter('ECOM0006', 3, { V5: corteID});
+    let params = this.db.createParameter('ECOM0006', 5, { V5: corteID});
     return this.db.getData(params)
       .map(result => {
         return result.Table.map(row => this.mapDataDetalle(row));
@@ -99,12 +99,17 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
   }
 
   save(_currentValue: CorteCaja, _newValue: CorteCaja) {
-    let params = this.db.createParameter('ECOM0002', 3, {
+    let params = this.db.createParameter('ECOM0006', 3, {
       'V3': _currentValue.usuarioID, 
       'V4': _currentValue.sucursalID, 
       'V5': _currentValue.diferencia,
       'V6': this.map2Server(_currentValue)
     });
-    return this.db.getData(params);
+    return this.db.getData(params)
+      .map(value => {
+        let corte = this.mapData(value.Table[0]);
+        corte.detalle = _currentValue.detalle;
+        return corte;
+      });
   }
 }

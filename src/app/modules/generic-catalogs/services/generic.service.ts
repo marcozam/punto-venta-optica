@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BaseGenericCatalog, GenericCatalog } from '../models/generic-catalogs.models';
+import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base//models/base.models';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { Producto } from 'app/modules/producto/models/producto.models';
 import { Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import { AjaxLocalStorage } from 'app/modules/base/models/request.models';
 import { Observable } from 'rxjs/Observable';
 
 export interface GenericServiceBase<T>{
-    save(_currentValue: T, _newValue: T, callback?)
+    save(_newValue: T, _currentValue?: T, callback?)
     newInstance(): T
     mapData(object: any): T
     mapList?(objects: any[]): T[]

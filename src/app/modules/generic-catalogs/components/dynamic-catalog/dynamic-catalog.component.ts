@@ -7,7 +7,7 @@ import { CatalogsMetadataService } from '../../services/catalogs-metadata.servic
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 //Models
 import { MetaDataTable, MetaDataField, MetaDataCatalog } from '../../models/metadata-catalogs.models'
-import { GenericCatalog } from '../../models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 //Constants
 import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/messages.contants';
 

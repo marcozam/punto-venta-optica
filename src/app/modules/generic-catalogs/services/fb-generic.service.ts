@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject, AngularFireList, AngularFireAction } from 'angularfire2/database';
 import { database } from 'firebase';
 
-import { GenericCatalog } from '../models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 
 @Injectable()
 export class FBGenericService {

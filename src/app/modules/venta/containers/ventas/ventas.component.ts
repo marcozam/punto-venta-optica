@@ -14,8 +14,7 @@ import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.serv
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 
 import { Examen } from 'app/modules/optica/models/examen.models';
-import { ImpresionTicketService } from 'app/modules/venta/services/impresion-ticket.service';
-import { VentaTicketService } from 'app/modules/venta/services/venta-ticket.service';
+import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 import { VentaOptica } from 'app/modules/optica/models/venta-optica';
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
 
@@ -29,7 +28,7 @@ import { Inventario } from 'app/modules/inventario/models/inventario.models';
     InventarioService,
     DialogBoxService, 
     DialogPagosService, 
-    VentaTicketService
+    VentaOptikaTicketService
   ]
 })
 export class VentasComponent extends VentaOptica implements OnInit {
@@ -44,7 +43,7 @@ export class VentasComponent extends VentaOptica implements OnInit {
     private _contactoService: ContactoService,
     private _ventaService: VentaService,
     private _inventarioService: InventarioService,
-    private _printService: VentaTicketService,
+    private _printService: VentaOptikaTicketService,
     private dialog: DialogBoxService,
     private pagosDialog: DialogPagosService,
     private router: Router,

@@ -7,7 +7,7 @@ import { ModeloArmazon, MarcaArmazon } from 'app/modules/optica/models/armazon.m
 import { ModeloArmazonService } from 'app/modules/optica/services/modelo-armzaon.service';
 import { CategoriaArmazonService } from 'app/modules/optica/services/categoria-armazon.service';
 import { MarcaArmazonService } from 'app/modules/optica/services/marca-armazon.service';
-import { GenericCatalog } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 
 @Component({
   selector: 'app-modelo-aramazon-list',

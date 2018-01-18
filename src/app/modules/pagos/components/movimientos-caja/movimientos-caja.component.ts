@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, TemplateRef, AfterViewInit } from 
 import { DecimalPipe, DatePipe } from '@angular/common';
 
 import { CajaService } from '../../services/caja.service';
-import { VentaTicketService } from 'app/modules/venta/services/venta-ticket.service';
+import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Observable';
   selector: 'app-movimientos-caja',
   templateUrl: './movimientos-caja.component.html',
   styleUrls: ['./movimientos-caja.component.scss'],
-  providers: [VentaTicketService, CajaService]
+  providers: [VentaOptikaTicketService, CajaService]
 })
 export class MovimientosCajaComponent implements OnInit, AfterViewInit {
 
@@ -45,7 +45,7 @@ export class MovimientosCajaComponent implements OnInit, AfterViewInit {
 
   constructor( 
     private _service: CajaService,
-    private _printVentaService: VentaTicketService,
+    private _printVentaService: VentaOptikaTicketService,
     private _dialog: DialogBoxService,
     private _decimal: DecimalPipe, 
     private _date: DatePipe) {

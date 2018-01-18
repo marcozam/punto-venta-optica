@@ -2,15 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-//Routing
-import { PagosRoutingModule } from './pagos-routing.module';
-
-import { MovimientosSinCorteComponent } from './containers/movimientos-sin-corte/movimientos-sin-corte.component';
-import { EntregasAbonosComponent } from './components/entregas-abonos/entregas-abonos.component';
-import { RegistrarCorteComponent } from './components/registrar-corte/registrar-corte.component';
-import { CorteListComponent } from './components/corte-list/corte-list.component';
-import { MovimientosCajaComponent } from './components/movimientos-caja/movimientos-caja.component';
-
 import {
   MatButtonModule, 
   MatSelectModule, 
@@ -25,6 +16,16 @@ import {
 
 //OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
+
+//Routing
+import { PagosRoutingModule } from './pagos-routing.module';
+
+import { MovimientosSinCorteComponent } from './containers/movimientos-sin-corte/movimientos-sin-corte.component';
+import { ListaVentasComponent } from './components/lista-ventas/lista-ventas.component';
+import { RegistrarCorteComponent } from './components/registrar-corte/registrar-corte.component';
+import { CorteListComponent } from './components/corte-list/corte-list.component';
+import { MovimientosCajaComponent } from './components/movimientos-caja/movimientos-caja.component';
+import { VentasPendientesEntregaComponent } from './containers/ventas-pendientes-entrega/ventas-pendientes-entrega.component';
 
 @NgModule({
   imports: [
@@ -46,10 +47,11 @@ import { BaseModule } from 'app/modules/base/base.module';
   ],
   declarations: [
     MovimientosSinCorteComponent,
-    EntregasAbonosComponent,
+    ListaVentasComponent,
     RegistrarCorteComponent,
     CorteListComponent,
-    MovimientosCajaComponent
+    MovimientosCajaComponent,
+    VentasPendientesEntregaComponent,
   ],
   entryComponents: [
     RegistrarCorteComponent

@@ -2,7 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 //Models
 import { MarcaArmazon, ModeloArmazon } from './../../models/armazon.models';
-import { GenericCatalog } from '../../../generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 //Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { ModeloArmazonService } from '../../services/modelo-armzaon.service';

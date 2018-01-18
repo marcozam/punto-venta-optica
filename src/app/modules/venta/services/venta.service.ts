@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Venta, DetalleVenta, DetallePagos, SumaryVenta, MetodoPago, ComentariosVenta } from '../models/venta.models';
-import { BaseAjaxService } from '../../base/services/base-ajax.service'
-import { Sucursal, Status } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Status } from 'app/modules/base/models/base.models';
 import { Producto } from 'app/modules/producto/models/producto.models';
+
+import { BaseAjaxService } from '../../base/services/base-ajax.service'
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
+import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
-export class VentaService {
+export class VentaService implements GenericServiceBase<Venta> {
     
     constructor(
-        private _osBD: BaseAjaxService,
+        private db: BaseAjaxService,
         private _contactoService: ContactoService
     ) { }
+
+    newInstance(): Venta {
+        return new Venta();
+    }
 
     mapDetalleVenta2Server(detalle: DetalleVenta[]){
         let arr = detalle.map(dv => {
@@ -38,13 +46,13 @@ export class VentaService {
         return arr.join('&');
     }
 
-    mapList(list: any[]){
+    mapList(list: any[]): Venta[]{
         return list.map(p=>{
             return this.mapData(p);
         })
     }
     
-    mapData(item: any) {
+    mapData(item: any): Venta {
         let venta = new Venta();
         venta.sumary.key = item.C0;
         venta.sumary.sucursal.nombre = item.R2;
@@ -66,19 +74,48 @@ export class VentaService {
         return venta;
     }
 
+    mapDetalleVentaData(item: any): DetalleVenta {
+        let dv = new DetalleVenta(new Producto(item.C2));
+        dv.productoVenta.key =  item.C0;
+        dv.cantidad = item.C1;
+        dv.precioUnitario = item.C3;
+        dv.comentario = item.C10;
+        return dv;
+    }
+
+    mapDetallePagosData(item: any): DetallePagos {
+        let dp = new DetallePagos();
+        dp.key = item.C0;
+        dp.fecha = moment(item.C3).toDate();
+        dp.metodoPago = new MetodoPago();
+        dp.metodoPago.nombre = item.C1;
+        dp.monto = item.C2;
+        dp.totalRecibido = item.C6;
+        dp.esPagoInicial = item.C4;
+        dp.corteID = item.C5;
+        return dp;
+    }
+
+    mapComentariosData(item: any): ComentariosVenta {
+        let c = new ComentariosVenta(item.C2);
+        c.key = item.C0;
+        c.productoID = item.C1;
+        return c;
+    }
+
     registarPago(ventaID: number, pagos: DetallePagos[]){
         let total = pagos.map(p=> p.monto).reduce((p, n) => p + n);
-        let params = this._osBD.createParameter('ECOM0002', 6, {
+        let params = this.db.createParameter('ECOM0002', 6, {
             'V3': ventaID,
             'V4': total,
             'V6': this.mapDetallePagos2Server(pagos)
         });
-        return this._osBD.getData(params);
+        return this.db.getData(params);
     }
 
     saveVenta(venta: Venta, sucursalID: number, callback){
         venta.sumary.totalPagado = venta.pagos.map(p=> p.monto).reduce((c, p) => c + p);
-        let params = this._osBD.createParameter('ECOM0002', 1, {
+        let params = this.db.createParameter('ECOM0002', 1, {
             'V3': venta.sumary.cliente ? venta.sumary.cliente.key : 0,
             'V4': sucursalID <= 0 ? venta.sumary.sucursal.key : sucursalID,
             'V5': venta.sumary.total,
@@ -95,7 +132,7 @@ export class VentaService {
             //Vendedor
             'V12': 0
         });
-        this._osBD.getData(params).subscribe(res=>{
+        this.db.getData(params).subscribe(res=>{
             if (res.Table[0].C1 > 0) {
                 //All correct
                 venta.sumary.key = res.Table[0].C0;
@@ -107,66 +144,58 @@ export class VentaService {
         });
     }
 
+    save(_currentValue: Venta, _newValue: Venta) {
+        throw new Error("Method not implemented.");
+    }
+
     changeStatus(ID: number, status: number, internal: boolean = false){
-        let params = this._osBD.createParameter('ECOM0002', 2, { 
+        let params = this.db.createParameter('ECOM0002', 2, { 
             V3: internal ? 1 : 0,
             V4: ID,
             V5: status
         });
-        return this._osBD.getData(params);
+        return this.db.getData(params);
     }
 
     cancelOrder(ID: number){
         this.changeStatus(ID, 40102, true);
     }
 
-    getByID(ID: number, callback){
-        let params = this._osBD.createParameter('ECOM0003', 2, { V3: ID });
-        this._osBD.getData(params).subscribe(data => {
+    getByID(ID: number){
+        let observable$: Subject<Venta> = new Subject();
+        let params = this.db.createParameter('ECOM0003', 2, { V3: ID });
+
+        this.db.getData(params).subscribe(data=>{
             let header = data.Table[0];
             let venta = this.mapData(header);
-            venta.updateDetalleVenta(data.Table1.map( row => {
-                let dv = new DetalleVenta(new Producto(row.C2));
-                dv.productoVenta.key =  row.C0;
-                dv.cantidad = row.C1;
-                dv.precioUnitario = row.C3;
-                dv.comentario = row.C10;
-                return dv;
-            }));
-
-            venta.pagos = data.Table2.map( row => {
-                let dp = new DetallePagos();
-                dp.key = row.C0;
-                dp.fecha = moment(row.C3).toDate();
-                dp.metodoPago = new MetodoPago();
-                dp.metodoPago.nombre = row.C1;
-                dp.monto = row.C2;
-                dp.totalRecibido = row.C6;
-                dp.esPagoInicial = row.C4;
-                dp.corteID = row.C5;
-                return dp;
-            });
-
-            venta.comentarios = data.Table3.map( row => {
-                let c = new ComentariosVenta(row.C2);
-                c.key = row.C0;
-                c.productoID = row.C1;
-                return c;
-            });
-
+            
+            venta.updateDetalleVenta(data.Table1.map( row => this.mapDetalleVentaData(row)));
+            venta.pagos = data.Table2.map( row => this.mapDetallePagosData(row));
+            venta.comentarios = data.Table3.map( row => this.mapComentariosData(row));
+            //observable$.next(venta);
             this._contactoService.getByID(venta.sumary.cliente.key)
-                .subscribe((res)=>{
-                venta.sumary.cliente = res;
-                callback(venta);
-            });
-        });
+                .subscribe((result) => {
+                    venta.sumary.cliente = result;
+                    observable$.next(venta);
+                });
+        })
+        return observable$;
     }
 
-    getOrdenesPendientesEntrega(sucursalID: number, callback){
-        let params = this._osBD.createParameter('ECOM0003', 3, { V4: sucursalID});
-        this._osBD.getData(params)
-            .subscribe(res => {
-                callback(this.mapList(res.Table));
-            });
+    getOrdenesPendientesEntrega(sucursalID: number, clienteID: number){
+        let params = this.db.createParameter('ECOM0003', 3, { 
+            V4: sucursalID ? sucursalID : '',
+            V8: clienteID ? clienteID : '',
+        });
+        return this.db.getData(params)
+            .map(result => this.mapList(result.Table));
+    }
+
+    getHistorialCompras(clienteID: number){
+        let params = this.db.createParameter('ECOM0003', 4, { 
+            V3: clienteID ? clienteID : '',
+        });
+        return this.db.getData(params)
+            .map(result => this.mapList(result.Table));
     }
 }

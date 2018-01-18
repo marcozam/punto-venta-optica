@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GenericCatalog } from '../../../generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { CategoriaArmazonService } from '../../services/categoria-armazon.service';
 

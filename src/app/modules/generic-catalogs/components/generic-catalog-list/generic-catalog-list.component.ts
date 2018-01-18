@@ -6,7 +6,7 @@ import { GenericCatalogService } from 'app/modules/generic-catalogs/services/gen
 import { _catalogs, CatalogsMetadataService } from 'app/modules/generic-catalogs/services/catalogs-metadata.service';
 import { FBGenericService } from 'app/modules/generic-catalogs/services/fb-generic.service';
 //Models
-import { BaseGenericCatalog, GenericCatalog } from '../../models/generic-catalogs.models';
+import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 

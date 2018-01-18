@@ -1,7 +1,7 @@
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericCatalog } from '../../models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MetaDataCatalog } from '../../models/metadata-catalogs.models';
 import { FBGenericService } from '../../services/fb-generic.service';
 import { GenericCatalogService } from '../../services/generic.service';

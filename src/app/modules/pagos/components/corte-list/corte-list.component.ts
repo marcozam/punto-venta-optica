@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angul
 
 import { DecimalPipe, DatePipe } from '@angular/common';
 
+import { CorteTicketService } from '../../services/tickets/corte-ticket.service';
 import { CajaService } from '../../services/caja.service';
 
 import { CorteCaja, DetalleCorteCaja } from '../../models/caja.models';
@@ -11,7 +12,7 @@ import { TableSource, TableColumn } from 'app/modules/base/models/data-source.mo
   selector: 'app-corte-list',
   templateUrl: './corte-list.component.html',
   styleUrls: ['./corte-list.component.scss'],
-  providers: [CajaService]
+  providers: [ CajaService, CorteTicketService ]
 })
 export class CorteListComponent implements OnInit, AfterViewInit {
 
@@ -28,6 +29,7 @@ export class CorteListComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _service: CajaService,
+    private _ticket: CorteTicketService,
     private _decimal: DecimalPipe, 
     private _date: DatePipe) {
       this.dataSource = new TableSource();
@@ -58,6 +60,15 @@ export class CorteListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     //Set Template for Actions
     this.dataSource.actionsTemplate = this.actionsTemplate;
+  }
+
+  printTicket(item: CorteCaja){
+    this._ticket.corte = item;
+    this._service.getDetalleCorte(Number(item.key))
+        .subscribe(result => {
+          item.detalle = result;
+          this._ticket.print();
+        });
   }
 
   mostarDetalle(item: CorteCaja){

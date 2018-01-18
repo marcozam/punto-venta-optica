@@ -1,5 +1,5 @@
 import { Producto } from "app/modules/producto/models/producto.models";
-import { GenericCatalog, BaseGenericCatalog } from "app/modules/generic-catalogs/models/generic-catalogs.models";
+import { GenericCatalog, BaseGenericCatalog } from "app/modules/base/models/base.models";
 
 export class TipoMovimientoInventario extends GenericCatalog {
 

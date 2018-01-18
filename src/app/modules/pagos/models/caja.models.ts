@@ -1,4 +1,5 @@
-import { BaseGenericCatalog, Sucursal } from "app/modules/generic-catalogs/models/generic-catalogs.models";
+import { BaseGenericCatalog } from "app/modules/base/models/base.models";
+import { Sucursal } from "app/modules/generic-catalogs/models/generic-catalogs.models";
 import { MetodoPago, Usuario } from "app/modules/venta/models/venta.models";
 
 export class CorteCaja extends BaseGenericCatalog {

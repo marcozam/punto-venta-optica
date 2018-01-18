@@ -1,4 +1,4 @@
-import { BaseGenericCatalog, GenericCatalog } from "app/modules/generic-catalogs/models/generic-catalogs.models";
+import { BaseGenericCatalog, GenericCatalog } from "app/modules/base/models/base.models";
 
 export class StoreProcedureMetaData extends GenericCatalog {
     description: string;

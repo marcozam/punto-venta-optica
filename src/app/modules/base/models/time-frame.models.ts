@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { GenericCatalog } from "app/modules/generic-catalogs/models/generic-catalogs.models";
+import { GenericCatalog } from "app/modules/base/models/base.models";
 
 export class Periodo extends GenericCatalog { 
     constructor(_key: number, _nombre: string){

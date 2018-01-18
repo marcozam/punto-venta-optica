@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { GenericCatalog } from '../../../generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MarcaArmazon } from '../../models/armazon.models';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';

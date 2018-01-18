@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
-import { BaseGenericCatalog, GenericCatalog } from '../../generic-catalogs/models/generic-catalogs.models';
+import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 
 @Injectable()
 export class CategoriaArmazonService extends FBGenericService {

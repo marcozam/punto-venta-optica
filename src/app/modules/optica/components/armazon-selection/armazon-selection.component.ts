@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { MarcaArmazon, ModeloArmazon, MedidasArmazon } from '../../models/armazon.models';
-import { GenericCatalog } from '../../../generic-catalogs/models/generic-catalogs.models';
-import { Producto } from '../../../producto/models/producto.models';
+import { ComentariosVenta } from 'app/modules/venta/models/venta.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
+import { Producto } from 'app/modules/producto/models/producto.models';
 
 import { ModeloArmazonService } from '../../services/modelo-armzaon.service';
 import { CategoriaArmazonService } from '../../services/categoria-armazon.service';
 import { MarcaArmazonService } from '../../services/marca-armazon.service';
-import { ComentariosVenta } from 'app/modules/venta/models/venta.models';
 
 @Component({
   selector: 'app-armazon-selection',

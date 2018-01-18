@@ -26,7 +26,6 @@ import { BaseModule } from 'app/modules/base/base.module';
 import { GenericCatalogsRoutingModule } from './generic-catalogs-routing.module';
 
 //Components
-import { PersonaComponent } from './components/persona/persona.component';
 import { GenericCatalogComponent } from './components/generic-catalog/generic-catalog.component';
 import { GenericCatalogListComponent } from './components/generic-catalog-list/generic-catalog-list.component';
 import { DynamicCatalogListComponent } from './components/dynamic-catalog-list/dynamic-catalog-list.component';
@@ -34,8 +33,8 @@ import { DynamicCatalogComponent } from './components/dynamic-catalog/dynamic-ca
 import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fields/dynamic-catalog-fields.component';
 
 //Services
-import { BaseAjaxService } from '../base/services/base-ajax.service';
-import { PersonasService } from 'app/modules/generic-catalogs/services/personas.service';
+import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
+import { PersonasService } from 'app/modules/base/services/personas.service';
 
 @NgModule({
   imports: [
@@ -61,15 +60,11 @@ import { PersonasService } from 'app/modules/generic-catalogs/services/personas.
     BaseModule,
   ],
   declarations: [
-    PersonaComponent,
     GenericCatalogComponent,
     GenericCatalogListComponent,
     DynamicCatalogListComponent,
     DynamicCatalogComponent,
     DynamicCatalogFieldsComponent,
-  ],
-  exports: [
-    PersonaComponent,
   ],
   providers: [
     BaseAjaxService,

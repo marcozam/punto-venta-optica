@@ -3,11 +3,11 @@
   (onExamenChanged)="onExamenChanged($event)"
   (onProdutsChanged)="onOpticaVentaChanged($event)"></app-optica-venta>
 <div class="text-right buttons-containers">
-  <button mat-raised-button color="primary" type="button"
+  <button mat-raised-button color="primary" type="button" [disabled]="loading"
     (click)="print()">
     <mat-icon>
-      print
+      {{ loading ? 'schedule': 'print'}}
     </mat-icon>
-    Imprimir
+    {{ loading ? 'Espere ...': 'Imprimir'}}
   </button>
 </div>

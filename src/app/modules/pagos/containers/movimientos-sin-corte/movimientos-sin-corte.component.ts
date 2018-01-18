@@ -5,6 +5,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { environment } from '../../../../../environments/environment';
 
 //Services
+import { CorteTicketService } from '../../services/tickets/corte-ticket.service';
 import { CajaService } from '../../services/caja.service';
 //Models
 import { MovimientoCaja, CorteCaja } from '../../models/caja.models';
@@ -19,7 +20,7 @@ import { SuccessMessage, SuccessTitle, WarningTitle } from 'app/modules/base/con
   selector: 'app-movimientos-sin-corte',
   templateUrl: './movimientos-sin-corte.component.html',
   styleUrls: ['./movimientos-sin-corte.component.scss'],
-  providers: [CajaService]
+  providers: [CajaService, CorteTicketService]
 })
 export class MovimientosSinCorteComponent implements OnInit {
   
@@ -28,6 +29,7 @@ export class MovimientosSinCorteComponent implements OnInit {
 
   constructor(
     private _service: CajaService,
+    private _ticket: CorteTicketService,
     private _matDialog: MatDialog,
     private _dialog: DialogBoxService,) {
       
@@ -53,8 +55,11 @@ export class MovimientosSinCorteComponent implements OnInit {
           this.corte.totalRecibido = this.corte.detalle.length > 0 ? 
               this.corte.detalle.map(d=> d.montoRecibido).reduce((p, c)=> p + c) : 0;
           this._service.save(this.corte, null)
-            .subscribe(result=>{
-              this._dialog.openDialog(SuccessTitle, SuccessMessage);
+            .subscribe(result=> {
+              console.log(result);
+              this._ticket.corte = result;
+              this._ticket.print();
+              //this._dialog.openDialog(SuccessTitle, SuccessMessage);
               //TODO: Add option to update 
               //this.dataSource.updateDataSource([])
               this.corte = new CorteCaja(this.sucursalID, environment.defaultUser);

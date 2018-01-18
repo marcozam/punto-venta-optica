@@ -19,16 +19,25 @@
     </button>
   </div>
   <mat-list dense class="selection" *ngIf="!isLoading">
-    <mat-list-item *ngFor="let item of resultados" (click)="onItemSelected(item)">
+    <mat-list-item *ngFor="let item of resultados">
       <span matLine>
-          {{ item.nombre }}
+        {{ item.nombre }}
       </span>
+      <button mat-icon-button (click)="onViewContactClick(item)">
+        <mat-icon>contact_phone</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onItemSelected(item)">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
     </mat-list-item>
   </mat-list>
   <h3 *ngIf="resultados.length === 0 && triggerSearch && !isLoading" class="text-center">
     Sin resultados
   </h3>
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <div class="text-center" *ngIf="isLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    Cargando, por favor espere ...
+  </div>
   <div class="text-right buttons-containers" *ngIf="triggerSearch && !isLoading">
     <button type="button" mat-raised-button color="primary" (click)="onAddClick(searchForm.value.nombre)">
       <mat-icon aria-label="Agregar">add</mat-icon>
@@ -36,6 +45,6 @@
     </button>
   </div>
 </form>
-<os-contacto [catalogName]="catalogName" [initialData]="_contacto.persona"
+<os-contacto [catalogName]="catalogName" [initialData]="_contacto?.persona" [contactoID]="contactoID"
   (onCancel)="showAdd = false" (onChange)="personaAdded($event)"
   *ngIf="showAdd"></os-contacto>

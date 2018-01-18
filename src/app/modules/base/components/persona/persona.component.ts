@@ -2,8 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { PersonasService } from '../../services/personas.service';
-import { Persona } from '../../models/generic-catalogs.models';
+import { PersonasService } from 'app/modules/base/services/personas.service';
+import { Persona } from 'app/modules/base/models/base.models';
 
 @Component({
   selector: 'os-persona',
@@ -18,7 +18,15 @@ export class PersonaComponent implements OnInit {
   @ViewChild('formPersona')
   form: NgForm
 
-  @Input() initialData: Persona;
+  private _initialData: Persona;
+  @Input() 
+  get initialData(): Persona{
+    return this._initialData;
+  }
+  set initialData(value: Persona) {
+    this._initialData = value;
+    if(value) this.persona = value;
+  }
   @Input() ID: number;
   @Input() catalogName: string;
   @Input() isContact: boolean = true;
@@ -33,17 +41,14 @@ export class PersonaComponent implements OnInit {
   }
 
   ngOnInit() {
-      if(this.ID){
-        this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
-      }
-      else if(this.initialData){
-        this.persona = this.initialData;
-      }
-      this.form.valueChanges.subscribe((val) => {
-        this.onChange.emit({
-          isValid: this.form.valid && this.form.dirty,
-          data: val
-        });
-      })
+    if(this.ID){
+      this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
+    }
+    this.form.valueChanges.subscribe((val) => {
+      this.onChange.emit({
+        isValid: this.form.valid,
+        data: Object.assign(this.persona, val)
+      });
+    })
   }
 }

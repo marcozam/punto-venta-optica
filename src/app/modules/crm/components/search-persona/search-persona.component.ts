@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ContactoService } from '../../services/contacto.service';
-import { PersonasService } from 'app/modules/generic-catalogs/services/personas.service';
+import { PersonasService } from 'app/modules/base/services/personas.service';
 import { Contacto } from 'app/modules/crm/models/crm.models';
-import { Persona } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Persona } from 'app/modules/base/models/base.models';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -20,6 +20,7 @@ export class SearchPersonaComponent implements OnInit {
   _contacto: Contacto;
   loading$: Observable<boolean>;
   isLoading: boolean = false;
+  contactoID: number;
 
   @Input() catalogName: string;
   @Output() onChange = new EventEmitter<any>();
@@ -54,6 +55,11 @@ export class SearchPersonaComponent implements OnInit {
     this.onChange.emit({data: item, exist: true});
   }
 
+  onViewContactClick(item: Contacto){
+    this.contactoID = item.key;
+    this.showAdd = true;
+  }
+
   onAddClick(_nombre:string){
     if(!_nombre) _nombre = ',';
     let _names = _nombre.split(',');
@@ -65,7 +71,8 @@ export class SearchPersonaComponent implements OnInit {
     this._contacto.persona = $persona;
   }
 
-  personaAdded(item: Contacto){
-    this.onChange.emit({data: item, exist: false});
+  personaAdded(data: any){
+    this.showAdd = false;
+    this.onChange.emit({data: data.Data, exist: data.isNew});
   }
 }

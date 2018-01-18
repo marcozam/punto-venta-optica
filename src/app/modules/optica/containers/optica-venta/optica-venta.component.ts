@@ -11,7 +11,7 @@ import { ExamenService } from '../../../optica/services/examen.service';
 import { TipoMicasService } from '../../../optica/services/tipo-micas.service'
 import { TratamientoMicasService } from '../../../optica/services/tratamiento-micas.service';
 import { SelectionChange } from '@angular/cdk/collections';
-import { GenericCatalog } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 
 //999 => Armazon
 //998 => Mica

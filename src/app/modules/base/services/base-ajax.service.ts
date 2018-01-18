@@ -7,7 +7,7 @@ import { environment } from '../../../../environments/environment';
 
 import { AjaxGuardService } from './ajax-guard.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { BaseGenericCatalog, GenericCatalog } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 import { Subject } from 'rxjs/Subject';
 import { WarningTitle, AuthErrorMessage, ErrorTitle, ErrorMessage, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';

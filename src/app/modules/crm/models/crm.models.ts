@@ -3,7 +3,7 @@ import {
     GenericCatalog, 
     Persona, 
     Empresa 
-} from '../../generic-catalogs/models/generic-catalogs.models';
+} from 'app/modules/base/models/base.models';
 
 export class Contacto extends BaseGenericCatalog {
     key: number;

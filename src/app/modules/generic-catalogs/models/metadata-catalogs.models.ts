@@ -1,4 +1,4 @@
-import { GenericCatalog } from "./generic-catalogs.models";
+import { GenericCatalog } from "app/modules/base/models/base.models";
 
 export class MetaDataTable{
     name: string;

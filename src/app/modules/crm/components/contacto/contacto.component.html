@@ -5,7 +5,7 @@
           <div class="sub-titles">
             {{catalogName}}
           </div>
-        <os-persona [catalogName]="catalogName" [initialData]="initialData" (onChange)="onPersonaChanged($event)"></os-persona>  
+        <os-persona [catalogName]="catalogName" [initialData]="initialData" (onChange)="onPersonaChanged($event)"></os-persona>
       </div>
     </div>
     <div class="col-md-4">
@@ -15,15 +15,15 @@
         </div>
         <mat-form-field class="sm">
           <mat-icon matSuffix>phone</mat-icon>
-          <input type="tel" maxlength="10" required matInput placeholder="Telefono" name="telefono" ngModel>
+          <input type="tel" maxlength="10" required matInput placeholder="Telefono" name="telefono" [ngModel]="datosContacto.telefono?.valor">
         </mat-form-field>
         <mat-form-field class="sm">
           <mat-icon matSuffix>email</mat-icon>
-          <input type="email" maxlength="50" [email]="formContacto.value.email !== ''" matInput placeholder="Email" name="email" ngModel>
+          <input type="email" maxlength="50" [email]="!(formContacto.value.email === null || formContacto.value.email === '')" matInput placeholder="Email" name="email" [ngModel]="datosContacto.email?.valor">
         </mat-form-field>
         <mat-form-field class="sm">
           <mat-icon matSuffix>location_on</mat-icon>
-          <input maxlength="50" matInput placeholder="Colonia" name="colonia" ngModel>
+          <input maxlength="50" matInput placeholder="Colonia" name="colonia" [ngModel]="datosContacto.colonia?.valor">
         </mat-form-field>
       </div>
     </div>
