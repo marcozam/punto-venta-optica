@@ -21,7 +21,7 @@ export class GenericCatalogComponent implements OnInit {
 
   constructor(
     private genericService: GenericCatalogService,
-    private fbGenericService: FBGenericService,
+    private fbGenericService: FBGenericService<GenericCatalog>,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: DialogBoxService) { 

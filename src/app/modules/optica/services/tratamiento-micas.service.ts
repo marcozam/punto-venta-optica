@@ -7,7 +7,7 @@ import { FBGenericService } from '../../generic-catalogs/services/fb-generic.ser
 import { GenericService } from '../../generic-catalogs/services/generic.service';
 
 @Injectable()
-export class TratamientoMicasService extends FBGenericService {
+export class TratamientoMicasService extends FBGenericService<TratamientoMica> {
   constructor(_db: AngularFireDatabase) { 
     super(_db)
     super.setListRefURL('micas/tratamientos');

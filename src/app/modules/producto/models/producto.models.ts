@@ -1,4 +1,5 @@
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 
 export class CategoriaProducto {
@@ -11,33 +12,44 @@ export class CategoriaProducto {
   }
 }
 
-export class CategoriaProductoSumary extends GenericCatalog {
-  usaInventario: boolean;
-  catalogoID: number;
-  formatoNombre: string;
+export class CategoriaProductoSumary extends BaseGenericCatalog {
+  @Field('C1', 40301) nombre: string
+  @Field('C2', 40302) catalogoID: number;
+  @Field('C3', 40303) formatoNombre: string;
+  @Field('C4', 40304) usaInventario: boolean;
 
   constructor(_nombre: string) {
     super();
-    this.key = '0';
+    this.key = 0;
     this.nombre = _nombre;
     this.usaInventario = true;
+    this.keysChanges = ['nombre', 'usaInventario', 'formatoNombre'];
   }
 }
 
-export class Producto extends GenericCatalog {
-  //presentacion: string;
+export class Producto extends BaseGenericCatalog {
+  @Field('C1') nombre: string;
+  @Field('C2') categoriaProductoID: number;
+  @Field('C4') requireProcesamiento: boolean = false;
+  @Field('C5') SKU: string;
+  @Field('C6') detalleID: number;
+
   imagen?: string;
   descripcion?: string;
   precio?: number = 0;
-  SKU: string;
-  detalleID: number;
-  requireProcesamiento: boolean = false;
-  categoriaProductoID: number;
-  categoriaProducto: CategoriaProductoSumary;
+
+  private _categoriaProducto: CategoriaProductoSumary
+  get categoriaProducto(): CategoriaProductoSumary{
+    return this._categoriaProducto;
+  }
+  set categoriaProducto(value: CategoriaProductoSumary){
+    this._categoriaProducto = value;
+    this.categoriaProductoID = Number(value.key);
+  };
 
   constructor(_nombre: string, _categoria?: CategoriaProductoSumary) {
     super();
-    this.keysChanges = ['nombre', 'categoriaProductoID', 'descripcion', 'SKU'];
+    this.keysChanges = ['nombre', 'categoriaProductoID', 'requireProcesamiento', 'SKU'];
     this.key = 0;
     this.nombre = _nombre;
     this.categoriaProducto = _categoria;

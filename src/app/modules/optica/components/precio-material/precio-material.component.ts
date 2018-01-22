@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TipoMica, MaterialMica, TratamientoMica } from './../../models/examen.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { MaterialMicasService } from './../../services/material-micas.service';
-import { TipoMicasService } from './../../services/tipo-micas.service';
+import { FBTipoMicasService } from './../../services/tipo-micas.service';
 import { TratamientoMicasService } from '../../services/tratamiento-micas.service';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -16,7 +16,7 @@ class PreciosForm {
   selector: 'app-precio-material',
   templateUrl: './precio-material.component.html',
   styleUrls: ['./precio-material.component.scss'],
-  providers: [TipoMicasService, MaterialMicasService, TratamientoMicasService, DialogBoxService]
+  providers: [FBTipoMicasService, MaterialMicasService, TratamientoMicasService, DialogBoxService]
 })
 export class PrecioMaterialComponent implements OnInit {
   //Data
@@ -30,7 +30,7 @@ export class PrecioMaterialComponent implements OnInit {
   listaPreciosID: number;
 
   constructor(
-    private _tipoService: TipoMicasService,
+    private _tipoService: FBTipoMicasService,
     private _materialService: MaterialMicasService,
     private _tratamientoService: TratamientoMicasService,
     public dialog: DialogBoxService) { 
@@ -46,9 +46,9 @@ export class PrecioMaterialComponent implements OnInit {
         return 0;
       })
       this.tiposMicas = [].concat(
-        tipos.filter(data=> { return data.tipoMica === '1'}), 
-        tipos.filter(data=> { return data.tipoMica === '0'}),
-        tipos.filter(data=> { return data.tipoMica === '2'})
+        tipos.filter(data=> { return data.tipoMica === 1}), 
+        tipos.filter(data=> { return data.tipoMica === 0}),
+        tipos.filter(data=> { return data.tipoMica === 2})
       );
       this._tratamientoService.getCatalogList((tratamientos: TratamientoMica[]) => {
         this.tratamientosMicas = tratamientos;

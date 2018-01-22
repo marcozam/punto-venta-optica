@@ -30,7 +30,8 @@ export class HomeComponent {
 
   onPersonaChange(item: any){
     if(item.data.key === 0){
-      this._contactoService.save(item.data, (data: Contacto) => this.checkData(data));
+      this._contactoService.save(item.data)
+        .subscribe((data: Contacto) => this.checkData(data));
     }
     else{
       if(item.exist) this.checkData(item.data);

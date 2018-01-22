@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { 
-  MatDatepickerModule, 
   MatNativeDateModule, 
   MatInputModule, 
   MatRadioModule, 
@@ -34,7 +33,7 @@ import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fiel
 
 //Services
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
-import { PersonasService } from 'app/modules/base/services/personas.service';
+//import { PersonasService } from 'app/modules/base/services/personas.service';
 
 @NgModule({
   imports: [
@@ -43,7 +42,6 @@ import { PersonasService } from 'app/modules/base/services/personas.service';
     ReactiveFormsModule,
     RouterModule,
     HttpClientModule,
-    MatDatepickerModule, 
     MatNativeDateModule, 
     MatInputModule, 
     MatRadioModule,
@@ -65,10 +63,6 @@ import { PersonasService } from 'app/modules/base/services/personas.service';
     DynamicCatalogListComponent,
     DynamicCatalogComponent,
     DynamicCatalogFieldsComponent,
-  ],
-  providers: [
-    BaseAjaxService,
-    PersonasService
   ]
 })
 export class GenericCatalogsModule { }

@@ -4,7 +4,7 @@ import { FBGenericService } from '../../generic-catalogs/services/fb-generic.ser
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 
 @Injectable()
-export class CategoriaArmazonService extends FBGenericService {
+export class CategoriaArmazonService extends FBGenericService<GenericCatalog> {
     constructor(_db: AngularFireDatabase) {
         super(_db);
         super.setListRefURL('armazones/categorias');

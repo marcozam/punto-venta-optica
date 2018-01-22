@@ -10,18 +10,4 @@ export class MetodosPagoService extends GenericService<MetodoPago> implements Ge
         super(_db);
         this.catalogID = 304;
     }
-    
-    save(_currentValue: MetodoPago, _newValue: MetodoPago, callback?: any): void {
-        throw new Error("Method not implemented.");
-    }
-    
-    mapData(object: any) {
-        let item = new MetodoPago();
-        item.key = object.C0;
-        item.nombre = object.C1;
-        item.enVenta = object.C2;
-        item.enCorte = object.C3;
-        item.utilizaReferencia = object.C4;
-        return item;
-    }
 }

@@ -45,6 +45,6 @@
     </button>
   </div>
 </form>
-<os-contacto [catalogName]="catalogName" [initialData]="_contacto?.persona" [contactoID]="contactoID"
+<os-contacto [catalogName]="catalogName" [contactoID]="contactoID" [initialData]="_contacto?.persona"
   (onCancel)="showAdd = false" (onChange)="personaAdded($event)"
   *ngIf="showAdd"></os-contacto>

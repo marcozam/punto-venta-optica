@@ -1,11 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { MetaDataCatalog } from '../../../generic-catalogs/models/metadata-catalogs.models';
+import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/messages.contants';
+
+import { MetaDataCatalog } from 'app/modules/generic-catalogs/models/metadata-catalogs.models';
 import { CategoriaProducto, CategoriaProductoSumary } from '../../models/producto.models';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { CatalogsMetadataService } from '../../../generic-catalogs/services/catalogs-metadata.service';
+import { CatalogsMetadataService } from 'app/modules/generic-catalogs/services/catalogs-metadata.service';
 import { CategoriaProductoService } from '../../services/categoria-producto.service';
 
 @Component({
@@ -42,8 +44,9 @@ export class CategoriaProductoComponent implements OnInit {
 
   onSave(value){
     this.item = Object.assign(this.item, value)
-    this._categoriaService.save(this.item, r=>{
-      this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
-    });
+    this._categoriaService.save(this.item)
+      .subscribe(r => {
+        this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
+      });
   }
 }

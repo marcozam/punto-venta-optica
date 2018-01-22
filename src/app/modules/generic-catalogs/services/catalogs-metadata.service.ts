@@ -17,78 +17,43 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
       this.catalogID = 100;
   }
 
-  save(_currentValue: MetaDataCatalog, _newValue: MetaDataCatalog, callback){
-    if(_currentValue.hasChanges(_newValue)){
-      let idx: number = 0;
-      let _table = [];
-      _table.push('C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11');
-      _currentValue.fields.forEach(it =>{
-        let row = [];
-        row.push( it.isNew ? 0 : it.key, it.nombre, it.nombreCorto, it.tipoCampoID, 0, '', it.required, idx++, it.visible, it.fieldName, 0, 0);
-        _table.push(row.join(','));
-      });
+  save(_currentValue: MetaDataCatalog, _newValue: MetaDataCatalog){
+    //TODO: Mising check for changes
+    let idx: number = 0;
+    let _table = [];
+    _table.push('C0,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11');
+    _currentValue.fields.forEach(it =>{
+      let row = [];
+      row.push( it.isNew ? 0 : it.key, it.nombre, it.nombreCorto, it.tipoCampoID, 0, '', it.required, idx++, it.visible, it.fieldName, 0, 0);
+      _table.push(row.join(','));
+    });
 
-      let d2s = {
-        V4: _currentValue.key,
-        V5: _newValue.nombre, 
-        // Name Tamplate => Deprecated
-        V6: '', 
-        V7: _newValue.dynamic ? '1' : '0',
-        V8: _newValue.tableName ? _newValue.tableName : '',
-        V21: _table.join('&')
-      };
-      let params = this.db.createParameter('DYN0000', 4, d2s);
-      this.db.getData(params).subscribe(callback);
-    }
-    else{
-      callback(_currentValue);
-    }
+    let d2s = {
+      V4: _currentValue.key,
+      V5: _newValue.nombre, 
+      V6: _newValue.detailURL, 
+      V7: _newValue.dynamic ? '1' : '0',
+      V8: _newValue.tableName ? _newValue.tableName : '',
+      V9: _newValue.listURL, 
+      V21: _table.join('&')
+    };
+    let params = this.db.createParameter('DYN0000', 4, d2s);
+    return this.db.getData(params);
   }
 
-  mapData(r){
-    let item = new MetaDataCatalog();
-    item.key = r.C0;
-    item.nombre = r.C1;
-    //C2 => Name Tamplate => Deprecated
-    item.dynamic = r.C3;
-    item.tableName = r.C4;
-    item.filterAccount = r.C5;
-    return item;
-  }
+  newInstance() { return new MetaDataCatalog(); }
 
   mapFieldsData(r){
-    let item = new MetaDataField();
-    item.key = r.C0;
-    item.nombre = r.C1;
-    item.nombreCorto = r.C2;
-    item.tipoCampoID = r.C3;
-    item.catalogoReferenciaID = r.C4;
-    item.displayMember = r.C5;
-    item.required = r.C6;
-    item.orden = r.C7;
-    item.visible = r.C8;
-    item.fieldName = r.C9;
-    item.catalogoID = r.C13;
+    let item = this.mapGenericData(new MetaDataField(), r);
     item.isNew = false;
     return item;
   }
 
-  mapTablesData(r){
-    let item = new MetaDataTable();
-    item.name = r.C1;
-    item.scheme = r.C2;
-    return item;
-  }
+  mapTablesData(r){ return this.mapGenericData(new MetaDataTable(), r); }
 
   mapColumnData(r){
-    let item = new MetaDataColumn();
-    item.name = r.C1;
-    item.dbType = r.C2;
-    item.maxLength = r.C3;
+    let item = this.mapGenericData(new MetaDataColumn(), r);
     item.isNullable = r.C4 === 'NO' ? false : true;
-    item.position = r.C5;
-    item.tipoDatoID = r.R2;
-    item.tipoCampoID = r.R1;
     return item;
   }
 
@@ -137,10 +102,11 @@ modeloArmazon.referenceURL = 'armazones/modelos';
 modeloArmazon.detailURL = '/armazon/modelo/';
 
 const tipoMicas = new MetaDataCatalog();
-tipoMicas.key = '996';
+tipoMicas.key = '1102';
+tipoMicas.hybrid = true;
 tipoMicas.nombre = 'Tipo de Micas';
+tipoMicas.detailURL = 'mica/tipo';
 tipoMicas.referenceURL = 'micas/tipos';
-tipoMicas.detailURL = '/mica/tipo/';
 
 const materialMicas = new MetaDataCatalog();
 materialMicas.key = '995';

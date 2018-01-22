@@ -3,6 +3,7 @@ import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 
 export class Venta {
@@ -87,7 +88,7 @@ export class SumaryVenta extends BaseGenericCatalog {
     fecha: Date;
 
     get total(): number {
-        return this.subTotal - this.descuento + this.impuestos;
+        return Math.floor((this.subTotal - this.descuento + this.impuestos)*100)/100;
     }
 
     get saldo(): number {
@@ -165,11 +166,12 @@ export class DetalleVenta extends BaseGenericCatalog {
 }
 
 //MOVE SOMEWHERE ELSE
-export class MetodoPago extends GenericCatalog {
+export class MetodoPago extends BaseGenericCatalog {
+    @Field('C1', 30401) nombre: string;
+    @Field('C2', 30402) enVenta: boolean;
+    @Field('C3', 30503) enCorte: boolean;
+    @Field('C4', 30404) utilizaReferencia: boolean;
     codigo: string;
-    enVenta: boolean;
-    enCorte: boolean;
-    utilizaReferencia: boolean;
 
     constructor(nombre?: string){
         super();

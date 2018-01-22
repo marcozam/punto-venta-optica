@@ -1,7 +1,8 @@
 import { database } from 'firebase';
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 export class BaseGenericCatalog {
-    key: string | number;
+    key: string | number = 0;
 
     keysChanges: string[] = [];
 
@@ -35,11 +36,12 @@ export class Empresa extends GenericCatalog {
     
 }
 
-export class Persona extends GenericCatalog {
-    apellidoPaterno: string;
-    apellidoMaterno?: string;
-    fechaNacimiento: Date;
-    sexo: number;
+export class Persona extends BaseGenericCatalog {
+    @Field('C1', 101) nombre: string;
+    @Field('C2', 102) apellidoPaterno: string;
+    @Field('C3', 103) apellidoMaterno: string;
+    @Field('C4', 104) fechaNacimiento: Date;
+    @Field('C5', 105) sexo: number;
 
     public get nombreCompleto(): string {
         return `${this.nombre} ${this.apellidoPaterno ? this.apellidoPaterno: ''} ${this.apellidoMaterno ? this.apellidoMaterno: ''}`;

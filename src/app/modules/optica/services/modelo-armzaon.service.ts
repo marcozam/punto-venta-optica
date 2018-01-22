@@ -11,7 +11,7 @@ import { ProductosService } from '../../producto/services/productos.service';
 import { Producto } from '../../producto/models/producto.models';
 
 @Injectable()
-export class ModeloArmazonService extends FBGenericService implements GenericServiceBase<ModeloArmazon> {
+export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implements GenericServiceBase<ModeloArmazon> {
     private catalogID: number = 1100;
     private categoryID: number = 2;
     //Firebase => SQL relation
@@ -102,10 +102,6 @@ export class ModeloArmazonService extends FBGenericService implements GenericSer
                 });
             });
         });
-        /*
-        }
-        else callback(_currentValue);
-        */
     }
 
     deleteModelo(modelo: ModeloArmazon, callback){

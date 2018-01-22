@@ -4,25 +4,25 @@ import { AngularFireDatabase, AngularFireObject, AngularFireList, AngularFireAct
 import { database } from 'firebase';
 
 import { GenericCatalog } from 'app/modules/base/models/base.models';
+import { GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 
 @Injectable()
-export class FBGenericService {
+export class FBGenericService<T> {
+    newInstance() { return new GenericCatalog() }
+
+    mapData(object: any): T { return Object.assign(this.newInstance(), this.setGenericType(object)); }
+
+    mapList(list: any[]): T[] { return list.map(snap => this.mapData(snap)); }
+    
     referenceURL: string;
-    db: AngularFireDatabase;
 
     $listRef: AngularFireList<any>;
 
-    constructor(_db: AngularFireDatabase) {
-        //, _referenceURL: string
-        //this.referenceURL = _referenceURL;
-        //this.$listRef = _db.list(_referenceURL);
-        this.db = _db;
-    }
+    constructor(protected db: AngularFireDatabase) { }
 
     protected addCatalogItem(_catalogItem){
         let $key = this.$listRef.push(_catalogItem).key;
         _catalogItem.key = $key;
-        //.then(data => console.log(data) );
         return _catalogItem;
     }
 
@@ -33,8 +33,6 @@ export class FBGenericService {
     }
 
     //TODO
-    //Return Typed Object
-    protected setItemType(item: any){}
 
     protected setGenericType(snap: AngularFireAction<database.DataSnapshot>){
         return Object.assign(snap.payload.val(), { key: snap.key});
@@ -47,27 +45,17 @@ export class FBGenericService {
 
     getCatalogList(callback:any, watch?:boolean){
         let $ref = this.$listRef.snapshotChanges()
-            .map((arr) => {
-                return arr.map(snap => {
-                    return this.setGenericType(snap);
-                });
-            })
+            .map((arr) => { return this.mapList(arr) })
             .subscribe(r=> {
-                if(!watch){
-                    $ref.unsubscribe();
-                }
+                if(!watch) $ref.unsubscribe();
                 callback(r);
             });
-        if(watch){
-            return $ref;
-        }
+        if(watch) return $ref;
     }
     
     getCatalogItem(id:string | number, callback:any ){
         let $ref = this.db.object(this.referenceURL + '/' + id).snapshotChanges()
-            .map(snap => {
-                return this.setGenericType(snap);
-            })
+            .map(snap => this.mapData(snap))
             .subscribe(r=> {
                 $ref.unsubscribe();
                 callback(r);
@@ -75,6 +63,7 @@ export class FBGenericService {
     }
 
     deleteCatalogItem(id: string | number){
+        console.log('Delete from FB');
         this.db.object(this.referenceURL + '/' + id).remove();
     }
 

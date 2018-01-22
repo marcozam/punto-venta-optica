@@ -21,7 +21,7 @@ export class MarcaArmazonComponent implements OnInit {
   item: MarcaArmazon;
   isLoading: boolean = true;
 
-  constructor(private _categoriaService: FBGenericService, 
+  constructor(private _categoriaService: FBGenericService<GenericCatalog>, 
     private _marcaService: MarcaArmazonService,
     private router: Router,
     private route: ActivatedRoute,

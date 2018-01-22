@@ -1,8 +1,15 @@
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
-export class TipoMica extends GenericCatalog {
-    tipoMica: string;
-    esBifocal: boolean;
+export class TipoMica extends BaseGenericCatalog {
+    @Field('C1', 100012) nombre: string;
+    @Field('C2', 100013) tipoMica: number;
+    @Field('C3', 100014) keyFB: string; //This should be removed once fully migrated to SQL}
+
+    constructor(){
+        super();
+        this.keysChanges = ['nombre', 'tipoMica'];
+    }
 }
 
 export class MaterialMica extends GenericCatalog {

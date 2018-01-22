@@ -103,15 +103,11 @@ export class BaseAjaxService{
             .map(result => result.Table);
     }
 
-    saveDynamicCatalog(DatosCatalogo: string, CatalogoID: number, DetailID: any, callback) {
+    saveDynamicCatalog(DatosCatalogo: string, CatalogoID: number, DetailID: any, callback?) {
         var params = this.createParameter('DYN0001', 3, { 'V4': CatalogoID, 'V5': DetailID ? DetailID : 0, 'V6': 'C0,C1,C2~' + DatosCatalogo });
-        this.getData(params).subscribe(res => {
-            if(res.Table.length == 1)
-            {
-                callback(res.Table[0]);
-            }
-            //throw error if empty
-        });
+        let respond = this.getData(params).map(res => res.Table.length >= 1 ? res.Table[0] : null);
+        if(callback) respond.subscribe(res => callback(res));
+        return respond;
     }
 
     removeItem(CatalogoID: number, DetailID: any) {

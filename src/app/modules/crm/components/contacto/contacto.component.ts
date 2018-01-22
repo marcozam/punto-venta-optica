@@ -68,7 +68,6 @@ export class ContactoComponent implements OnInit {
           this.datosContacto.telefono = item.datos.find(dc=> dc.nombre === 'TELEFONO');
           this.datosContacto.email = item.datos.find(dc=> dc.nombre === 'EMAIL');
           this.datosContacto.colonia = item.datos.find(dc=> dc.nombre === 'LOCALIDAD');
-          console.log(this.datosContacto);
         });
     }
   }
@@ -120,12 +119,12 @@ export class ContactoComponent implements OnInit {
     //TODO: Add contact type
     this.contacto.tipoID = 1;
     this.contacto.datos = datos;
-    this._personaService.save(this.contacto.persona, null, (pRes: Persona) => {
-      this.contacto.persona = pRes;
-      this._contactoService.save(this.contacto, (cRes) => {
-        this.onSaved(cRes);
+    this._personaService.save(this.contacto.persona)
+      .subscribe((pRes: Persona) => {
+        this.contacto.persona = pRes;
+        this._contactoService.save(this.contacto)
+          .subscribe((cRes) => this.onSaved(cRes));
       });
-    });
   }
 
   onSaved(data: Contacto){

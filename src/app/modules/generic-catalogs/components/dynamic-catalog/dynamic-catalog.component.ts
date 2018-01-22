@@ -74,11 +74,11 @@ export class DynamicCatalogComponent implements OnInit {
   }
 
   onSave(data: MetaDataCatalog){
-    this._service.save(this.catalog, data, result => { 
-      this._dialog.openDialog(SuccessTitle, SuccessMessage);
-      this.router.navigate(['/DCG']);
-      console.log(result);
-    });
+    this._service.save(this.catalog, data)
+      .subscribe(result => { 
+        this._dialog.openDialog(SuccessTitle, SuccessMessage);
+        this.router.navigate(['/DCG']);
+      });
   }
 
   saveRequested(fields: MetaDataField[]){

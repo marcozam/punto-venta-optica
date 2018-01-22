@@ -43,10 +43,10 @@ import { BaseModule } from './modules/base/base.module';
 import { DevelopmentModule } from './modules/development/development.module';
 import { GenericCatalogsModule } from './modules/generic-catalogs/generic-catalogs.module';
 import { ProductoModule } from './modules/producto/producto.module';
-import { CRMModule } from './modules/crm/crm.module';
 import { VentaModule } from './modules/venta/venta.module';
 import { PagosModule } from './modules/pagos/pagos.module';
 import { InventarioModule } from './modules/inventario/inventario.module';
+import { CRMModule } from './modules/crm/crm.module';
 import { OpticaModule } from './modules/optica/optica.module';
 
 

@@ -13,33 +13,11 @@ export class StoreProceduresService extends GenericService<StoreProcedureMetaDat
     super(_db, 'os_storeprocedures_metadata', 10);
     this.catalogID = 299;
   }
-
-  save(_currentValue: StoreProcedureMetaData, _newValue: StoreProcedureMetaData, callback?: any) {
-    throw new Error("Method not implemented.");
-  }
   
-  newInstance(){
-    return new StoreProcedureMetaData();
-  }
-
-  mapData(object: any, instantiate?: boolean): StoreProcedureMetaData {
-    let item = new StoreProcedureMetaData();
-    if(object){
-      item.key = object.C0;
-      item.nombre = object.C1;
-      item.description = object.C2;
-    }
-    return object || instantiate ? item : null;
-  }
+  newInstance(){ return new StoreProcedureMetaData(); }
 
   mapOptionsData(object: any){
-    let item = new StoreProcedureOptionMetaData();
-    item.key = object.C0;
-    item.storeProcedureID = object.C1;
-    item.opcion = object.C2;
-    item.description = object.C3;
-    item.allowAll = object.C4;
-    return item;
+    return this.mapGenericData(new StoreProcedureOptionMetaData(), object);
   }
 
   getOptionsList(storeProcedureID: number){

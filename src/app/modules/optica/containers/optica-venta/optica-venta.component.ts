@@ -8,7 +8,7 @@ import { OpticaVentaChangeEvent } from '../../models/optica-venta.models';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { ExamenService } from '../../../optica/services/examen.service';
-import { TipoMicasService } from '../../../optica/services/tipo-micas.service'
+import { FBTipoMicasService } from '../../../optica/services/tipo-micas.service'
 import { TratamientoMicasService } from '../../../optica/services/tratamiento-micas.service';
 import { SelectionChange } from '@angular/cdk/collections';
 import { GenericCatalog } from 'app/modules/base/models/base.models';
@@ -22,7 +22,7 @@ import { GenericCatalog } from 'app/modules/base/models/base.models';
   selector: 'app-optica-venta',
   templateUrl: './optica-venta.component.html',
   styleUrls: ['./optica-venta.component.scss'],
-  providers: [ExamenService, TipoMicasService, TratamientoMicasService, DialogBoxService]
+  providers: [ExamenService, FBTipoMicasService, TratamientoMicasService, DialogBoxService]
 })
 export class OpticaVentaComponent implements OnInit {
 
@@ -52,7 +52,7 @@ export class OpticaVentaComponent implements OnInit {
 
   constructor(
     private _examenService: ExamenService, 
-    private _tipoMicasService: TipoMicasService, 
+    private _tipoMicasService: FBTipoMicasService, 
     private _tratamientosService: TratamientoMicasService,
     private dialog: DialogBoxService) { }
 

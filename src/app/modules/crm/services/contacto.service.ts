@@ -15,10 +15,13 @@ export class ContactoService extends GenericService<Contacto> implements Generic
         super(_db)
     }
 
+    newInstance() { return new Contacto(); }
+
     getPersonaByName(apellido: string, nombre: string){
         this.startLoading();
         let params = this.db.createParameter('CRM0001', 4, { V3: apellido.trim(), V4: nombre.trim(), V5: '' });
-        this.db.getData(params).subscribe((result: any) =>{
+        let $sub = this.db.getData(params).subscribe((result: any) =>{
+            $sub.unsubscribe();
             this.source$.next(
                 result.Table.map(item => {
                     let cnt = new Contacto();
@@ -66,7 +69,7 @@ export class ContactoService extends GenericService<Contacto> implements Generic
         })
     }
 
-    save(item: Contacto, callback: any) {
+    save(item: Contacto) {
         let DCA = [];
         DCA.push('C0,C1,C2');
         DCA = DCA.concat(this.mapDatos2Server(item.datos));
@@ -76,12 +79,11 @@ export class ContactoService extends GenericService<Contacto> implements Generic
             V4: item.tipoID === 1 ? item.persona.key : item.empresa.key,
             V7: DCA.join('&')
         });
-        this.db.getData(tParams)
-            .subscribe((result: any) => {
-                let newItem = this.mapData(result.Table[0]);
-                item.key = newItem.key;
-                callback(Object.assign(item));
-            })
+        return this.db.getData(tParams).map((result: any) => {
+            let newItem = this.mapData(result.Table[0]);
+            item.key = newItem.key;
+            return item;
+        })
     }
 
     mapData(object: any): Contacto {

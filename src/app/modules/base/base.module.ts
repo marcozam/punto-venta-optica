@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
+  MatInputModule,
+  MatDatepickerModule,
+  MatRadioModule,
   MatDialogModule, 
   MatButtonModule, 
   MatIconModule, 
@@ -21,10 +25,16 @@ import { PersonaComponent } from './components/persona/persona.component';
 import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
 import { PersonasService } from './services/personas.service';
+import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    MatInputModule,
+    MatDatepickerModule, 
+    MatRadioModule,
     MatDialogModule, 
     MatButtonModule, 
     MatIconModule, 
@@ -51,7 +61,7 @@ import { PersonasService } from './services/personas.service';
   providers: [
     AjaxGuardService,
     DialogBoxService,
-    PersonasService,
+    BaseAjaxService,
   ]
 })
 export class BaseModule { }

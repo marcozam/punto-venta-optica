@@ -3,24 +3,37 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import { TipoMica, TratamientoMica, Examen } from '../models/examen.models';
-import { GenericServiceBase } from '../../generic-catalogs/services/generic.service';
+import { FieldProperty } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+
+import { GenericServiceBase, GenericService } from '../../generic-catalogs/services/generic.service';
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
+import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @Injectable()
-export class TipoMicasService extends FBGenericService implements GenericServiceBase<TipoMica> {
+export class TipoMicasService extends GenericService<TipoMica> implements GenericServiceBase<TipoMica> {
+
+  catalogID = 1102;
+
+  constructor(_db: BaseAjaxService) { super(_db); }
+
+  newInstance(){ return new TipoMica(); }
+
+  getByFBKey(key: string){
+    let fmd: FieldProperty = TipoMica.prototype['keyFB__dbData'];
+    return this.db.getAllDataFromCatalog(this.catalogID, `${fmd.key},${key}`)
+      .map(result => result.map(it => this.mapData(it)));
+  }
+}
+
+
+@Injectable()
+export class FBTipoMicasService extends FBGenericService<TipoMica> implements GenericServiceBase<TipoMica> {
   constructor(_db: AngularFireDatabase) { 
     super(_db);
     super.setListRefURL('micas/tipos');
   }
 
-  newInstance(){
-    return new TipoMica();
-  }
-
-  //TODO
-  mapData(r){
-    return this.newInstance();
-  }
+  newInstance(){ return new TipoMica(); }
 
   setPrecioMicas(listaPreciosID: number, materialID: string, precios: any){
     let $refPrecio = this.db.object(`micas/precios/${listaPreciosID}/${materialID}`);
@@ -72,16 +85,7 @@ export class TipoMicasService extends FBGenericService implements GenericService
       });
   }
 
-  hasChanges(value1: TipoMica, value2: TipoMica){
-    return value1.nombre !== value2.nombre 
-        || value1.tipoMica !== value2.tipoMica;
-  }
-
-  save(_currentValue: TipoMica, _newValue: TipoMica){
-    if(this.hasChanges(_currentValue, _newValue))
-    {
-      _currentValue = Object.assign(_currentValue, _newValue);
-      return _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
-    }
+  save(_newValue: TipoMica){
+    return _newValue.key ?  this.updateCatalogItem(_newValue) :  this.addCatalogItem(_newValue);
   }
 }

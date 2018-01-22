@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -15,11 +14,15 @@ import {
 
 import { CrmRoutingModule } from './crm-routing.module';
 
-import { GenericCatalogsModule } from 'app/modules/generic-catalogs/generic-catalogs.module';
+import { BaseModule } from 'app/modules/base/base.module';
 
 import { ContactoComponent } from './components/contacto/contacto.component';
 import { SearchPersonaComponent } from './components/search-persona/search-persona.component';
+
 import { NameValidatorDirective } from './directives/name-validator.directive';
+
+import { PersonasService } from 'app/modules/base/services/personas.service';
+import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @NgModule({
   imports: [
@@ -34,12 +37,16 @@ import { NameValidatorDirective } from './directives/name-validator.directive';
     MatTooltipModule,
     MatListModule,
     FormsModule,
-    GenericCatalogsModule,
+    BaseModule,
   ],
   declarations: [
     ContactoComponent,
     SearchPersonaComponent,
     NameValidatorDirective
+  ],
+  providers: [
+    PersonasService,
+    BaseAjaxService,
   ],
   exports: [
     ContactoComponent,

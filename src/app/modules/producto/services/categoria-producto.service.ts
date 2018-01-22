@@ -13,18 +13,7 @@ export class CategoriaProductoService extends GenericService<CategoriaProductoSu
         this.catalogID = 403;
     }
 
-    newInstance(){
-        return new CategoriaProductoSumary('');
-    }
-
-    mapData(r: any){
-        let _cat = new CategoriaProductoSumary(r.C1);
-        _cat.key = r.C0;
-        _cat.catalogoID = r.C2;
-        _cat.formatoNombre = r.C3;
-        _cat.usaInventario = r.C4;
-        return _cat;
-    }
+    newInstance() { return new CategoriaProductoSumary(''); }
 
     getStandAloneCategories(){
         let storageName = 'os_standalone_categoria_producto';
@@ -40,16 +29,5 @@ export class CategoriaProductoService extends GenericService<CategoriaProductoSu
             this._db.getAllDataFromCatalog(this.catalogID, '40304,1')
                 .subscribe((result: any[]) => this.setData(this.mapList(result), false, storageName));
         }, storageName);
-    }
-
-    save(item: CategoriaProductoSumary, callback){
-        let fields = [
-            `40301,${item.nombre}`,
-            `40302,${item.catalogoID}`,
-            `40303,${item.formatoNombre ? item.formatoNombre: ''}`,
-            `40304,${item.usaInventario ? '1': '0'}`,
-        ]
-        let d2s = fields.join('~');
-        this._db.saveDynamicCatalog(d2s, this.catalogID, item.key, r => callback(this.mapData(r)));
     }
 }

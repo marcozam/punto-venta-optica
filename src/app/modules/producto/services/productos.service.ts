@@ -32,37 +32,13 @@ export class ProductosService extends GenericService<Producto> implements Generi
             .map((result: any) => result.length > 0 ? this.mapData(result[0]) : new Producto(''));
     }
 
-    mapData(r: any) {
-        if(r){
-            const item = this.newInstance();
-            item.key = r.C0;
-            item.nombre = r.C1;
-            item.categoriaProductoID = r.C2;
-            item.requireProcesamiento = r.C4;
-            item.SKU = r.C5;
-            item.detalleID = r.C6;
-            return item;
-        }
-    }
-
-    newInstance(): Producto {
-        return new Producto('');
-    }
-
-    hasChanges(value1: Producto, value2: Producto) {
-        return value1.nombre !== value2.nombre
-            || value1.descripcion !== value2.descripcion
-            //|| value1.requireProcesamiento !== value2.requireProcesamiento
-            //|| value1.usaInventario !== value2.usaInventario
-            || value1.SKU !== value2.SKU;
-    }
+    newInstance(): Producto { return new Producto(''); }
 
     save(workingItem: Producto, callback, error?, storageName?) {
-        this.basicSave(workingItem, (producto: Producto) => {
+        return this.basicSave(workingItem, (producto: Producto) => {
             const params = this.db.createParameter('ECOM0005', 1, {
                 V3: producto.key,
                 V4: producto.nombre,
-                //V5: _producto.usaInventario ? 1 : 0,
                 V6: producto.requireProcesamiento ? 1 : 0,
                 V9: producto.categoriaProductoID,
                 V7: producto.SKU,

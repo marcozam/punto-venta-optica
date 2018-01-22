@@ -3,12 +3,10 @@
         <input matInput placeholder="Nombre" required autofocus
             name="nombre" [ngModel]="persona.nombre">
     </mat-form-field>
-
     <mat-form-field>
         <input matInput placeholder="Apellido Paterno" required
             name="apellidoPaterno" [ngModel]="persona.apellidoPaterno">
     </mat-form-field>
-
     <mat-form-field>
         <input matInput placeholder="Apellido Materno"
             name="apellidoMaterno" [ngModel]="persona.apellidoMaterno">
@@ -22,7 +20,6 @@
             dd/mm/aaaa
         </mat-hint>
     </mat-form-field>
-
     <mat-radio-group required class="radio-group-block" name="sexo" [ngModel]="persona.sexo">
         <mat-radio-button value="1">
             Hombre

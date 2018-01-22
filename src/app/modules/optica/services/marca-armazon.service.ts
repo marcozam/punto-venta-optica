@@ -7,19 +7,13 @@ import { FBGenericService } from '../../generic-catalogs/services/fb-generic.ser
 import { GenericService, GenericServiceBase } from '../../generic-catalogs/services/generic.service';
 
 @Injectable()
-export class MarcaArmazonService extends FBGenericService implements GenericServiceBase<MarcaArmazon> {
+export class MarcaArmazonService extends FBGenericService<MarcaArmazon> implements GenericServiceBase<MarcaArmazon> {
     constructor(_db: AngularFireDatabase) { 
         super(_db);
         super.setListRefURL('armazones/marcas');
     }
 
-    newInstance(){
-        return new MarcaArmazon();
-    }
-
-    mapData(r){
-        return this.newInstance();
-    }
+    newInstance(){ return new MarcaArmazon(); }
 
     hasChanges(value1: MarcaArmazon, value2: MarcaArmazon){
         return value1.nombre !== value2.nombre 

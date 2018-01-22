@@ -37,6 +37,8 @@ import { TipoMicaComponent } from './components/tipo-mica/tipo-mica.component';
 import { ModeloAramazonListComponent } from './components/modelo-aramazon-list/modelo-aramazon-list.component';
 import { MedidasArmazonComponent } from './components/medidas-armazon/medidas-armazon.component';
 import { ExamenPresupuestoComponent } from './containers/examen-presupuesto/examen-presupuesto.component';
+//FireBase
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @NgModule({
   imports: [
@@ -75,7 +77,8 @@ import { ExamenPresupuestoComponent } from './containers/examen-presupuesto/exam
   ],
   providers: [
     ExamenService, 
-    ProductosService
+    ProductosService,
+    AngularFireDatabase
   ],
   exports: [
     ExamenComponent, 

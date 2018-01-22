@@ -81,8 +81,4 @@ export class InventarioService extends GenericService<Inventario> implements Gen
     });
     return wc;
   }
-
-  save(_currentValue: Inventario, _newValue: Inventario, callback?: any) {
-    throw new Error("Method not implemented.");
-  }
 }

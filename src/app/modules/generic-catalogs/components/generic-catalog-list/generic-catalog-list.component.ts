@@ -30,7 +30,7 @@ export class GenericCatalogListComponent implements OnInit {
   constructor(
     private _genericService: GenericCatalogService, 
     private _metaDataService: CatalogsMetadataService,
-    private fbGenericService: FBGenericService,
+    private fbGenericService: FBGenericService<GenericCatalog>,
     private route: ActivatedRoute, 
     private router: Router,
     public dialog: DialogBoxService) { 
@@ -47,14 +47,18 @@ export class GenericCatalogListComponent implements OnInit {
       this.cleanData();
 
       this.workingCatalog = _catalogs.find(c=> c.key === this.catalogID);
-      //Se Trabaja con FireBase
       if(this.workingCatalog){
-        this.dataSource.columns = [ new TableColumn('Nombre', 'nombre', (item: GenericCatalog)=> item.nombre)];
+        this.dataSource.columns = [ new TableColumn('Nombre', 'nombre', item => item.nombre)];
         if(this.workingCatalog.detailURL) this.detailURL = this.workingCatalog.detailURL;
         this.fbGenericService.setListRefURL(this.workingCatalog.referenceURL);
-        this.fbGenericService.getCatalogList(result => this.dataSource.updateDataSource(result), true)
+        this.fbGenericService.getCatalogList(fbResult => {
+          if(this.workingCatalog.hybrid){
+            this._genericService.setCatalogID(this.catalogID);
+            this._genericService.getList(false);
+            this.dataSource.updateDataSource(fbResult)
+          }
+        }, true);
       }
-      //Trabajar con SQL
       else this.loadCatalogData();
     });
   }
@@ -69,7 +73,7 @@ export class GenericCatalogListComponent implements OnInit {
     this._metaDataService.getByID(this.catalogID)
       .subscribe(catalog =>{
         this.workingCatalog = catalog;
-        //IF has detail URL updated
+        if(this.workingCatalog.detailURL) this.detailURL = this.workingCatalog.detailURL;
 
         //Loads Data
         //It doesn't get GenericService since Type is unknown
@@ -89,7 +93,9 @@ export class GenericCatalogListComponent implements OnInit {
     this.loading$.subscribe((isLoading: boolean) => this.loading = this._metaDataService.isLoading);
     this._genericService.source$.subscribe((data: any[]) => { 
       console.log('Updating Data:', data);
-      this.dataSource.updateDataSource(data)
+      if(!this.workingCatalog.hybrid){
+        this.dataSource.updateDataSource(data)
+      }
     });
   }
 
@@ -99,8 +105,16 @@ export class GenericCatalogListComponent implements OnInit {
 
   onDelete(item: GenericCatalog | any){
     console.log('Current Data:', this.dataSource.data);
+    /*
+    this.workingCatalog.hybrid ? 
+          this._genericService.delete(Number(item.key ? item.key : item.C0))
+            .subscribe(()=>{
+              this.fbGenericService.deleteCatalogItem(item.key) 
+            })
+          :
+    */
     this.workingCatalog.referenceURL ? 
-      this.fbGenericService.deleteCatalogItem(Number(item.key)) : 
+      this.fbGenericService.deleteCatalogItem(item.key) :
       this._genericService.delete(Number(item.key ? item.key : item.C0))
   }
 

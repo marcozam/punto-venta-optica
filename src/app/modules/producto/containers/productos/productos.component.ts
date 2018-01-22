@@ -7,6 +7,8 @@ import { CategoriaProductoService } from '../../services/categoria-producto.serv
 import { ProductosService } from '../../services/productos.service';
 import { CategoriaProductoSumary, Producto } from '../../models/producto.models';
 
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-producto-detail',
   templateUrl: './productos.component.html',
@@ -17,6 +19,9 @@ export class ProductosComponent implements OnInit {
   productoID: number;
   product: Producto;
   categorias: CategoriaProductoSumary[];
+
+  loading$: Observable<boolean>;
+  loading: boolean;
   
   constructor(
     private route: ActivatedRoute, 
@@ -25,20 +30,19 @@ export class ProductosComponent implements OnInit {
     private router: Router, 
     public dialog: DialogBoxService) { 
     this.product = new Producto('');
+    Observable.merge(this._categoriasService.loading$, this._service.loading$);
   }
 
   createSubscriptions(){
-    /*
     this.loading$.subscribe((isLoading: boolean) => {
-      this.loading = this._categoriaService.isLoading || this._service.isLoading;
+      this.loading = this._categoriasService.isLoading || this._service.isLoading;
     });
-    */
-
     this._categoriasService.source$.subscribe(result => this.categorias = result);
   }
 
   ngOnInit() {
     this.productoID = Number(this.route.snapshot.params['id']);
+    
     this.createSubscriptions();
     this._categoriasService.getStandAloneCategories()
 
@@ -49,17 +53,13 @@ export class ProductosComponent implements OnInit {
   }
 
   onCancelar(data: any){
-    if(this._service.hasChanges(this.product, data))
+    if(this.product.hasChanges(data))
     {
       this.dialog.openDialog(WarningTitle, LeaveWarningMessage, true, result => { 
-        if(result){
-          this.router.navigate(['/productos']);
-        }
+        if(result) this.router.navigate(['/productos']);
       });
     }
-    else{
-      this.router.navigate(['/productos']);
-    }
+    else this.router.navigate(['/productos']);
   }
 
   onSave(data: Producto){

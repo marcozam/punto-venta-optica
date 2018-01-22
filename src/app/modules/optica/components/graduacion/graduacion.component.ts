@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 //Services
 import { TratamientoMicasService } from './../../services/tratamiento-micas.service';
 import { MaterialMicasService } from './../../services/material-micas.service';
-import { TipoMicasService } from './../../services/tipo-micas.service';
+import { FBTipoMicasService } from './../../services/tipo-micas.service';
 import { ExamenService } from '../../services/examen.service';
 //Models
 import { Ojo, Examen, MaterialMica, TipoMica } from '../../models/examen.models';
@@ -25,7 +25,7 @@ export class GraduacionEventChange{
   templateUrl: './graduacion.component.html',
   styleUrls: ['./graduacion.component.scss'],
   //changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExamenService, TipoMicasService, MaterialMicasService, TratamientoMicasService]
+  providers: [ExamenService, FBTipoMicasService, MaterialMicasService, TratamientoMicasService]
 })
 export class GraduacionComponent implements OnInit {
   _examen: Examen;
@@ -45,7 +45,7 @@ export class GraduacionComponent implements OnInit {
   @Output() tipoMicaChange: EventEmitter<any> = new EventEmitter();
   @Output() onSaved: EventEmitter<GraduacionEventChange> = new EventEmitter();
 
-  constructor(private _serviceExamen: ExamenService, private _tipoService: TipoMicasService,
+  constructor(private _serviceExamen: ExamenService, private _tipoService: FBTipoMicasService,
     private _materialService: MaterialMicasService, private _tratamientoService: TratamientoMicasService) { 
     this._examen = new Examen();
   }
@@ -64,9 +64,9 @@ export class GraduacionComponent implements OnInit {
         });
 
       this.tiposMicas = [].concat(
-        data.filter(data=> { return data.tipoMica === '1'}),
-        data.filter(data=> { return data.tipoMica === '0'}), 
-        data.filter(data=> { return data.tipoMica === '2'})
+        data.filter(data=> { return data.tipoMica === 1}),
+        data.filter(data=> { return data.tipoMica === 0}), 
+        data.filter(data=> { return data.tipoMica === 2})
       );
     });
     //Obtiene el ultimo examen del paciente
@@ -82,11 +82,9 @@ export class GraduacionComponent implements OnInit {
   esMonofocal(key){
     if(this.tiposMicas){
       let tm = this.tiposMicas.find(tm=> tm.key === key);
-      return (tm.tipoMica === '1');
+      return tm.tipoMica === 1;
     }
-    else {
-      return false;
-    }
+    else return false;
   }
 
   onOjoDerechoChange(value: any){
