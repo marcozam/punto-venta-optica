@@ -9,6 +9,7 @@ import { FieldProperty } from 'app/modules/generic-catalogs/models/generic-catal
 import { getFields } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 import { Subject, Observable } from 'rxjs';
+import { MetaDataField } from 'app/modules/generic-catalogs/models/metadata-catalogs.models';
 
 export interface GenericServiceBase<T>{
     save(_newValue: T, _currentValue?: T, callback?)
@@ -35,13 +36,13 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
     protected storage: AjaxLocalStorage<T>;
     protected catalogID: number;
     
-    constructor(
-        protected db: BaseAjaxService, 
-        storageName?: string, 
-        storageTime?: number) {
+    constructor( protected db: BaseAjaxService,  storageName?: string,  storageTime?: number) 
+    {
         this.loading$.subscribe((next: boolean)=> this.isLoading = next);
         if(storageName){
             this.storage = new AjaxLocalStorage(storageName, storageTime);
+            let localData = this.getLocalData(storageName);
+            if(localData) this.setData(localData, false, storageName, false);
         }
     }
 
@@ -213,17 +214,44 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 
 @Injectable()
 export class GenericCatalogService extends GenericService<GenericCatalog> implements GenericServiceBase<GenericCatalog> {
+    
     constructor(_db: BaseAjaxService) {
         super(_db);
     }
 
-    setCatalogID(id: number){
-        this.catalogID = id;
+    setCatalogID(id: number){ this.catalogID = id; }
+
+    fields: MetaDataField[];
+
+    map2Server(value: GenericCatalog){
+        let fieldsMD = getFields(value);
+        return fieldsMD.map(fldMD => {
+                let fld =  this.fields.find((_fld) => _fld.nombreCorto === fldMD.serverField);
+                return `${fld.key},${value[fldMD.propertyName]}`;
+            })
+            .join('~');
     }
 
-    save(workingItem: GenericCatalog, callback){
-        return this.basicSave(workingItem, (item: GenericCatalog) =>{
-            console.log('Algo');
-        });
+    getByFBKey(key: string){
+        let fmd: FieldProperty = GenericCatalog.prototype['keyFB__dbData'];
+        let fld =  this.fields.find((_fld) => _fld.nombreCorto === fmd.serverField);
+        return this.db.getAllDataFromCatalog(this.catalogID, `${fld.key},${key}`)
+            .map(result => result.map(it => this.mapData(it)));
+    }
+
+    save(workingItem: GenericCatalog, oldItem: GenericCatalog = null){
+        let respond = this.basicSave(workingItem, (item: GenericCatalog) => {
+            console.log('Saving');
+            let $sub = this.db.saveDynamicCatalog(
+                this.map2Server(item),
+                this.catalogID, 
+                item.key)
+            .map(item => this.mapData(item))
+            .subscribe(item => {
+                respond.next(item);
+                $sub.unsubscribe();
+            });
+        }, oldItem);
+        return respond.asObservable();
     }
 }

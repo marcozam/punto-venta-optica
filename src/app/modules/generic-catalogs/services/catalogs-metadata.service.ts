@@ -78,52 +78,25 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
   }
 }
 
-const categoriaProucto = new MetaDataCatalog();
-categoriaProucto.key = '100';
-categoriaProucto.nombre = 'Categoria de Productos';
-categoriaProucto.referenceURL = 'productos/categorias';
-categoriaProucto.detailURL = '/producto/categoria/';
-
 const categoriaArmazon = new MetaDataCatalog();
-categoriaArmazon.key = '999';
+categoriaArmazon.key = 999;
 categoriaArmazon.nombre = 'Categorias de Armazones';
 categoriaArmazon.referenceURL = 'armazones/categorias';
 
 const marcaProducto = new MetaDataCatalog();
-marcaProducto.key = '998';
+marcaProducto.key = 998;
 marcaProducto.nombre = 'Marca Productos';
 marcaProducto.referenceURL = 'armazones/marcas';
 marcaProducto.detailURL = '/armazon/marca/'
 
 const modeloArmazon = new MetaDataCatalog();
-modeloArmazon.key = '997';
+modeloArmazon.key = 997;
 modeloArmazon.nombre = 'Modelo Armazones';
 modeloArmazon.referenceURL = 'armazones/modelos';
 modeloArmazon.detailURL = '/armazon/modelo/';
 
-const tipoMicas = new MetaDataCatalog();
-tipoMicas.key = '1102';
-tipoMicas.hybrid = true;
-tipoMicas.nombre = 'Tipo de Micas';
-tipoMicas.detailURL = 'mica/tipo';
-tipoMicas.referenceURL = 'micas/tipos';
-
-const materialMicas = new MetaDataCatalog();
-materialMicas.key = '995';
-materialMicas.nombre = 'Material de Micas';
-materialMicas.referenceURL = 'micas/materiales';
-
-const tratamientoMicas = new MetaDataCatalog();
-tratamientoMicas.key = '994';
-tratamientoMicas.nombre = 'Tratamiento de Micas';
-tratamientoMicas.referenceURL = 'micas/tratamientos';
-
 export const _catalogs: MetaDataCatalog[] = [
-  categoriaProucto,
   categoriaArmazon,
   marcaProducto,
   modeloArmazon,
-  tipoMicas,
-  materialMicas,
-  tratamientoMicas
 ];

@@ -35,7 +35,7 @@ export class OpticaVentaComponent implements OnInit {
   examenLoading: boolean = true;
 
   @Input()
-  clienteID: string;
+  clienteID: number;
   @Input()
   listaPrecioID: number;
   @Input()

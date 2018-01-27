@@ -28,7 +28,6 @@ export class MetaDataCatalog extends GenericCatalog {
     
     //Firebase
     referenceURL: string;
-    hybrid?: boolean = false;
     //Fields
     fields?: MetaDataField[] = [];
 

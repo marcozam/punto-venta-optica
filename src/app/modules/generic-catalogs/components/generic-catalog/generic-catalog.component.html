@@ -1,29 +1,38 @@
-<form #genericForm="ngForm">
-  <div class="row">
-    <div class="col-xs col-sm-4">
-      <mat-form-field>
-          <input matInput placeholder="Nombre" name="nombre" type="text" required
-              #nombreControl="ngModel" [ngModel]="item?.nombre"/>
-          
-          <mat-error *ngIf="nombreControl.hasError('required')">
-            El nombre es <strong>requerido</strong>.
-          </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs col-sm-4 text-right buttons-containers">
-      <button mat-button color="warn" type="button" routerLink="/catalogo/{{catalogID}}">
-        <mat-icon>cancel</mat-icon>
-        Cancelar
-      </button>
+<div class="row">
+  <div class="col-xs col-md-4">
+    <div class="sub-container">
+      <h3 class="sub-titles">
+        {{catalog?.nombre}}
+      </h3>
+      <form #genericForm="ngForm">
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" name="nombre" type="text" required
+                    #nombreControl="ngModel" [ngModel]="item?.nombre"/>
+                
+                <mat-error *ngIf="nombreControl.hasError('required')">
+                  El nombre es <strong>requerido</strong>.
+                </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs text-right buttons-containers">
+            <button mat-button color="warn" type="button" routerLink="/catalogo/{{catalogID}}">
+              <mat-icon>cancel</mat-icon>
+              Cancelar
+            </button>
 
-      <button mat-raised-button color="primary" 
-        [disabled]="genericForm.invalid"
-        (click)="onSave(genericForm.value)">
-        <mat-icon aria-label="Guardar">save</mat-icon>
-        Guardar
-      </button>
+            <button mat-raised-button color="primary" 
+              [disabled]="genericForm.invalid"
+              (click)="onSave(genericForm.value)">
+              <mat-icon aria-label="Guardar">save</mat-icon>
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-</form>
+</div>

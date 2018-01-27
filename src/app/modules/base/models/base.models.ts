@@ -2,7 +2,7 @@ import { database } from 'firebase';
 import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 export class BaseGenericCatalog {
-    key: string | number = 0;
+    key: number = 0;
 
     keysChanges: string[] = [];
 
@@ -25,7 +25,13 @@ export class BaseGenericCatalog {
 }
 
 export class GenericCatalog extends BaseGenericCatalog {
-    nombre: string
+    @Field('C1') nombre: string
+    @Field('C2') keyFB?: string;
+
+    constructor(){
+        super();
+        this.keysChanges = ['nombre'];
+    }
 }
 
 export class Status extends GenericCatalog {

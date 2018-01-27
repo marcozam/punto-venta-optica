@@ -14,7 +14,22 @@ export class TipoMicasService extends GenericService<TipoMica> implements Generi
 
   catalogID = 1102;
 
-  constructor(_db: BaseAjaxService) { super(_db); }
+  constructor(_db: BaseAjaxService) { 
+    super(_db, 'os_optica_tipo_mica', 480);
+  }
+
+  mapList(list: any[]) { 
+    let iList = super.mapList(list);
+    iList = iList.sort((v1, v2) => {
+      if(v1.nombre < v2.nombre) return -1;
+      if(v1.nombre > v2.nombre) return 1;
+      return 0;
+    })
+    let respond: TipoMica[] = iList.filter(d => d.tipoMica === 1);
+    respond = respond.concat(iList.filter(d => d.tipoMica === 0));
+    respond = respond.concat(iList.filter(d => d.tipoMica === 2));
+    return respond;
+  }
 
   newInstance(){ return new TipoMica(); }
 
@@ -35,12 +50,12 @@ export class FBTipoMicasService extends FBGenericService<TipoMica> implements Ge
 
   newInstance(){ return new TipoMica(); }
 
-  setPrecioMicas(listaPreciosID: number, materialID: string, precios: any){
+  setPrecioMicas(listaPreciosID: number, materialID: any, precios: any){
     let $refPrecio = this.db.object(`micas/precios/${listaPreciosID}/${materialID}`);
     $refPrecio.update(precios);
   }
 
-  getPreciosMica(listaPrecioID: number, tipoMicaID: string, materialID: string){
+  getPreciosMica(listaPrecioID: number, tipoMicaID: any, materialID: any){
     return this.db.object(`micas/precios/${listaPrecioID}/${materialID}/${tipoMicaID}`)
       .snapshotChanges()
       .map(snap => {

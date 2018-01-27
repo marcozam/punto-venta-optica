@@ -65,7 +65,7 @@ export class DynamicCatalogFieldsComponent implements OnInit {
 
   addNewField(){
     let _fld =  new MetaDataField();
-    _fld.key = new Date().getTime().toString();
+    _fld.key = new Date().getTime();
     this.workingFields.push(this.createGroup(_fld));
   }
 
@@ -87,7 +87,7 @@ export class DynamicCatalogFieldsComponent implements OnInit {
         allValid = false;
       }
       let _fld: MetaDataField = Object.assign(fld.value, fld.formGroup.value);
-      _fld.key = _fld.isNew ? '0' : _fld.key;
+      _fld.key = _fld.isNew ? 0 : _fld.key;
       _fields.push(_fld);
     })
     if(allValid){

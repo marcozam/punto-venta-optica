@@ -17,7 +17,7 @@ export const NumberConverter = (value: any) => {
     let rValue = value;
     if (!(value === null || value === undefined || typeof value === "number"))
         rValue = parseFloat(value.toString());
-    return Math.floor((rValue*100)/100);
+    return Math.floor((rValue*100))/100;
 }
 
 

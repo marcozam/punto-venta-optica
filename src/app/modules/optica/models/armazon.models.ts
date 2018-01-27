@@ -1,4 +1,5 @@
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 export class MarcaArmazon extends GenericCatalog {
     categoria: GenericCatalog;
@@ -9,10 +10,19 @@ export class MarcaArmazon extends GenericCatalog {
     }
 }
 
+export class TipoArmazon extends BaseGenericCatalog {
+    @Field('C1') nombre: string;
+    @Field('C2') exportKey: number
+    
+    constructor(){
+        super();
+    }
+}
+
 export class ModeloArmazon extends GenericCatalog {
     categoria?: GenericCatalog;
     marca: MarcaArmazon;
-    marcaID?: string;
+    marcaID?: number;
     modeloID?: number = 0;
     tipoArmazonID?: number = 0;
     sku?: string;

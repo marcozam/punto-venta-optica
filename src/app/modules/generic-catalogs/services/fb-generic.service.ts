@@ -10,9 +10,15 @@ import { GenericServiceBase } from 'app/modules/generic-catalogs/services/generi
 export class FBGenericService<T> {
     newInstance() { return new GenericCatalog() }
 
-    mapData(object: any): T { return Object.assign(this.newInstance(), this.setGenericType(object)); }
+    mapData(object: any): any { 
+        object = this.setGenericType(object);
+        let item = this.newInstance();
+        item.key = object.key;
+        item.nombre = object.nombre;
+        return item;
+    }
 
-    mapList(list: any[]): T[] { return list.map(snap => this.mapData(snap)); }
+    mapList(list: any[]) { return list.map(snap => this.mapData(snap)); }
     
     referenceURL: string;
 
@@ -28,7 +34,8 @@ export class FBGenericService<T> {
 
     protected updateCatalogItem(_catalogItem){
         _catalogItem.updatedDate = database.ServerValue.TIMESTAMP;
-        this.db.object(this.referenceURL + '/' + _catalogItem.key).update(_catalogItem);
+        this.db.object(this.referenceURL + '/' +  _catalogItem.keyFB ?  _catalogItem.keyFB : _catalogItem.key)
+            .update(_catalogItem);
         return _catalogItem;
     }
 
@@ -63,19 +70,11 @@ export class FBGenericService<T> {
     }
 
     deleteCatalogItem(id: string | number){
-        console.log('Delete from FB');
         this.db.object(this.referenceURL + '/' + id).remove();
     }
 
-    hasChanges(value1, value2){
-        return value1.nombre !== value2.nombre;
-    }
-
     save(_currentValue, _newValue, callback?){
-        if(this.hasChanges(_currentValue, _newValue))
-        {
-            _currentValue = Object.assign(_currentValue, _newValue);
-            _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
-        }
+        _currentValue = Object.assign(_currentValue, _newValue);
+        (_currentValue.keyFB ? _currentValue.keyFB : _currentValue.key) ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
     }
 }

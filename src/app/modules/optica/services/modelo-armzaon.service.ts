@@ -84,7 +84,7 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
     save(_currentValue: ModeloArmazon, _newValue: ModeloArmazon, callback){
         //if(this.hasChanges(_currentValue, _newValue)) {
         _currentValue = Object.assign(_currentValue, _newValue);
-        _currentValue.marcaID = _currentValue.marca.key.toString();
+        _currentValue.marcaID = _currentValue.marca.key;
         if(!_currentValue.categoria)
             _currentValue.categoria = null;
         if(!_currentValue.sku)
