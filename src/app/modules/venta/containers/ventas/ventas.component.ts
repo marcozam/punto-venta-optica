@@ -154,9 +154,7 @@ export class VentasComponent extends VentaOptica implements OnInit {
     this.venta.updateDetalleVenta(newDetalle);
   }
 
-  onDetalleChanged(newValue){
-    if(newValue) this.venta.updateDetalleVenta(newValue);
-  }
+  onDetalleChanged(value: DetalleVenta[]){ this.venta.updateDetalleVenta(value, false); }
 
   //Optica
   ventaMica: boolean = false;

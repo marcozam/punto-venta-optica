@@ -10,25 +10,29 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ProductosService extends GenericService<Producto> implements GenericServiceBase<Producto> {
+    
     constructor(_osBD: BaseAjaxService) {
         super(_osBD, 'os_producto', 360);
         this.catalogID = 402;
     }
 
+    newInstance(): Producto { return new Producto(''); }
+
     getProductsByCategory(categoryID: number) {
         let respond$ = new Subject();
         if(!isNaN(categoryID)){
-            this.startLoading();
             let storageName = `os_producto_categoria-${categoryID}`;
-            
+            this.startLoading();
             let localData = this.getLocalData(storageName);
-            if(localData) setTimeout(() => respond$.next(localData), 200);
+            if(localData) setTimeout(() => respond$.next(localData), 100);
             else {
-                this.db.getAllDataFromCatalog<Producto>(this.catalogID, `40202,${categoryID}`)
-                    .subscribe((result: any[]) => {
-                        this.setData(result, false, storageName, true);
-                        respond$.next(this.mapList(result));
-                    });
+                let $sub = this.db.getAllDataFromCatalog(this.catalogID, `40202,${categoryID}`)
+                .subscribe((result: any[]) => {
+                    let data = this.mapList(result);
+                    this.storage.setStorage(data, 0, storageName);
+                    respond$.next(data);
+                    $sub.unsubscribe();
+                })
             }
         }
         return respond$.asObservable();
@@ -38,8 +42,6 @@ export class ProductosService extends GenericService<Producto> implements Generi
         return this.db.getAllDataFromCatalog(this.catalogID, `40202,${categoryID}~40206,${ID}`)
             .map((result: any) => result.length > 0 ? this.mapData(result[0]) : new Producto(''));
     }
-
-    newInstance(): Producto { return new Producto(''); }
 
     save(workingItem: Producto, callback, error?, storageName?) {
         return this.basicSave(workingItem, (producto: Producto) => {

@@ -16,15 +16,14 @@ import { Form, FormControl } from '@angular/forms';
 })
 export class AddProductoComponent implements OnInit {
 
-  @Input()
-  listaPreciosID: number;
   categorias: CategoriaProducto[];
   preciosDetalle: PrecioProducto[];
   productos: Producto[];
   selectedProduct: Producto;
 
-  @Output()
-  onProdutoAdded: EventEmitter<any> = new EventEmitter<any>();
+  @Input() listaPreciosID: number;
+
+  @Output() onProdutoAdded: EventEmitter<DetalleVenta> = new EventEmitter<DetalleVenta>();
 
   @ViewChild('formAddProduct') form: FormControl;
   @ViewChild('cantidadField') field: ElementRef;
@@ -45,15 +44,15 @@ export class AddProductoComponent implements OnInit {
     this._categoriaService.source$
       .subscribe((r: CategoriaProductoSumary[]) => {
         this.categorias = r.map(cat => new CategoriaProducto(cat));
-        this.categorias.forEach(cat=>{
-          this._productoService.getProductsByCategory(Number(cat.sumary.key))
-          .subscribe((products: Producto[]) => {
-            cat.productos = products.map(prod=>{
-              let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
-              prod.precio = precio ? precio.precio : 0;
-              return prod;
-            });
-          })
+        this.categorias.forEach(cat => {
+          this._productoService.getProductsByCategory(cat.sumary.key)
+            .subscribe((products: Producto[]) => {
+              cat.productos = products.map(prod=>{
+                let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
+                prod.precio = precio ? precio.precio : 0;
+                return prod;
+              });
+            })
         });
       });
   }
@@ -80,13 +79,9 @@ export class AddProductoComponent implements OnInit {
 
   searchProductBySKU(sku: string){
     let rval = null;
-    this.categorias.forEach(cat=>{
-      let prods = cat.productos.filter(prod=>{
-        return prod.SKU === sku;
-      });
-      if(prods.length > 0){
-        rval = prods[0];
-      }
+    this.categorias.forEach(cat => {
+      let prods = cat.productos.filter(prod=> prod.SKU === sku);
+      if(prods.length > 0) rval = prods[0];
     })
     return rval;
   }
@@ -97,6 +92,7 @@ export class AddProductoComponent implements OnInit {
     dv.precioUnitario = producto.precio;
     dv.canEditPrecio = false;
     dv.canEditCantidad = true;
+    dv.canBeRemoved = true;
     this.onProdutoAdded.emit(dv);
     this.cleanData();
   }

@@ -5,7 +5,8 @@ import { CategoriaProductoService } from 'app/modules/producto/services/categori
 
 import { MovimientoInventario, TipoMovimientoInventario } from 'app/modules/inventario/models/inventario.models';
 import { CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
-import { Periodo, periodos } from 'app/modules/base/models/time-frame.models';
+import { OSPeriodo } from 'app/modules/base/models/time-frame.models';
+import { periodos } from 'app/modules/base/constants/date-time.constants';
 
 @Component({
   selector: 'app-movimientos',
@@ -27,11 +28,13 @@ export class MovimientosComponent implements OnInit {
   selectedCategory: CategoriaProductoSumary;
   selectedTipoMovimiento: TipoMovimientoInventario;
 
-  _periodos: Periodo[] = periodos;
+  _periodos: OSPeriodo[];
 
   constructor(private service: MovimientosInventarioService,
     private _categoriaService: CategoriaProductoService
-  ) { }
+  ) {
+    this._periodos = periodos;
+  }
 
   createSubscriptions(){
     /*

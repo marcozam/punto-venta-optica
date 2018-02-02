@@ -62,6 +62,7 @@ import { DateSelectionComponent } from './components/date-selection/date-selecti
     DialogBoxComponent,
     PersonaComponent,
     MonthYearSelectorComponent,
+    DateSelectionComponent,
   ],
   providers: [
     AjaxGuardService,

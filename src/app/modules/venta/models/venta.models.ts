@@ -1,7 +1,8 @@
 import { Subject } from 'rxjs';
+
+import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
-import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
@@ -24,7 +25,7 @@ export class Venta {
         this.sumary = new SumaryVenta();
     }
 
-    updateDetalleVenta(items: DetalleVenta[], removed?: DetalleVenta[]){
+    updateDetalleVenta(items: DetalleVenta[], concat: boolean = true){
         let changes: DetalleVenta[] = [];
         //search for changes on list
         items.forEach(ndv => {
@@ -40,12 +41,9 @@ export class Venta {
                 changes.push(ndv);
             }
         });
-        if(removed){
-            this._detalle = this._detalle.filter(dv=>{
-                let item = removed.find(ndv => ndv.productoVenta.key === dv.productoVenta.key);
-                return item ? false : true;
-            });
-        }
+        if(!concat) 
+            this._detalle = this._detalle.filter(dv => items.findIndex(ndv => ndv.productoVenta.key === dv.productoVenta.key) >= 0);
+
         this.updateSubTotal();
         if(changes.length > 0) this.onDetalleChanged.next(changes);
     }

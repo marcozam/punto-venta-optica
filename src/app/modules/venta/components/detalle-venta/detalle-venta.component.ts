@@ -16,29 +16,29 @@ let unique_id: number;
   }
 })
 export class DetalleVentaComponent implements OnInit {
-  @Input() detalleVenta: DetalleVenta[];
+  
+  //2 Way Data Binding
+  _detalleVenta: DetalleVenta[];
+  @Output() detalleVentaChange: EventEmitter<DetalleVenta[]> = new EventEmitter();
+  @Input()
+  get detalleVenta(): DetalleVenta[] { return this._detalleVenta; }
+  set detalleVenta(value){
+    this._detalleVenta = value;
+    this.detalleVentaChange.emit(this._detalleVenta);
+  }
+
   @Input() sumaryVenta: SumaryVenta;
-  @Output() detalleChanged: EventEmitter<any[]> = new EventEmitter();
+  
   index: number;
 
-  constructor(
-    public matDialog: MatDialog
-  ) { 
-    this.index = unique_id++;
-  }
+  constructor(public matDialog: MatDialog) { this.index = unique_id++; }
 
-  ngOnInit() {
+  ngOnInit() { }
 
-  }
+  onCantidadChange(cantidad: number, item: DetalleVenta) { item.cantidad = cantidad; }
 
   onEliminarProducto(detalle: DetalleVenta){
     this.detalleVenta = this.detalleVenta.filter(dv=> dv.productoVenta.key !== detalle.productoVenta.key);
-    this.detalleChanged.emit();
-  }
-
-  onCantidadChange(cantidad: number, item: DetalleVenta){
-    item.cantidad = cantidad;
-    this.detalleChanged.emit();
   }
 
   openDescuentoItem(item: DetalleVenta){
@@ -48,9 +48,9 @@ export class DetalleVentaComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        //let idx = this.detalleVenta.findIndex(dv => dv.productoVenta.key === result.Data.productoVenta.key);
-        //this.detalleVenta[idx] = result.Data;
-        this.detalleChanged.emit([result.Data]);
+        this.detalleVenta = this.detalleVenta
+          .filter(dv => dv.productoVenta.key === result.Data.productoVenta.key)
+          .concat([result.Data]);
       }
     });
   }

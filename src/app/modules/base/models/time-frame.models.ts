@@ -1,7 +1,15 @@
 import * as moment from 'moment';
 import { GenericCatalog } from "app/modules/base/models/base.models";
 
-export class Periodo extends GenericCatalog { 
+export class OSMes extends GenericCatalog{
+    constructor(_key: number, _nombre: string){
+        super();
+        this.key = _key;
+        this.nombre = _nombre;
+    }
+}
+
+export class OSPeriodo extends GenericCatalog { 
     constructor(_key: number, _nombre: string){
         super();
         this.key = _key;
