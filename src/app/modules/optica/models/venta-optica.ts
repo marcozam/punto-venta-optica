@@ -15,9 +15,8 @@ export abstract class VentaOptica {
     }
 
     onOpticaVentaChanged(data: OpticaVentaChangeEvent){
-        data.isRemove ?
-            this.venta.updateDetalleVenta([], data.detalle) :
-            this.venta.updateDetalleVenta(data.detalle);
+        //add option to remove
+        this.venta.updateDetalleVenta(data.detalle);
         this.venta.comentarios = this.venta.comentarios.filter(c=> c.moduleID !== 999 && c.moduleID !== 998 && c.moduleID !== 995).concat(data.comentarios);
     }
 

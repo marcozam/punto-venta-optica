@@ -61,13 +61,11 @@ export class MovimientosComponent implements OnInit {
 
   onTipoMovimientoChange(tipo: TipoMovimientoInventario){
     this.selectedTipoMovimiento = tipo;
-    if(tipo.nombre === 'All'){
-      this.selectedTipoMovimiento = null;
-    }
+    if(tipo.nombre === 'All') this.selectedTipoMovimiento = null;
     this.applyFilters();
   }
 
-  onRangoChanged(option: Periodo){
+  onRangoChanged(option: OSPeriodo){
     let _periodo = option.getTimeFrame();
 
     this.service.getMovimientos(
