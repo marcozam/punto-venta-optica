@@ -48,14 +48,3 @@ export class Periodo extends GenericCatalog {
         return { start: fechaInicio.toDate(), end: fechaFin.toDate()}
     }
 }
-
-export const periodos: Periodo[] = [
-    new Periodo(1, 'Hoy'),
-    new Periodo(2, 'Ayer'),
-    new Periodo(3, 'Ultimos 2 Dias'),
-    new Periodo(4, 'Esta Semana'),
-    new Periodo(5, 'La semana pasada'),
-    new Periodo(6, 'Ultimas 2 Semanas'),
-    new Periodo(7, 'Este mes'),
-    new Periodo(8, 'Mes pasado'),
-]

@@ -18,6 +18,7 @@ export class CategoriaProductoService extends GenericService<CategoriaProductoSu
     getStandAloneCategories(){
         let storageName = 'os_standalone_categoria_producto';
         this.getBaseList(()=>{
+            console.log('Getting data from server');
             this._db.getAllDataFromCatalog(this.catalogID, '40302,0')
                 .subscribe((result: any[]) => this.setData(this.mapList(result), false, storageName));
         }, storageName);

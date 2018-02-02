@@ -1,0 +1,8 @@
+<mat-form-field class="sm">
+  <mat-select placeholder="Periodo">
+    <mat-option *ngFor="let p of _periodos" [value]="p">
+      {{p.nombre}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<os-month-year-selector></os-month-year-selector>

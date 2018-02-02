@@ -26,6 +26,8 @@ import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
 import { PersonasService } from './services/personas.service';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
+import { MonthYearSelectorComponent } from './components/month-year-selector/month-year-selector.component';
+import { DateSelectionComponent } from './components/date-selection/date-selection.component';
 
 @NgModule({
   imports: [
@@ -48,6 +50,8 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
     PaginatorComponent,
     FilterComponent,
     PersonaComponent,
+    MonthYearSelectorComponent,
+    DateSelectionComponent,
   ],
   entryComponents:[
     DialogBoxComponent
@@ -57,6 +61,7 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
     FilterComponent,
     DialogBoxComponent,
     PersonaComponent,
+    MonthYearSelectorComponent,
   ],
   providers: [
     AjaxGuardService,

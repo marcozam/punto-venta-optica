@@ -44,7 +44,7 @@ export class Producto extends BaseGenericCatalog {
   }
   set categoriaProducto(value: CategoriaProductoSumary){
     this._categoriaProducto = value;
-    this.categoriaProductoID = Number(value.key);
+    this.categoriaProductoID = value ? Number(value.key) : 0;
   };
 
   constructor(_nombre: string, _categoria?: CategoriaProductoSumary) {

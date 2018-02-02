@@ -16,15 +16,22 @@ export class ProductosService extends GenericService<Producto> implements Generi
     }
 
     getProductsByCategory(categoryID: number) {
+        let respond$ = new Subject();
         if(!isNaN(categoryID)){
+            this.startLoading();
             let storageName = `os_producto_categoria-${categoryID}`;
-            this.getBaseList(()=>{
+            
+            let localData = this.getLocalData(storageName);
+            if(localData) setTimeout(() => respond$.next(localData), 200);
+            else {
                 this.db.getAllDataFromCatalog<Producto>(this.catalogID, `40202,${categoryID}`)
                     .subscribe((result: any[]) => {
-                        this.setData(this.mapList(result), true, storageName)
+                        this.setData(result, false, storageName, true);
+                        respond$.next(this.mapList(result));
                     });
-            }, storageName, true);
+            }
         }
+        return respond$.asObservable();
     }
 
     getProductByDetail(ID: number, categoryID: number){

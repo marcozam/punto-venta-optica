@@ -23,7 +23,14 @@ export class MetodoPagoVentaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) 
     { }
 
+
+  createSubscriptions(){
+    this._metodoPagoService.source$
+      .subscribe(result => { this.metodosPago = result.filter(item => item.enVenta) });
+  }
+
   ngOnInit() {
+    this.createSubscriptions();
     this.venta = this.data.Venta;
     //Watch for changes 
     this.form.valueChanges.subscribe(value => {
@@ -33,10 +40,8 @@ export class MetodoPagoVentaComponent implements OnInit {
         this.totalPagado = pagos.map(p=> p.totalRecibido).reduce((p, c) => p + c);
       }
     })  
+    
     this._metodoPagoService.getList();
-
-    this._metodoPagoService.source$
-      .subscribe(result => this.metodosPago = result.filter(item => item.enVenta));
   }
 
   onContinue(value){

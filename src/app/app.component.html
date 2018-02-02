@@ -26,7 +26,7 @@
     </mat-nav-list>
 
     <mat-menu #catalogos="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
-      <a mat-menu-item [matMenuTriggerFor]="micas">Micas</a>
+      <!--<a mat-menu-item [matMenuTriggerFor]="micas">Micas</a>-->
       <a mat-menu-item [matMenuTriggerFor]="armazones">Armazones</a>
       <a mat-menu-item routerLink="productos" (click)="sidenav.close()">Productos</a>
     </mat-menu>
@@ -51,6 +51,7 @@
 
     <mat-menu #reportes="matMenu" class="main-menu-submenu" [overlapTrigger]="false">
       <a mat-menu-item routerLink="caja/cortes" (click)="sidenav.close()">Cortes de Caja</a>
+      <a mat-menu-item routerLink="resumen/ventas" (click)="sidenav.close()">Resumen de Ventas</a>
     </mat-menu>
   </mat-sidenav>
   <div class="app-content">

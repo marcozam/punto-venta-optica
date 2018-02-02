@@ -23,12 +23,6 @@ export class TratamientoMica extends BaseGenericCatalog{
     @Field('C3') productID: number;
 }
 
-export class TratamientoMicaPrecios{ 
-    constructor(
-        public tratamiento: TratamientoMica,
-        public precio: number) { }
-}
-
 export class Ojo {
     @Field('C1') esfera: number;
     @Field('C2') cilindro: number;
@@ -65,5 +59,22 @@ export class Examen extends BaseGenericCatalog {
         this.ojoIzquierdo =  new Ojo();
         this.tipoMicaRecomendadoID = 1;
         this.materialRecomendadoID = 1;
+    }
+}
+
+export class MicaPrecio{
+    material: MaterialMica;
+    tipoMica: TipoMica;
+
+    tratamientos: TratamientoMicaPrecios[];
+
+    constructor(public precioBase: number, public materialID: number, public tipoMicaID: number) {
+    }
+}
+
+export class TratamientoMicaPrecios{
+    tratamiento: TratamientoMica;
+
+    constructor(public precio: number, public tratamientoID: number, public productID: number) {
     }
 }

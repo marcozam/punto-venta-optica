@@ -40,75 +40,50 @@ export class PrecioMaterialComponent implements OnInit {
 
   createSubscriptions(){
     this._materialService.source$.subscribe(data => this.materialesMicas = data);
+    this._tratamientoService.source$.subscribe(data => this.tratamientosMicas = data);
     this._tipoService.source$.subscribe(data => this.tiposMicas = data);
   }
 
   ngOnInit() {
     this.createSubscriptions();
+
     this._tipoService.getList();
+    this._tratamientoService.getList();
     this._materialService.getList();
-    /*
-    this._tipoService.getCatalogList((tipos: TipoMica[]) => {
-      //Ordena las micas por monofocal, ambas o bifocal
-      tipos.sort((a:TipoMica, b:TipoMica)=>{
-        if(a.nombre < b.nombre) return -1;
-        if(a.nombre > b.nombre) return 1;
-        return 0;
-      })
-      this.tiposMicas = [].concat(
-        tipos.filter(data=> { return data.tipoMica === 1}), 
-        tipos.filter(data=> { return data.tipoMica === 0}),
-        tipos.filter(data=> { return data.tipoMica === 2})
-      );
-      this._tratamientoService.getCatalogList((tratamientos: TratamientoMica[]) => {
-        this.tratamientosMicas = tratamientos;
-        this._materialService.getList();
-      });
-    });
-    */
   }
 
   onSave(value){
     let _precios = {};
     this.fields.forEach( row => {
       if(row.formGroup.value.precioBase){
-        if(row.formGroup.value.precioBase >= 0){
-          _precios[row.key] = row.formGroup.value;
-        }
+        if(row.formGroup.value.precioBase >= 0) _precios[row.key] = row.formGroup.value;
       }
     })
     this._tipoServiceFB.setPrecioMicas(this.listaPreciosID, value.material, _precios);
     this.dialog.openDialog('Registro exitoso!', 'Los precios para los Materiales se guardaron correctamente.', false);
   }
 
-  onMaterialChange(material: string){
-    this._tipoServiceFB.getAllMicasPrecios(this.listaPreciosID, material, (actualPrice:any[]) =>{
+  onMaterialChange(material: MaterialMica) {
+    this._tipoServiceFB.getAllMicasPrecios(this.listaPreciosID, material.keyFB, (actualPrice:any[]) => {
         this.precios = actualPrice;
         this.createFormGroups();
       });
   }
 
   createFormGroups(){
-    console.log('creating forms....');
     let _controls: PreciosForm[] = [];
-    this.tiposMicas.forEach(tipo => {
-      _controls.push(this.createGroup(tipo));
-    });
-    console.log(_controls);
+    this.tiposMicas.forEach(tipo => _controls.push(this.createGroup(tipo)));
     this.fields = _controls;
   }
 
-  createGroup(tipo: TipoMica): PreciosForm{
-    let _item = {
-      precioBase: new FormControl()
-    };
-    this.tratamientosMicas.forEach( tr => {
-      _item[tr.key] = new FormControl();
-    });
+  createGroup(tipo: TipoMica): PreciosForm {
+    let _item = { precioBase: new FormControl() };
+    this.tratamientosMicas.forEach( tr => _item[tr.keyFB] = new FormControl());
+
     let _fGroup = new FormGroup(_item);
-    let _precio = this.precios.filter(p=> p.key === tipo.key)[0];
-    if(_precio)
-      _fGroup.patchValue(_precio);
+    let _precio = this.precios.filter(p=> p.key === tipo.keyFB)[0];
+    if(_precio) _fGroup.patchValue(_precio);
+
     return { 
       formGroup: _fGroup,
       nombre: tipo.nombre,
@@ -119,9 +94,7 @@ export class PrecioMaterialComponent implements OnInit {
 
   getInitialValue(tKey, mKey){
     if(this.precios){
-      if(this.precios[tKey]){
-        return this.precios[tKey][mKey];
-      }
+      if(this.precios[tKey]) return this.precios[tKey][mKey];
     }
     return '';
   }

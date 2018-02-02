@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
@@ -143,6 +143,7 @@ export class DetalleVenta extends BaseGenericCatalog {
 
     //use to group products
     moduleID: number = 1;
+    canBeRemoved?: boolean = true;
     canEditCantidad?: boolean;
     canEditPrecio?: boolean;
 

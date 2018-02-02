@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { getFields } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 
@@ -11,6 +12,16 @@ export class PersonasService extends GenericService<Persona> implements GenericS
     constructor(_db: BaseAjaxService) {
         super(_db);
         this.catalogID = 1;
+    }
+
+    map2Server(value: Persona) {
+        let fieldsMD = getFields(value);
+        return fieldsMD.map(fld => {
+            if(fld.propertyName === 'fechaNacimiento')
+                return `${fld.key},${value[fld.propertyName].toJSON()}`;
+            else return `${fld.key},${value[fld.propertyName]}`;
+        })
+        .join('~');
     }
 
     newInstance() { return new Persona(); }

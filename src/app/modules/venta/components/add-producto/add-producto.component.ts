@@ -47,20 +47,15 @@ export class AddProductoComponent implements OnInit {
         this.categorias = r.map(cat => new CategoriaProducto(cat));
         this.categorias.forEach(cat=>{
           this._productoService.getProductsByCategory(Number(cat.sumary.key))
+          .subscribe((products: Producto[]) => {
+            cat.productos = products.map(prod=>{
+              let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
+              prod.precio = precio ? precio.precio : 0;
+              return prod;
+            });
+          })
         });
       });
-
-    this._productoService.source$.subscribe((products: Producto[]) => {
-      if(products.length > 0){
-        let fProd = products[0];
-        let wCat = this.categorias.find(c=> c.sumary.key === fProd.categoriaProductoID);
-        wCat.productos = products.map(prod=>{
-          let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
-          prod.precio = precio ? precio.precio : 0;
-          return prod;
-        })
-      }
-    });
   }
 
   ngOnInit() {
@@ -136,13 +131,9 @@ export class AddProductoComponent implements OnInit {
     }
   }
 
-  onCategoriaChanged(productos: Producto[]){
-    this.productos = productos;
-  }
+  onCategoriaChanged(productos: Producto[]){ this.productos = productos; }
 
-  onProductoChange(producto: Producto){
-    this.selectedProduct = producto;
-  }
+  onProductoChange(producto: Producto){ this.selectedProduct = producto; }
 
   addProduct(value){
     let cantidad = Number.isNaN(value) ? 1 : Number(value);

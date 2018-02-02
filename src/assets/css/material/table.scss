@@ -23,12 +23,14 @@ table, th, td {
 }
 .os-table{
   width: 100%;
-
-  thead{
+  td.main-column, thead{ 
+    color: #757575;
     font-size: 12px;
     font-weight: 500;
+  }
+
+  thead{
     border-bottom: 1px solid $table-border-color;
-    color: #757575;
   }
 
   tfoot{

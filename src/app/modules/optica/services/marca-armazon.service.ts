@@ -8,14 +8,17 @@ import { GenericService, GenericServiceBase } from '../../generic-catalogs/servi
 
 @Injectable()
 export class MarcaArmazonService extends FBGenericService<MarcaArmazon> implements GenericServiceBase<MarcaArmazon> {
-    
-    mapData(object: any): MarcaArmazon {
-        return this.newInstance();
-    }
 
     constructor(_db: AngularFireDatabase) { 
         super(_db);
         super.setListRefURL('armazones/marcas');
+    }
+
+    mapData(object: any): MarcaArmazon { 
+        let item: MarcaArmazon = super.mapData(object);
+        object = this.setGenericType(object);
+        item.categoria = object.categoria;
+        return item;
     }
 
     newInstance(){ return new MarcaArmazon(); }

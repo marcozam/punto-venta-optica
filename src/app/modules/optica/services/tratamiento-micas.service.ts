@@ -20,11 +20,3 @@ export class TratamientoMicasService extends GenericService<TratamientoMica> imp
       .map(result => result.map(it => this.mapData(it)));
   }
 }
-
-@Injectable()
-export class FBTratamientoMicasService extends FBGenericService<TratamientoMica> {
-  constructor(_db: AngularFireDatabase) { 
-    super(_db)
-    super.setListRefURL('micas/tratamientos');
-  }
-}

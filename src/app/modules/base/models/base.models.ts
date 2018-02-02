@@ -28,9 +28,11 @@ export class GenericCatalog extends BaseGenericCatalog {
     @Field('C1') nombre: string
     @Field('C2') keyFB?: string;
 
-    constructor(){
+    constructor(key?: number, nombre?: string){
         super();
         this.keysChanges = ['nombre'];
+        this.key = key ? key : 0;
+        this.nombre = nombre ? nombre : null;
     }
 }
 

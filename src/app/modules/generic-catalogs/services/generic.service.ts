@@ -241,7 +241,6 @@ export class GenericCatalogService extends GenericService<GenericCatalog> implem
 
     save(workingItem: GenericCatalog, oldItem: GenericCatalog = null){
         let respond = this.basicSave(workingItem, (item: GenericCatalog) => {
-            console.log('Saving');
             let $sub = this.db.saveDynamicCatalog(
                 this.map2Server(item),
                 this.catalogID, 

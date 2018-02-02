@@ -41,7 +41,7 @@
           <mat-icon aria-label="Editar">edit</mat-icon>
         </button>
         -->
-        <button *ngIf="_detalle.canEditCantidad" 
+        <button *ngIf="_detalle.canEditCantidad || _detalle.canBeRemoved" 
           mat-icon-button matTooltip="Eliminar" matTooltipPosition="below" color="warn" 
           (click)="onEliminarProducto(_detalle)">
           <mat-icon aria-label="Eliminar">

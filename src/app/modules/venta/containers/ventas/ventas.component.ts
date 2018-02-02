@@ -8,6 +8,7 @@ import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Venta, DetalleVenta, DetallePagos, MetodoPago } from '../../models/venta.models';
 
 import { VentaService } from '../../services/venta.service';
+import { ExamenService } from 'app/modules/optica/services/examen.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
@@ -32,7 +33,6 @@ import { Inventario } from 'app/modules/inventario/models/inventario.models';
   ]
 })
 export class VentasComponent extends VentaOptica implements OnInit {
-
   venta: Venta;
   clienteID: number;
   listaPrecioID: number;
@@ -44,6 +44,8 @@ export class VentasComponent extends VentaOptica implements OnInit {
     private _ventaService: VentaService,
     private _inventarioService: InventarioService,
     private _printService: VentaOptikaTicketService,
+    //Optika
+    private _examenService: ExamenService,
     private dialog: DialogBoxService,
     private pagosDialog: DialogPagosService,
     private router: Router,
@@ -58,7 +60,6 @@ export class VentasComponent extends VentaOptica implements OnInit {
     this.listaPrecioID = 1;
     this.sucursalID = 1;
     this.clienteID = this.route.snapshot.params['clienteID'];
-
     this.nuevaVenta();
     //TODO: Agregar loadeder
   }
@@ -116,11 +117,12 @@ export class VentasComponent extends VentaOptica implements OnInit {
         });
         this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
           if(newVenta){
-            this._printService.venta = this.venta;
-            this._printService.examen = this.examen;
-            this._printService.esPagoInicial = true;
-            this._printService.print();
-            this.router.navigate(['']);
+            //Optika
+            if(this.examen) {
+              this._examenService.saveVentaExamen(newVenta.sumary.key, this.examen.key, this.examen.materialRecomendadoID, this.examen.tipoMicaRecomendadoID)
+                .subscribe(()=> this.onVentaSaved())
+            }
+            else this.onSaveVenta();
           }
           else{
             this.dialog.openDialog('Error', 'Ocurrio un error al generar la venta', false);
@@ -129,6 +131,14 @@ export class VentasComponent extends VentaOptica implements OnInit {
         });
       }
     })
+  }
+
+  onVentaSaved(){
+    this._printService.examen = this.examen;
+    this._printService.venta = this.venta;
+    this._printService.esPagoInicial = true;
+    this._printService.print();
+    this.router.navigate(['']);
   }
 
   onProductoAdded(item: DetalleVenta){
@@ -145,12 +155,11 @@ export class VentasComponent extends VentaOptica implements OnInit {
   }
 
   onDetalleChanged(newValue){
-    if(newValue){
-      this.venta.updateDetalleVenta(newValue);
-    }
+    if(newValue) this.venta.updateDetalleVenta(newValue);
   }
 
   //Optica
+  ventaMica: boolean = false;
   showOptica: boolean = true;
 
   onExamenChanged(value){

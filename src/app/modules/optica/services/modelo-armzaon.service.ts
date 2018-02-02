@@ -24,13 +24,8 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
         super.setListRefURL('armazones/modelos');
     }
 
-    newInstance(): ModeloArmazon {
-        return new ModeloArmazon();
-    }
-    
-    mapData(r){
-        return new ModeloArmazon()
-    }
+    newInstance(): ModeloArmazon { return new ModeloArmazon(); }
+    mapData(r){ return new ModeloArmazon() }
 
     getCatalogItem(id: string, callback){
         let d2s = `${this._fb_fieldID},${id}`;

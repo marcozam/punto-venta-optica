@@ -29,6 +29,7 @@ import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.
 import { AddProductoComponent } from './components/add-producto/add-producto.component';
 import { MetodoPagoVentaComponent } from './components/metodo-pago-venta/metodo-pago-venta.component';
 import { AddDescuentoProductoComponent } from './components/add-descuento-producto/add-descuento-producto.component';
+import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen-venta-mes.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { AddDescuentoProductoComponent } from './components/add-descuento-produc
     AddProductoComponent,
     MetodoPagoVentaComponent,
     AddDescuentoProductoComponent,
+    ResumenVentaMesComponent,
   ],
   exports:[
     VentasComponent,

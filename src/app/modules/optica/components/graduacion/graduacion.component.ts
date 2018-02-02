@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { Observable } from 'rxjs';
 
 //Services
-import { TratamientoMicasService } from './../../services/tratamiento-micas.service';
 import { MaterialMicasService } from './../../services/material-micas.service';
 import { TipoMicasService } from './../../services/tipo-micas.service';
 import { ExamenService } from '../../services/examen.service';
@@ -24,7 +23,7 @@ export class GraduacionEventChange{
   templateUrl: './graduacion.component.html',
   styleUrls: ['./graduacion.component.scss'],
   //changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ExamenService, TipoMicasService, MaterialMicasService, TratamientoMicasService]
+  providers: [ExamenService, TipoMicasService, MaterialMicasService]
 })
 export class GraduacionComponent implements OnInit {
   _examen: Examen;
@@ -40,7 +39,7 @@ export class GraduacionComponent implements OnInit {
   @Input() editable: boolean = true;
   @Input() pacienteID: number;
   @Input() paciente: Contacto;
-  @Input() listaPrecioID: number;
+  //@Input() listaPrecioID: number;
   @Output() materialChange: EventEmitter<any> = new EventEmitter();
   @Output() tipoMicaChange: EventEmitter<any> = new EventEmitter();
   @Output() onSaved: EventEmitter<GraduacionEventChange> = new EventEmitter();
@@ -48,19 +47,15 @@ export class GraduacionComponent implements OnInit {
   constructor(
     private _serviceExamen: ExamenService, 
     private _tipoService: TipoMicasService,
-    private _materialService: MaterialMicasService, 
-    private _tratamientoService: TratamientoMicasService) { 
+    private _materialService: MaterialMicasService) { 
     this._examen = new Examen();
     //Observer when app is retriving data
-    this.loading$ = Observable.merge(_serviceExamen.loading$, 
-                                    _tipoService.loading$, 
-                                    _materialService.loading$,
-                                  _tratamientoService.loading$);
+    this.loading$ = Observable.merge(_serviceExamen.loading$, _tipoService.loading$, _materialService.loading$);
   }
 
   createSubscriptions(){
     this.loading$.subscribe((isLoading: boolean) => this.loading = this._serviceExamen.isLoading 
-        || this._tipoService.isLoading || this._materialService.isLoading || this._tratamientoService.isLoading);
+        || this._tipoService.isLoading || this._materialService.isLoading);
 
     this._materialService.source$
       .subscribe(data => this.materialesMicas = data);

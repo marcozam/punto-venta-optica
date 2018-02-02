@@ -5,9 +5,11 @@ import { GenericService, GenericServiceBase } from '../../generic-catalogs/servi
 
 @Injectable()
 export class MetodosPagoService extends GenericService<MetodoPago> implements GenericServiceBase<MetodoPago> {
-    
+
     constructor(_db: BaseAjaxService) {
-        super(_db);
+        super(_db, 'os-pagos_metodos-pago', 360);
         this.catalogID = 304;
     }
+
+    newInstance(): MetodoPago { return new MetodoPago(); }
 }

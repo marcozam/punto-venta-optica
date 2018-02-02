@@ -1,4 +1,10 @@
 <form #examenForm="ngForm">
+  <div class="row" *ngIf="loading">
+    <div class="col-xs text-center loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      Cargando, por favor espere ...
+    </div>
+  </div>
   <div class="row" *ngIf="editable">
     <div class="col-xs">
       <div class="sub-container">

@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-xs">
+    <mat-form-field class="sm">
+      <mat-select placeholder="Mes" name="month" [(ngModel)]="month">
+        <mat-option *ngFor="let m of _months" [value]="m.key">
+          {{m.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xs">
+    <mat-form-field class="sm">
+      <mat-select placeholder="Año" name="year" [(ngModel)]="year">
+        <mat-option *ngFor="let y of years" [value]="y">
+          {{y}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="sub-container">
+      <div class="row">
+        <div class="col-md-8 col-xs-12">
+          <os-month-year-selector [(month)]="selectedMonth" [(year)]="selectedYear"></os-month-year-selector>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <button mat-raised-button color="primary" (click)="getResume()">
+              <mat-icon> search </mat-icon>
+              Consultar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="resumen">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sub-container">
+        <div class="sub-titles">
+          Resumen del Mes
+        </div>
+        <table class="os-table highlight">
+          <tbody>
+            <tr>
+              <td class="main-column"> Total de Ventas </td>
+              <td class="text-right">$ {{resumen?.totalVenta | number:'1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td class="main-column"> Total Pagado </td>
+              <td class="text-right">$ {{resumen?.totalPagado | number:'1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td class="main-column"> No Ventas </td>
+              <td class="text-right"> {{resumen?.noVentas}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="sub-container">
+        <div class="sub-titles">
+          Ingresos
+        </div>
+        <os-table [dataSource]="dsIngresos" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="sub-container">
+        <div class="sub-titles">
+          Pacientes referidos
+        </div>
+        <os-table [dataSource]="dsOftalmologos" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="sub-container">
+        <div class="sub-titles">
+          Lentes
+        </div>
+        <os-table [dataSource]="dsLentes" [canAdd]="false" [canEdit]="false" [canDelete]="false"></os-table>
+      </div>
+    </div>
+  </div>
+</ng-container>

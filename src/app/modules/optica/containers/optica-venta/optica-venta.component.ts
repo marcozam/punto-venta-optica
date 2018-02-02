@@ -8,10 +8,10 @@ import { OpticaVentaChangeEvent } from '../../models/optica-venta.models';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { ExamenService } from '../../../optica/services/examen.service';
-import { FBTipoMicasService } from '../../../optica/services/tipo-micas.service'
 import { TratamientoMicasService } from '../../../optica/services/tratamiento-micas.service';
 import { SelectionChange } from '@angular/cdk/collections';
 import { GenericCatalog } from 'app/modules/base/models/base.models';
+import { Observable } from 'rxjs';
 
 //999 => Armazon
 //998 => Mica
@@ -22,9 +22,12 @@ import { GenericCatalog } from 'app/modules/base/models/base.models';
   selector: 'app-optica-venta',
   templateUrl: './optica-venta.component.html',
   styleUrls: ['./optica-venta.component.scss'],
-  providers: [ExamenService, FBTipoMicasService, TratamientoMicasService, DialogBoxService]
+  providers: [ExamenService, TratamientoMicasService, DialogBoxService]
 })
 export class OpticaVentaComponent implements OnInit {
+
+  loading$: Observable<boolean>;
+  loading: boolean = false;
 
   ultimoExamen: Examen;
   //Tratamientos
@@ -34,31 +37,34 @@ export class OpticaVentaComponent implements OnInit {
   comentariosOptica: ComentariosVenta[] = [];
   examenLoading: boolean = true;
 
-  @Input()
-  clienteID: number;
-  @Input()
-  listaPrecioID: number;
-  @Input()
-  esVenta: boolean = true;
-  @Input()
-  detalleVenta: DetalleVenta[];
+  @Input() clienteID: number;
+  @Input() listaPrecioID: number;
+  @Input() esVenta: boolean = true;
+  @Input() detalleVenta: DetalleVenta[];
 
-  @Output()
-  onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter<OpticaVentaChangeEvent>();
-  @Output()
-  onExamenChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter<OpticaVentaChangeEvent>();
+  @Output() onExamenChanged: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(MatSelectionList) tratamientoList: MatSelectionList;
 
   constructor(
-    private _examenService: ExamenService, 
-    private _tipoMicasService: FBTipoMicasService, 
+    private _examenService: ExamenService,
     private _tratamientosService: TratamientoMicasService,
-    private dialog: DialogBoxService) { }
+    private dialog: DialogBoxService) { 
+    this.loading$ = Observable.merge(_examenService.loading$, _tratamientosService.loading$);
+  }
+
+  createSubscriptions(){
+    this.loading$.subscribe((isLoading: boolean) => this.loading = this._examenService.isLoading || this._tratamientosService.isLoading);
+
+    this._tratamientosService.source$
+      .subscribe(data => this.allTratamientos = data);
+  }
 
   ngOnInit() {
+    this.createSubscriptions();
     //Obtiene los tratamientos
-    this._tratamientosService.getCatalogList(list => this.allTratamientos = list);
+    this._tratamientosService.getList();
     if(this.clienteID) {
       //Obtiene el ultimo examen del paciente
       this._examenService.getLastExamen(this.clienteID)
@@ -75,12 +81,12 @@ export class OpticaVentaComponent implements OnInit {
     //Listen to changes on tratamientos
     this.tratamientoList.selectedOptions.onChange.subscribe((list: SelectionChange<MatListOption>) => {
       if(list.removed.length > 0){
-        list.removed.forEach(t => this.removeVentaDetail(t.value.tratamiento.productID));
+        list.removed.forEach(t => this.removeVentaDetail(t.value.productID));
       }
       if(list.added.length > 0){
         list.added.forEach(t => {
           let _producto: Producto = new Producto(t.value.tratamiento.nombre);
-          _producto.key = t.value.tratamiento.productID;
+          _producto.key = t.value.productID;
           this.addVentaDetail(_producto, t.value.precio, 997);
         });
       }
@@ -109,41 +115,30 @@ export class OpticaVentaComponent implements OnInit {
   }
 
   addMica(){
-    this._tipoMicasService.getPreciosMica(this.listaPrecioID, this.ultimoExamen.tipoMicaRecomendadoID, this.ultimoExamen.materialRecomendadoID)
-      .subscribe(tm => {
-        if(tm){
-          this.setValidTratamientos(tm);
+    this._examenService.getPrecio(this.listaPrecioID, this.ultimoExamen.tipoMicaRecomendadoID, this.ultimoExamen.materialRecomendadoID)
+      .subscribe((precioMica)=>{
+        if(precioMica){
+          this.setValidTratamientos(precioMica.tratamientos);
           let comentario = `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`;
           let _producto: Producto = new Producto('MICA');
           _producto.key = 999999;
-          this.addVentaDetail(_producto, this._tipoMicasService.getPrecioMica(this.ultimoExamen, tm), 998, comentario)
+          this.addVentaDetail(_producto, this._examenService.getPrecioMica(this.ultimoExamen, precioMica), 998, comentario)
           this.comentariosOptica.push({
               productoID: _producto.key, 
               comentario: comentario, 
               key: 0, 
               moduleID: 998
             });
-          if(this.tempTratamientos.length > 0){
-            /*
-            this.tempTratamientos.forEach(tr=> {
-              let tratamiento = this.tratamientos.find(t=> t.tratamiento.productID === tr.productoVenta.key);
-              if(tratamiento)
-                this.addVentaDetail(tr.productoVenta, tratamiento.precio, 997);
-            })
-            */
-            this.tempTratamientos = [];
-          }
         }
         else console.warn('Combination not allow');
-      }
-    )
+      });
   }
 
-  setValidTratamientos(tm){
-    this.tratamientos = this.allTratamientos
-      .filter(tr=> tm[tr.key])
-      .map(tr => new TratamientoMicaPrecios(tr, tm[tr.key]))
-      .filter(tr=> tr.precio >= 0);
+  setValidTratamientos(tm: TratamientoMicaPrecios[]){
+    this.tratamientos = tm.map(item=> {
+      item.tratamiento = this.allTratamientos.find(tr=> tr.key === item.tratamientoID);
+      return item;
+    })
   }
   
   //Manage Armazon
@@ -161,6 +156,7 @@ export class OpticaVentaComponent implements OnInit {
   addVentaDetail(producto: Producto, precio: number, moduleID: number = 998, comentario?: string){
     let detalleVenta: DetalleVenta = new DetalleVenta(producto, precio);
     detalleVenta.canEditCantidad = false;
+    detalleVenta.canBeRemoved = producto.key === 999999;
     detalleVenta.moduleID = moduleID;
     detalleVenta.comentario = comentario;
     this.sendChanges([detalleVenta]);

@@ -40,16 +40,12 @@ export class ArmazonSelectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._marca.getCatalogList(marcas => {
-      this.marcasArmazon = marcas;
-    });
+    this._marca.getCatalogList(marcas => this.marcasArmazon = marcas);
   }
 
   onArmazonPropioChange(value: boolean){
     this.esArmazonPropio = value;
-    if(value){
-      this.onChange.emit({added: [], removed: this.detalle, isComment: false, moduleID: 999})
-    }
+    if(value && this.detalle) this.onChange.emit({added: [], removed: this.detalle, isComment: false, moduleID: 999});
   }
 
   onArmazonChange(value){

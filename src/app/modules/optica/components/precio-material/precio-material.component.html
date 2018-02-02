@@ -3,7 +3,7 @@
     <div class="col-xs col-md-3">
       <mat-form-field>
         <mat-select placeholder="Material" name="material" ngModel (change)="onMaterialChange($event.value)" required>
-          <mat-option *ngFor="let material of materialesMicas" [value]="material.key">
+          <mat-option *ngFor="let material of materialesMicas" [value]="material">
             {{material.nombre}}
           </mat-option>
         </mat-select>
@@ -39,7 +39,7 @@
             <td *ngFor="let tratamiento of tratamientosMicas" class="text-center">
               <mat-form-field class="sm">
                 <span matPrefix>$ &nbsp;</span>
-                <input matInput type="number" step="50" required formControlName="{{tratamiento.key}}" />
+                <input matInput type="number" step="50" required formControlName="{{tratamiento.keyFB}}" />
               </mat-form-field>
             </td>
           </tr>
