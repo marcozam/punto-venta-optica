@@ -70,6 +70,7 @@ export class GraduacionComponent implements OnInit {
     this._tipoService.getList();
     //Obtiene el ultimo examen del paciente
     if(this.pacienteID){
+      console.log('Obteniento ultima graduacion');
       this._serviceExamen.getLastExamen(this.pacienteID)
         .subscribe((data: Examen) => {
           if(data) this._examen = data;

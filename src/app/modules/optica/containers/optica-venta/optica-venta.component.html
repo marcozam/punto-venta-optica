@@ -1,7 +1,7 @@
 <div class="row" *ngIf="examenLoading">
     <div class="col-md text-center loading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        Validando ultimo examen, por favor espere ... {{examenLoading}}
+        Cargando ultimo examen, por favor espere ...
     </div>
 </div>
 <div class="row" [class.sr-only]="!examenLoading">

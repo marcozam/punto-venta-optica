@@ -9,6 +9,17 @@ import { PreciosDetalleComponent } from './containers/precios-detalle/precios-de
 //import { FacturacionComponent } from './modules/facturacion/facturacion.component';
 
 const appRoutes: Routes = [ 
+    {
+        path: 'DCG',
+        loadChildren: 'app/modules/generic-catalogs/generic-catalogs.module#GenericCatalogsModule'
+    },
+    {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full'
+    },
+
+
     //Home
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent, data: { title: 'Inicio' } },

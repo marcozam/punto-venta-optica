@@ -49,7 +49,7 @@ export class DetalleVentaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         this.detalleVenta = this.detalleVenta
-          .filter(dv => dv.productoVenta.key === result.Data.productoVenta.key)
+          .filter(dv => dv.productoVenta.key !== result.Data.productoVenta.key)
           .concat([result.Data]);
       }
     });
