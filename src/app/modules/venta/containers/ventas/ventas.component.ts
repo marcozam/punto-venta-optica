@@ -97,13 +97,13 @@ export class VentasComponent extends VentaOptica implements OnInit {
   isVentaInvalid(){
     let rval = true;
     if(this.venta.detalle.length > 0){
+      rval = false;
       if(this.showOptica){
-        rval = this.venta.detalle.find(d=> { return d.productoVenta.key === 999999 }) ? false : true;
-        if(!rval){
+        let mica = this.venta.detalle.find(d=> { return d.productoVenta.key === 999999 });
+        if(mica){
           rval = this.venta.comentarios.filter(c=> c.moduleID === 995).length === 0;
         }
       }
-      else rval = false;
     }
     return rval;
   }
