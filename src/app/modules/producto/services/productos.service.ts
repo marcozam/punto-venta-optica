@@ -19,7 +19,7 @@ export class ProductosService extends GenericService<Producto> implements Generi
     newInstance(): Producto { return new Producto(''); }
 
     getProductsByCategory(categoryID: number) {
-        let respond$ = new Subject();
+        let respond$: Subject<Producto[]> = new Subject();
         if(!isNaN(categoryID)){
             let storageName = `os_producto_categoria-${categoryID}`;
             this.startLoading();

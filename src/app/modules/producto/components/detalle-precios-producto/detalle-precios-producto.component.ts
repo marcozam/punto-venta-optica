@@ -26,22 +26,21 @@ export class DetallePreciosProductoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._service.source$.subscribe((products: Producto[]) => {
-      if(products.length > 0){
-        let fProd = products[0];
-        let wCat = this.categorias.find(c=> c.sumary.key === fProd.categoriaProductoID);
-        wCat.productos = products.map(prod=>{
-          let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
-          prod.precio = precio ? precio.precio : 0;
-          return prod;
-        })
-      }
-    })
-
     //Listen to Categories
     this._categoriaService.source$.subscribe((result: CategoriaProductoSumary[]) => {
       this.categorias = result.map(cat => new CategoriaProducto(cat));
-      this.categorias.forEach(cat => this._service.getProductsByCategory(Number(cat.sumary.key)));
+      this.categorias.forEach(cat => { 
+        this._service.getProductsByCategory(Number(cat.sumary.key))
+          .subscribe((products => {
+            if(products.length > 0){
+              cat.productos = products.map(prod=>{
+                let precio = this.preciosDetalle.find(p=> p.productoID === prod.key);
+                prod.precio = precio ? precio.precio : 0;
+                return prod;
+              })
+            }
+          }))
+      });
     });
     
     this._listaPreciosService.getPreciosPreductos(this.listaPreciosID, (precios: PrecioProducto[]) => {
