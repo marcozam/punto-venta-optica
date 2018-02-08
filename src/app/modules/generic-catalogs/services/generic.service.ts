@@ -39,6 +39,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
     constructor( protected db: BaseAjaxService,  storageName?: string,  storageTime?: number) 
     {
         this.loading$.subscribe((next: boolean)=> this.isLoading = next);
+        this.source$.subscribe(() => this.finishLoading());
         if(storageName){
             this.storage = new AjaxLocalStorage(storageName, storageTime);
             let localData = this.getLocalData(storageName);
@@ -70,6 +71,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
                         return response;
                     });
         }
+        item$.subscribe(()=> this.finishLoading);
         return item$.asObservable();
     }
 
@@ -88,6 +90,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         let response = this.db.removeItem(this.catalogID, ID);
         let $sub = response.subscribe( result => {
             this.setData(this.source.filter((s: T | any) => (s.key ? s.key : s.C0) !== ID), false,  storageName);
+            this.finishLoading();
             $sub.unsubscribe();
         })
         return response;
@@ -105,15 +108,12 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
                 $sub.unsubscribe();
             });
         }, oldItem);
+        respond.subscribe(()=> this.finishLoading());
         return respond.asObservable();
     }
 
-    protected startLoading(){ if(!this.isLoading && ++this.n_requests > 0) this.loading$.next(true); }
+    protected startLoading() { if(++this.n_requests > 0 && !this.isLoading) this.loading$.next(true); }
     protected finishLoading() { if(--this.n_requests <= 0 && this.isLoading) this.loading$.next(false); }
-
-    getProperty<T, K extends keyof T>(obj: T, key: K) {
-        return obj[key];
-    }
 
     protected mapGenericData(item: any, data: any){
         if(data){
@@ -165,7 +165,13 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         return response;
     }
 
-    addItem(item: T, storageName?: string){
+    private getLocalByID(ID: number){
+        let localData: T[] = this.getLocalData();
+        if(localData) return localData.find(item=> item.key === ID);
+        return null;
+    }
+
+    protected addItem(item: T, storageName?: string){
         let currentItem = this.getLocalByID(Number(item.key));
         if(currentItem){
             let localData = this.getLocalData();
@@ -174,12 +180,6 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
             this.setData(localData, false, storageName);
         }
         else this.setData([item], true, storageName);
-    }
-
-    private getLocalByID(ID: number){
-        let localData: T[] = this.getLocalData();
-        if(localData) return localData.find(item=> item.key === ID);
-        return null;
     }
 
     protected getBaseList(ajax, storageName?: string, concat: boolean = false){
@@ -196,17 +196,12 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
             this.storage.setStorage(data, 0, storageName);
             if(storageName !== this.storage.storageName && concat && saveLocal) this.storage.setStorage(this.source, 0);
         }
-        this.finishLoading();
     }
 
     protected getLocalData(storageName?: string): T[]{
-        if(this.storage){
+        if(this.storage) {
             let storedData = this.storage.getStorage(storageName);
-            if(storedData){
-                return storedData.map((item: T)=> {
-                    return Object.assign(this.newInstance(), item);
-                });
-            }
+            if(storedData) return storedData.map((item: T)=> Object.assign(this.newInstance(), item));
         }
         return null;
     }
@@ -215,9 +210,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 @Injectable()
 export class GenericCatalogService extends GenericService<GenericCatalog> implements GenericServiceBase<GenericCatalog> {
     
-    constructor(_db: BaseAjaxService) {
-        super(_db);
-    }
+    constructor(_db: BaseAjaxService) { super(_db); }
 
     setCatalogID(id: number){ this.catalogID = id; }
 
