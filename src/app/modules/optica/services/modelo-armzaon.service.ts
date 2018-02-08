@@ -25,7 +25,6 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
     }
 
     newInstance(): ModeloArmazon { return new ModeloArmazon(); }
-    mapData(r){ return new ModeloArmazon() }
 
     getCatalogItem(id: string, callback){
         let d2s = `${this._fb_fieldID},${id}`;
@@ -44,7 +43,7 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
         ).snapshotChanges()
         .map((arr) => {
             return arr.map(snap => {
-                return this.setGenericType(snap);
+                return this.mapData(snap);
             });
         })
         .subscribe(r=> {

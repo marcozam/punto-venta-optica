@@ -69,18 +69,16 @@ export class ProductosListComponent implements OnInit {
     this._categoriaService.source$.subscribe((result: CategoriaProductoSumary[]) => {
       this.categorias = result;
       this.categorias.forEach(cat=>{
-        this._service.getProductsByCategory(Number(cat.key));
+        this._service.getProductsByCategory(Number(cat.key))
+          .subscribe((products: Producto[])=>{
+            products = products.filter(p => {
+              let cat = this.categorias.find(c=> c.key === p.categoriaProductoID);
+              p.categoriaProducto = cat;
+              return cat ? true : false;;
+            });
+            if(products.length > 0) this.dataSource.updateDataSource(products);
+          });
       });
-    });
-    
-    this._service.source$.subscribe((products: Producto[]) =>{
-      //Elimina los productos sin categoria
-      products = products.filter(p => {
-        let cat = this.categorias.find(c=> c.key === p.categoriaProductoID);
-        p.categoriaProducto = cat;
-        return cat ? true : false;;
-      });
-      if(products.length > 0) this.dataSource.updateDataSource(products);
     });
   }
 
