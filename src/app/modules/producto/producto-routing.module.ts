@@ -6,9 +6,9 @@ import { ProductosComponent } from './containers/productos/productos.component';
 import { ProductosListComponent } from './containers/productos-list/productos-list.component';
 
 const routes: Routes = [
-  { path: 'productos/categorias/:id', component: CategoriaProductoComponent, data: { title: 'Categoria de Productos' } },
-  { path: 'productos', component: ProductosListComponent, data: { title: 'Productos' } },
-  { path: 'productos/detail/:id', component: ProductosComponent, data: { title: 'Producto' } },
+  { path: '', component: ProductosListComponent, data: { title: 'Productos' }, pathMatch: 'full' },
+  { path: 'detail/:id', component: ProductosComponent, data: { title: 'Producto' } },
+  { path: 'categorias/:id', component: CategoriaProductoComponent, data: { title: 'Categoria de Productos' } },
 ];
 
 @NgModule({
