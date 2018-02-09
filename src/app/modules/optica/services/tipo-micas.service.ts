@@ -40,7 +40,7 @@ export class TipoMicasService extends GenericService<TipoMica> implements Generi
   }
 }
 
-
+/*
 @Injectable()
 export class FBTipoMicasService extends FBGenericService<TipoMica> implements GenericServiceBase<TipoMica> {
   constructor(_db: AngularFireDatabase) { 
@@ -104,3 +104,4 @@ export class FBTipoMicasService extends FBGenericService<TipoMica> implements Ge
     return _newValue.key ?  this.updateCatalogItem(_newValue) :  this.addCatalogItem(_newValue);
   }
 }
+*/

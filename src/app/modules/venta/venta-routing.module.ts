@@ -5,9 +5,9 @@ import { VentasComponent } from './containers/ventas/ventas.component';
 import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen-venta-mes.component';
 
 const routes: Routes = [
-  { path: 'ventas', component: VentasComponent, data: { title: 'Generar Venta' } },
-  { path: 'ventas/:clienteID', component: VentasComponent, data: { title: 'Generar Venta' } },
-  { path: 'resumen/ventas', component: ResumenVentaMesComponent, data: { title: 'Resumen de Ventas por Mes' } },
+  { path: 'generar', component: VentasComponent, data: { title: 'Generar Venta' } },
+  { path: 'generar/:clienteID', component: VentasComponent, data: { title: 'Generar Venta' } },
+  { path: 'resumen', component: ResumenVentaMesComponent, data: { title: 'Resumen de Ventas por Mes' } },
 ];
 
 @NgModule({

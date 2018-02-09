@@ -5,8 +5,8 @@ import { MovimientosComponent } from './components/movimientos/movimientos.compo
 import { CorteInventarioComponent } from './components/corte-inventario/corte-inventario.component';
 
 const routes: Routes = [
-  { path: 'inventario/movimientos', component: MovimientosComponent, data: { title: 'Movimientos de Inventario' } },
-  { path: 'inventario/corte', component: CorteInventarioComponent, data: { title: 'Corte de Inventario' } },
+  { path: 'movimientos', component: MovimientosComponent, data: { title: 'Movimientos de Inventario' } },
+  { path: 'corte', component: CorteInventarioComponent, data: { title: 'Corte de Inventario' } },
 ];
 
 @NgModule({

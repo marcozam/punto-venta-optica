@@ -54,9 +54,11 @@
       <a mat-menu-item routerLink="resumen/ventas" (click)="sidenav.close()">Resumen de Ventas</a>
     </mat-menu>
   </mat-sidenav>
-  <div class="app-content">
-    <router-outlet></router-outlet>
-  </div>
+  <mat-sidenav-content>
+    <div class="app-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
 

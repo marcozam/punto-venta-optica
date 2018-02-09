@@ -6,10 +6,10 @@ import { VentasPendientesEntregaComponent } from './containers/ventas-pendientes
 import { CorteListComponent } from './components/corte-list/corte-list.component';
 
 const routes: Routes = [
-  { path: 'caja/movimientos', component: MovimientosSinCorteComponent, data: { title: 'Movimientos sin corte de caja' } },
-  { path: 'caja/cortes', component: CorteListComponent, data: { title: 'Cortes de Caja' } },
-  { path: 'venta/entregas', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendiente de entrega' }},
-  { path: 'venta/entregas/:clienteID', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendientes' }},
+  { path: 'movimientos', component: MovimientosSinCorteComponent, data: { title: 'Movimientos sin corte de caja' } },
+  { path: 'cortes', component: CorteListComponent, data: { title: 'Cortes de Caja' } },
+  { path: 'entregas', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendiente de entrega' }},
+  { path: 'entregas/:clienteID', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendientes' }},
 ];
 
 @NgModule({

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TipoMica, MaterialMica, TratamientoMica } from './../../models/examen.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { MaterialMicasService } from './../../services/material-micas.service';
-import { FBTipoMicasService, TipoMicasService } from './../../services/tipo-micas.service';
+import { TipoMicasService } from './../../services/tipo-micas.service';
 import { TratamientoMicasService } from '../../services/tratamiento-micas.service';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -16,7 +16,7 @@ class PreciosForm {
   selector: 'app-precio-material',
   templateUrl: './precio-material.component.html',
   styleUrls: ['./precio-material.component.scss'],
-  providers: [FBTipoMicasService, TipoMicasService, MaterialMicasService, TratamientoMicasService, DialogBoxService]
+  providers: [TipoMicasService, MaterialMicasService, TratamientoMicasService, DialogBoxService]
 })
 export class PrecioMaterialComponent implements OnInit {
   //Data
@@ -30,7 +30,6 @@ export class PrecioMaterialComponent implements OnInit {
   listaPreciosID: number;
 
   constructor(
-    private _tipoServiceFB: FBTipoMicasService,
     private _tipoService: TipoMicasService,
     private _materialService: MaterialMicasService,
     private _tratamientoService: TratamientoMicasService,
@@ -59,15 +58,17 @@ export class PrecioMaterialComponent implements OnInit {
         if(row.formGroup.value.precioBase >= 0) _precios[row.key] = row.formGroup.value;
       }
     })
-    this._tipoServiceFB.setPrecioMicas(this.listaPreciosID, value.material, _precios);
+    //this._tipoServiceFB.setPrecioMicas(this.listaPreciosID, value.material, _precios);
     this.dialog.openDialog('Registro exitoso!', 'Los precios para los Materiales se guardaron correctamente.', false);
   }
 
   onMaterialChange(material: MaterialMica) {
+    /*
     this._tipoServiceFB.getAllMicasPrecios(this.listaPreciosID, material.keyFB, (actualPrice:any[]) => {
         this.precios = actualPrice;
         this.createFormGroups();
       });
+      */
   }
 
   createFormGroups(){

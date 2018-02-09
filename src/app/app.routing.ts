@@ -2,11 +2,7 @@ import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 //Components
-import { HomeComponent } from './containers/home/home.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { PreciosDetalleComponent } from './containers/precios-detalle/precios-detalle.component';
-//import { FacturaListComponent } from './modules/facturacion/factura-list.component';
-//import { FacturacionComponent } from './modules/facturacion/facturacion.component';
 
 const appRoutes: Routes = [ 
     {
@@ -17,16 +13,32 @@ const appRoutes: Routes = [
         path: 'productos',
         loadChildren: 'app/modules/producto/producto.module#ProductoModule'
     },
-
-
+    {
+        path: 'inventario',
+        loadChildren: 'app/modules/inventario/inventario.module#InventarioModule'
+    },
+    {
+        path: 'ventas',
+        loadChildren: 'app/modules/venta/venta.module#VentaModule'
+    },
+    {
+        path: 'crm',
+        loadChildren: 'app/modules/crm/crm.module#CRMModule'
+    },
+    {
+        path: 'development',
+        loadChildren: 'app/modules/development/development.module#DevelopmentModule'
+    },
+    {
+        path: 'optica',
+        loadChildren: 'app/modules/optica/optica.module#OpticaModule'
+    },
+    {
+        path: 'caja',
+        loadChildren: 'app/modules/pagos/pagos.module#PagosModule'
+    },
     //Home
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: HomeComponent, data: { title: 'Inicio' } },
-    //Should be on Producto Module??
-    { path: 'lista-precios', component: PreciosDetalleComponent, data: { title: 'Lista de Precios' } },
-    //Facturacion
-    //{ path: 'facturacion', component: FacturacionComponent, data: { title: 'Facturacion' } },
-    //{ path: 'facturacion/list', component: FacturaListComponent, data: { title: 'Lista de Facturas' } },
+    { path: '', redirectTo: 'crm/search', pathMatch: 'full' },
     { path: '404', component: PageNotFoundComponent, data: { title: 'Pagina no encontrada'} },
     { path: '**', component: PageNotFoundComponent, data: { title: 'Pagina no encontrada'} }
 ];

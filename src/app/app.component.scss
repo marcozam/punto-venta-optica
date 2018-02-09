@@ -2,9 +2,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import '~@angular/material/_theming';
 
-//Project Styles
-@import '../assets/css/browser-compatibility-mixins';
-
 @include mat-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
@@ -33,7 +30,10 @@ body{
 {
   margin: 0 25px;
   padding-top: 20px;
-  @include height-calc('100vh - 134px');
+  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
+  max-height: calc(100vh - 64px);
+  box-sizing: border-box;
 }
 
 .os-form-container{
@@ -52,19 +52,4 @@ body{
       margin-bottom: 8px;
     }
   }
-  /*
-  @include sm{
-    footer{
-      justify-content: center;
-      flex-direction: row-reverse;
-      button{
-        width: auto;
-        margin-left: 18px;
-      }
-      button:last-of-type{
-        margin-left: 0;
-      }
-    }
-  }
-  */
 }
