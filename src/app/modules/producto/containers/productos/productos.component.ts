@@ -30,7 +30,7 @@ export class ProductosComponent implements OnInit {
     private router: Router, 
     public dialog: DialogBoxService) { 
     this.product = new Producto('');
-    Observable.merge(this._categoriasService.loading$, this._service.loading$);
+    this.loading$ = Observable.merge(this._categoriasService.loading$, this._service.loading$);
   }
 
   createSubscriptions(){

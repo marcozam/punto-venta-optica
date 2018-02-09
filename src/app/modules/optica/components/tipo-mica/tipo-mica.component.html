@@ -1,40 +1,40 @@
 <form #tipoMicaForm="ngForm">
-  <div class="row" *ngIf="isLoading">
-    <div class="col-xs col-sm-4">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
-  </div>
   <div class="row">
     <div class="col-xs col-sm-4">
-      <mat-form-field>
-          <input matInput placeholder="Nombre" name="nombre" type="text" required
-              #nombreControl="ngModel" [ngModel]="item.nombre"/>
+      <div class="sub-container">
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+        <div class="sub-titles">
+          Tipo de Mica
+        </div>
+        <mat-form-field>
+            <input matInput placeholder="Nombre" name="nombre" type="text" required
+                #nombreControl="ngModel" [ngModel]="item.nombre"/>
         </mat-form-field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs col-sm-4">
-      <mat-radio-group name="tipoMica" [ngModel]="item.tipoMica">
-        <mat-radio-button value="1">Monofocal</mat-radio-button>
-        <mat-radio-button value="2">Bifocal</mat-radio-button>
-        <mat-radio-button value="0">Ambas</mat-radio-button>
-      </mat-radio-group>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xs col-sm-4 text-right buttons-containers">
-      <button mat-button color="warn" type="button" routerLink="/catalogo/{{catalogID}}">
-        <mat-icon>cancel</mat-icon>
-        Cancelar
-      </button>
+        
+        <div class="row">
+          <div class="col-xs">
+            <mat-radio-group name="tipoMica" [ngModel]="item.tipoMica">
+              <mat-radio-button value="1">Monofocal</mat-radio-button>
+              <mat-radio-button value="2">Bifocal</mat-radio-button>
+              <mat-radio-button value="0">Ambas</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
 
-      <button mat-raised-button color="primary" 
-        [disabled]="tipoMicaForm.invalid"
-        (click)="onSave(tipoMicaForm.value)">
-        <mat-icon aria-label="Guardar">save</mat-icon>
-        Guardar
-      </button>
+        <div class="text-right buttons-containers">
+          <button mat-button color="warn" type="button" routerLink="/catalogo/{{catalogID}}">
+            <mat-icon>cancel</mat-icon>
+            Cancelar
+          </button>
+    
+          <button mat-raised-button color="primary" 
+            [disabled]="tipoMicaForm.invalid"
+            (click)="onSave(tipoMicaForm.value)">
+            <mat-icon aria-label="Guardar">save</mat-icon>
+            Guardar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </form>

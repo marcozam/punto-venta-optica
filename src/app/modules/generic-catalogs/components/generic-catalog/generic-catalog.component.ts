@@ -64,17 +64,19 @@ export class GenericCatalogComponent implements OnInit {
   }
 
   onSave(newValue: GenericCatalog){
-    if(this.catalog){
+    let _url = this.catalog.listURL ? this.catalog.listURL : '/catalogo/' + this.catalogID;
+    if(this.catalog.referenceURL){
+      console.log('Save FB');
       this.fbGenericService.save(this.item, newValue);
       this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
+      this.router.navigate([_url]);
     }
     else{
       this.genericService.save(newValue, this.item)
         .subscribe(() =>{
           this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
+          this.router.navigate([_url]);
         });
     }
-    let _url = this.catalog.listURL ? this.catalog.listURL : '/catalogo/' + this.catalogID;
-    this.router.navigate([_url]);
   }
 }
