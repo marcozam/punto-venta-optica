@@ -14,9 +14,8 @@ const appRoutes: Routes = [
         loadChildren: 'app/modules/generic-catalogs/generic-catalogs.module#GenericCatalogsModule'
     },
     {
-        path: '',
-        redirectTo: '',
-        pathMatch: 'full'
+        path: 'productos',
+        loadChildren: 'app/modules/producto/producto.module#ProductoModule'
     },
 
 
