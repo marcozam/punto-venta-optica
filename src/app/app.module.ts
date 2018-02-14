@@ -18,7 +18,6 @@ import { AppComponent } from './app.component';
 
 import { routing } from './app.routing';
 import { LoginComponent } from './components/login/login.component';
-import { PreciosDetalleComponent } from './containers/precios-detalle/precios-detalle.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 registerLocaleData(localeESMX);
@@ -27,9 +26,7 @@ registerLocaleData(localeESMX);
   declarations: [
     AppComponent,
     LoginComponent,
-    PageNotFoundComponent,
-    //This should be removed
-    PreciosDetalleComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

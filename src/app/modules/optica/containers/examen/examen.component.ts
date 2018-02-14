@@ -34,7 +34,7 @@ export class ExamenComponent implements OnInit {
       this._route.navigateByUrl('/ventas/' + this.pacienteID)
     }
     else if (event.action === 'presupuesto'){
-      this._route.navigateByUrl('/examen/presupuesto/' + this.pacienteID)
+      this._route.navigateByUrl('/optica/examen/presupuesto/' + this.pacienteID)
     }
   }
 }

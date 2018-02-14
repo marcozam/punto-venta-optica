@@ -9,7 +9,7 @@ import { Persona } from 'app/modules/base/models/base.models';
   selector: 'os-persona',
   templateUrl: './persona.component.html',
   styleUrls: ['./persona.component.scss'],
-  providers:[PersonasService, DialogBoxService]
+  providers:[DialogBoxService]
 })
 export class PersonaComponent implements OnInit {
 
@@ -41,9 +41,7 @@ export class PersonaComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.ID){
-      this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
-    }
+    if(this.ID) this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
     this.form.valueChanges.subscribe((val) => {
       this.onChange.emit({
         isValid: this.form.valid,

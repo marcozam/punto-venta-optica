@@ -9,14 +9,10 @@ export class CorteTicketService extends ImpresionTicketService implements Genera
 
     corte: CorteCaja;
 
-    constructor(private _decimal: DecimalPipe, private _date: DatePipe) {
-        super();
-    }
+    constructor(private _decimal: DecimalPipe, private _date: DatePipe) { super(); }
 
-    getServerData(key: number) {
-        throw new Error("Method not implemented.");
-    }
-    
+    getServerData(key: number) { throw new Error('Method not implemented.'); }
+
     createContent(): string {
         let content: string[] = [];
         content = content.concat([`<tr>
@@ -84,8 +80,5 @@ export class CorteTicketService extends ImpresionTicketService implements Genera
         </tr>`;
     }
 
-    print() {
-        super.print(this, this.corte.sucursal);
-    }
-
+    print() { super.print(this, this.corte.sucursal); }
 }

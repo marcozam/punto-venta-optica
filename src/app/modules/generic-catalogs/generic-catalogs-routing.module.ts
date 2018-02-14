@@ -9,8 +9,8 @@ import { DynamicCatalogListComponent } from './components/dynamic-catalog-list/d
 const routes: Routes = [
   { path: 'catalogo/:catalogID', component: GenericCatalogListComponent, data: { title: 'Lista' } },
   { path: 'catalogo/:catalogID/:detailID', component: GenericCatalogComponent, data: { title: 'Catalogo' } },
-  { path: 'DCG', component: DynamicCatalogListComponent, data: { title: 'Generador de Catalogos Dinamico' }},
-  { path: 'DCG/:catalogID', component: DynamicCatalogComponent, data: { title: 'Generador de Catalogos Dinamico' }}
+  { path: '', component: DynamicCatalogListComponent, data: { title: 'Generador de Catalogos Dinamico' }},
+  { path: ':catalogID', component: DynamicCatalogComponent, data: { title: 'Generador de Catalogos Dinamico' }}
 ];
 
 @NgModule({

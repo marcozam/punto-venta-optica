@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+// Models
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 import { ModeloArmazon, MarcaArmazon } from 'app/modules/optica/models/armazon.models';
-
+// Services
 import { ModeloArmazonService } from 'app/modules/optica/services/modelo-armzaon.service';
 import { CategoriaArmazonService } from 'app/modules/optica/services/categoria-armazon.service';
 import { MarcaArmazonService } from 'app/modules/optica/services/marca-armazon.service';
-import { GenericCatalog } from 'app/modules/base/models/base.models';
 
 @Component({
   selector: 'app-modelo-aramazon-list',
@@ -24,25 +24,25 @@ export class ModeloAramazonListComponent implements OnInit {
   dataSource: TableSource<ModeloArmazon>;
 
   constructor(
-    private service: ModeloArmazonService, 
-    private _categorias: CategoriaArmazonService, 
+    private service: ModeloArmazonService,
+    private _categorias: CategoriaArmazonService,
     private _marca: MarcaArmazonService,
-    private router: Router) { 
+    private router: Router) {
     this.dataSource = new TableSource();
-    //Define filter function
-    this.dataSource.filter = () =>{
+    // Define filter function
+    this.dataSource.filter = () => {
       return this.selectedMarca ?
-        this.selectedMarca.nombre === 'All' ? 
-        this.dataSource.data : 
+        this.selectedMarca.nombre === 'All' ?
+        this.dataSource.data :
         this.dataSource.data.filter(item => item.marcaID === this.selectedMarca.key) :
         this.dataSource.data;
-    }
+    };
     this.dataSource.columns = [
       new TableColumn('Categoria', 'categoria', (item) => item.categoria ? item.categoria.nombre : item.marca.categoria.nombre ),
       new TableColumn('Marca', 'marca', (item) => item.marca.nombre ),
-      new TableColumn('Modelo', 'modelo', (item)=> item.nombre )
-    ]
-    //Default Sorts
+      new TableColumn('Modelo', 'modelo', (item) => item.nombre )
+    ];
+    // Default Sorts
     this.dataSource.columns[0].sortOrder = 0;
     this.dataSource.columns[0].sortDirection = 'desc';
     this.dataSource.columns[1].sortOrder = 1;
@@ -50,24 +50,22 @@ export class ModeloAramazonListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.getCatalogList(((res: ModeloArmazon[])=> this.dataSource.updateDataSource(res)));
-    this._marca.getCatalogList((res)=> this.marcas = res);
+    this.service.getCatalogList(((res: ModeloArmazon[]) => this.dataSource.updateDataSource(res)));
+    this._marca.getCatalogList((res) => this.marcas = res);
   }
 
-  onMarcaChange(marca: MarcaArmazon){
+  onMarcaChange(marca: MarcaArmazon) {
     this.selectedMarca = marca;
     this.dataSource.applyFilters();
   }
 
-  add(){
-    this.router.navigate(['/armazon/modelo/new']);
-  }
+  add() { this.navigate('new'); }
 
-  edit(item: ModeloArmazon){
-    this.router.navigate([`/armazon/modelo/${item.key}`]);
-  }
+  edit(item: ModeloArmazon) { this.navigate(item.key.toString()); }
 
-  delete(item: ModeloArmazon){
-    //this.service.deleteModelo(item, () =>{ })
+  navigate(key: string) { this.router.navigate([`/optica/armazon/modelo/${key}`]); }
+
+  delete(item: ModeloArmazon) {
+    // this.service.deleteModelo(item, () =>{ })
   }
 }

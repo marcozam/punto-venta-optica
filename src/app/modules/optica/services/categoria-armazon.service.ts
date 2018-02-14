@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireAction } from 'angularfire2/database';
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 
@@ -10,38 +10,27 @@ export class CategoriaArmazonService extends FBGenericService<GenericCatalog> {
         super.setListRefURL('armazones/categorias');
     }
 
-    setPrecioCategorias(precios, listaPreciosID){
-        let $refPrecio = this.db.object(`armazones/precios/${listaPreciosID}/categorias`);
+    mapData(snap: AngularFireAction<any>) {
+        console.log(snap.payload.val());
+        return { precio : snap.payload.val(), key: snap.key };
+    }
+
+    setPrecioCategorias(precios, listaPreciosID) {
+        const $refPrecio = this.db.object(`armazones/precios/${listaPreciosID}/categorias`);
         $refPrecio.set(precios);
     }
 
-    getPrecioCategoria(listaPreciosID, categoriaID, callback){
-        let $refPrecio = this.db.object(`armazones/precios/${listaPreciosID}/categorias/${categoriaID}`).snapshotChanges()
-        .map(snap => {
-            return { 
-                precio : snap.payload.val(),
-                key: snap.key
-            }
-        })
-        .subscribe(r=> {
-            callback(r);
-        });
+    getPrecioCategoria(listaPreciosID, categoriaID, callback) {
+        const $refPrecio = this.db.object(`armazones/precios/${listaPreciosID}/categorias/${categoriaID}`).snapshotChanges()
+        .map(snap => this.mapData(snap))
+        .subscribe(r => { callback(r); });
     }
 
-    getPreciosCategorias(listaPreciosID, callback?, watch?:boolean){
-        let $refPrecio = this.db.list(`armazones/precios/${listaPreciosID}/categorias`).snapshotChanges()
-            .map((arr) => {
-                return arr.map(snap => {
-                    return { 
-                        precio : snap.payload.val(),
-                        key: snap.key
-                    }
-                });
-            })
-            .subscribe(r=> {
-                if(!watch){
-                    $refPrecio.unsubscribe();
-                }
+    getPreciosCategorias(listaPreciosID, callback?, watch?: boolean) {
+        const $refPrecio = this.db.list(`armazones/precios/${listaPreciosID}/categorias`).snapshotChanges()
+            .map((arr) => arr.map(snap => ({ precio : snap.payload.val(), key: snap.key })))
+            .subscribe(r => {
+                if (!watch) { $refPrecio.unsubscribe(); }
                 callback(r);
             });
     }

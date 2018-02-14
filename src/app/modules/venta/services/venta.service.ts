@@ -18,9 +18,7 @@ export class VentaService implements GenericServiceBase<Venta> {
         private _contactoService: ContactoService
     ) { }
 
-    newInstance(): Venta {
-        return new Venta();
-    }
+    newInstance(): Venta { return new Venta(); }
 
     mapDetalleVenta2Server(detalle: DetalleVenta[]){
         let arr = detalle.map(dv => {
@@ -46,11 +44,7 @@ export class VentaService implements GenericServiceBase<Venta> {
         return arr.join('&');
     }
 
-    mapList(list: any[]): Venta[]{
-        return list.map(p=>{
-            return this.mapData(p);
-        })
-    }
+    mapList(list: any[]): Venta[]{ return list.map(p=> this.mapData(p)); }
     
     mapData(item: any): Venta {
         let venta = new Venta();
@@ -157,9 +151,7 @@ export class VentaService implements GenericServiceBase<Venta> {
         return this.db.getData(params);
     }
 
-    cancelOrder(ID: number){
-        this.changeStatus(ID, 40102, true);
-    }
+    cancelOrder(ID: number){ this.changeStatus(ID, 40102, true); }
 
     getByID(ID: number){
         let observable$: Subject<Venta> = new Subject();
@@ -187,15 +179,13 @@ export class VentaService implements GenericServiceBase<Venta> {
             V4: sucursalID ? sucursalID : '',
             V8: clienteID ? clienteID : '',
         });
-        return this.db.getData(params)
-            .map(result => this.mapList(result.Table));
+        return this.db.getData(params).map(result => this.mapList(result.Table));
     }
 
     getHistorialCompras(clienteID: number){
         let params = this.db.createParameter('ECOM0003', 4, { 
             V3: clienteID ? clienteID : '',
         });
-        return this.db.getData(params)
-            .map(result => this.mapList(result.Table));
+        return this.db.getData(params).map(result => this.mapList(result.Table));
     }
 }

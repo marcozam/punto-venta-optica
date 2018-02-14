@@ -1,6 +1,7 @@
 <form #formArmazonesPrecios="ngForm">
   <div class="row middle-xs" *ngFor="let categoria of categoriaArmazon">
     <div class="col-xs">
+      {{categoria | json}}
       {{categoria.nombre}}
     </div>
     <div class="col-xs">

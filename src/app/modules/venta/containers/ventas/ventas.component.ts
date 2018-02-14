@@ -2,22 +2,21 @@ import { Component, DebugElement, ElementRef, OnInit, ViewChild, ViewContainerRe
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { MatSelectionList } from '@angular/material';
 import { MatDialog } from '@angular/material';
-
-import { Producto } from 'app/modules/producto/models/producto.models';
+// Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
+import { Examen } from 'app/modules/optica/models/examen.models';
+import { Producto } from 'app/modules/producto/models/producto.models';
+import { VentaOptica } from 'app/modules/shared-optica/models/venta-optica';
+import { Inventario } from 'app/modules/inventario/models/inventario.models';
 import { Venta, DetalleVenta, DetallePagos, MetodoPago } from '../../models/venta.models';
-
+// Services
 import { VentaService } from '../../services/venta.service';
 import { ExamenService } from 'app/modules/optica/services/examen.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-
-import { Examen } from 'app/modules/optica/models/examen.models';
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
-import { VentaOptica } from 'app/modules/optica/models/venta-optica';
-import { Inventario } from 'app/modules/inventario/models/inventario.models';
 
 @Component({
   selector: 'app-ventas',
@@ -25,10 +24,10 @@ import { Inventario } from 'app/modules/inventario/models/inventario.models';
   styleUrls: ['./ventas.component.scss'],
   providers: [
     VentaService,
-    ContactoService, 
+    ContactoService,
     InventarioService,
-    DialogBoxService, 
-    DialogPagosService, 
+    DialogBoxService,
+    DialogPagosService,
     VentaOptikaTicketService
   ]
 })
@@ -37,103 +36,99 @@ export class VentasComponent extends VentaOptica implements OnInit {
   clienteID: number;
   listaPrecioID: number;
   sucursalID: number;
-  loading: boolean = false;
+  loading = false;
 
   constructor(
     private _contactoService: ContactoService,
     private _ventaService: VentaService,
     private _inventarioService: InventarioService,
     private _printService: VentaOptikaTicketService,
-    //Optika
+    // Optika
     private _examenService: ExamenService,
     private dialog: DialogBoxService,
     private pagosDialog: DialogPagosService,
     private router: Router,
-    private route: ActivatedRoute) { 
-      super();
-  }
+    private route: ActivatedRoute) { super(); }
 
   @ViewChild('ticketVenta') ticketVenta: ViewContainerRef;
 
   ngOnInit() {
-    //TODO: Obtener la lista de precios de la sucursal
+    // TODO: Obtener la lista de precios de la sucursal
     this.listaPrecioID = 1;
     this.sucursalID = 1;
     this.clienteID = this.route.snapshot.params['clienteID'];
     this.nuevaVenta();
-    //TODO: Agregar loadeder
+    // TODO: Agregar loadeder
   }
 
-  nuevaVenta(){
+  nuevaVenta() {
     this.venta = new Venta();
 
-    //Obtiene el paciente
-    if(this.clienteID){
+    // Obtiene el paciente
+    if (this.clienteID) {
       this._contactoService.getByID(this.clienteID)
         .subscribe((data: Contacto) => {
           this.venta.sumary.cliente = data;
         });
     }
 
-    //Validacion de inventario
-    this.venta.onDetalleChanged.subscribe((items: DetalleVenta[]) =>{
-      items.forEach(item=>{
+    // Validacion de inventario
+    this.venta.onDetalleChanged.subscribe((items: DetalleVenta[]) => {
+      items.forEach(item => {
         this._inventarioService.getInventarioProducto(Number(item.productoVenta.key), this.sucursalID)
-          .subscribe((inv: Inventario)=> {
-            if(inv.cantidad <= 0){
+          .subscribe((inv: Inventario) => {
+            if (inv.cantidad <= 0) {
               this.dialog.openDialog(
-                'Advertencia', 
-                `No hay ${item.productoVenta.nombre} en el inventario. ¿Desea continuar?`, 
-                true, 
-                res =>{
-                  console.log(res ? 'No hacer nada': 'Remover producto');
+                'Advertencia',
+                `No hay ${item.productoVenta.nombre} en el inventario. ¿Desea continuar?`,
+                true,
+                res => {
+                  console.log(res ? 'No hacer nada' : 'Remover producto');
                 });
             }
           });
       });
-    })
+    });
   }
 
-  isVentaInvalid(){
+  isVentaInvalid() {
     let rval = true;
-    if(this.venta.detalle.length > 0){
+    if (this.venta.detalle.length > 0) {
       rval = false;
-      if(this.showOptica){
-        let mica = this.venta.detalle.find(d=> { return d.productoVenta.key === 999999 });
-        if(mica){
-          rval = this.venta.comentarios.filter(c=> c.moduleID === 995).length === 0;
+      if (this.showOptica) {
+        const mica = this.venta.detalle.find(d => d.productoVenta.key === 999999);
+        if (mica) {
+          rval = this.venta.comentarios.filter(c => c.moduleID === 995).length === 0;
         }
       }
     }
     return rval;
   }
 
-  onSaveVenta(){
+  onSaveVenta() {
     this.pagosDialog.openDialog(this.venta, (pagos: DetallePagos[]) => {
-      if(pagos){
-        this.venta.pagos = pagos.map(p=> {
+      if (pagos) {
+        this.venta.pagos = pagos.map(p => {
           p.esPagoInicial = true;
           return p;
         });
         this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
-          if(newVenta){
-            //Optika
-            if(this.examen) {
+          if (newVenta) {
+            // Optika
+            if (this.examen) {
               this._examenService.saveVentaExamen(newVenta.sumary.key, this.examen.key, this.examen.materialRecomendadoID, this.examen.tipoMicaRecomendadoID)
-                .subscribe(()=> this.onVentaSaved())
-            }
-            else this.onSaveVenta();
-          }
-          else{
+                .subscribe(() => this.onVentaSaved());
+            } else { this.onSaveVenta(); }
+          } else {
             this.dialog.openDialog('Error', 'Ocurrio un error al generar la venta', false);
             this.venta.sumary.totalPagado = 0;
           }
         });
       }
-    })
+    });
   }
 
-  onVentaSaved(){
+  onVentaSaved() {
     this._printService.examen = this.examen;
     this._printService.venta = this.venta;
     this._printService.esPagoInicial = true;
@@ -141,26 +136,23 @@ export class VentasComponent extends VentaOptica implements OnInit {
     this.router.navigate(['']);
   }
 
-  onProductoAdded(item: DetalleVenta){
-    let currentItem = this.venta.detalle.find(dv => dv.productoVenta.key === item.productoVenta.key);
-    if(currentItem){
-      item.cantidad += currentItem.cantidad;
-    }
-    let newDetalle = 
-        (currentItem ? 
-        this.venta.detalle.filter(dv => dv.productoVenta.key !== item.productoVenta.key) : 
+  onProductoAdded(item: DetalleVenta) {
+    const currentItem = this.venta.detalle.find(dv => dv.productoVenta.key === item.productoVenta.key);
+    if (currentItem) { item.cantidad += currentItem.cantidad; }
+    const newDetalle = (currentItem ?
+        this.venta.detalle.filter(dv => dv.productoVenta.key !== item.productoVenta.key) :
         this.venta.detalle)
         .concat(item);
     this.venta.updateDetalleVenta(newDetalle);
   }
 
-  onDetalleChanged(value: DetalleVenta[]){ this.venta.updateDetalleVenta(value, false); }
+  onDetalleChanged(value: DetalleVenta[]) { this.venta.updateDetalleVenta(value, false); }
 
-  //Optica
-  ventaMica: boolean = false;
-  showOptica: boolean = true;
+  // Optica
+  ventaMica = false;
+  showOptica = true;
 
-  onExamenChanged(value){
+  onExamenChanged(value) {
     this.showOptica = value ? true :  false;
     super.onExamenChanged(value);
   }

@@ -57,7 +57,7 @@ export class GenericCatalogListComponent implements OnInit {
   }
 
   cleanData(){
-    this.detailURL = `/catalogo/${this.catalogID}/`;
+    this.detailURL = `/DCG/catalogo/${this.catalogID}/`;
     this.dataSource = new TableSource();
   }
 

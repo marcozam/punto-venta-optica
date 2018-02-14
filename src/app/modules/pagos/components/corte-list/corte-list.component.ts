@@ -12,7 +12,7 @@ import { TableSource, TableColumn } from 'app/modules/base/models/data-source.mo
   selector: 'app-corte-list',
   templateUrl: './corte-list.component.html',
   styleUrls: ['./corte-list.component.scss'],
-  providers: [ CajaService, CorteTicketService ]
+  providers: [ CajaService, CorteTicketService, DecimalPipe, DatePipe ]
 })
 export class CorteListComponent implements OnInit, AfterViewInit {
 
@@ -74,8 +74,7 @@ export class CorteListComponent implements OnInit, AfterViewInit {
   mostarDetalle(item: CorteCaja){
     this.selectedCorte = item;
     this.showDetails = true;
-    if(item.detalle.length > 0)
-      this.detailsDataSource.updateDataSource(item.detalle);
+    if(item.detalle.length > 0) this.detailsDataSource.updateDataSource(item.detalle);
     else {
       this.loadingDetail = true;
       this._service.getDetalleCorte(Number(item.key))

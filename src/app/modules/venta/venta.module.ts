@@ -1,29 +1,28 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import {
-    MatButtonModule, 
-    MatSelectModule, 
-    MatIconModule, 
-    MatInputModule, 
-    MatFormFieldModule, 
+    MatButtonModule,
+    MatSelectModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatListModule,
     MatGridListModule,
     MatTooltipModule,
     MatProgressBarModule,
   } from '@angular/material';
-  
-//OS Modules
+
+// OS Modules
 import { OpticaModule } from '../optica/optica.module';
 import { BaseModule } from 'app/modules/base/base.module';
-//Routing
+// Routing
 import { VentaRoutingModule } from './venta-routing.module';
-//Services
+// Services
 import { VentaService } from 'app/modules/venta/services/venta.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
-//Components
+// Components
 import { VentasComponent } from './containers/ventas/ventas.component';
 import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.component';
 import { AddProductoComponent } from './components/add-producto/add-producto.component';
@@ -33,21 +32,21 @@ import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen
 
 @NgModule({
   imports: [
-    CommonModule,
     FormsModule,
-    //Routing
+    CommonModule,
+    // Routing
     VentaRoutingModule,
-    //Material2 Modules
-    MatButtonModule, 
-    MatSelectModule, 
-    MatIconModule, 
-    MatInputModule, 
-    MatFormFieldModule, 
+    // Material2 Modules
+    MatButtonModule,
+    MatSelectModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
     MatListModule,
     MatGridListModule,
     MatTooltipModule,
     MatProgressBarModule,
-    //OS Modules
+    // OS Modules
     OpticaModule,
     BaseModule,
   ],
@@ -59,7 +58,7 @@ import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen
     AddDescuentoProductoComponent,
     ResumenVentaMesComponent,
   ],
-  exports:[
+  exports: [
     VentasComponent,
     VentaRoutingModule
   ],
@@ -67,12 +66,6 @@ import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen
     MetodoPagoVentaComponent,
     AddDescuentoProductoComponent
   ],
-  providers: [
-    VentaService,
-    //TBD
-    ContactoService,
-    DecimalPipe, 
-    DatePipe
-  ]
+  providers: [ VentaService ]
 })
 export class VentaModule { }

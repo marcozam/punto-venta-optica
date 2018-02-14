@@ -99,6 +99,7 @@ export class ArmazonSelectionComponent implements OnInit {
   }
 
   onModeloChanged(value: ModeloArmazon){
+    console.log('Selected Model', value);
     let _categoria: GenericCatalog = this.marca.categoria;
     if(value.categoria) {
       if(value.categoria.key) {

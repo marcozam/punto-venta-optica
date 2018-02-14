@@ -1,12 +1,15 @@
-import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+//Models
 import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
+//Services
+import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { FBGenericService } from '../../services/fb-generic.service';
 import { GenericCatalogService } from '../../services/generic.service';
 import { _catalogs, CatalogsMetadataService } from '../../services/catalogs-metadata.service';
-import { Subject } from 'rxjs/Subject';
+//Constants
 import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/messages.contants';
 
 @Component({
@@ -15,7 +18,7 @@ import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/message
   styleUrls: ['./generic-catalog.component.scss'],
   providers: [GenericCatalogService, DialogBoxService, CatalogsMetadataService, FBGenericService]
 })
-export class GenericCatalogComponent implements OnInit {
+export class GenericCatalogComponent implements OnInit, OnDestroy {
 
   catalogID: number;
   item: GenericCatalog;
@@ -52,6 +55,8 @@ export class GenericCatalogComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(){}
+
   loadInitialData(_detailID: any){
     let respond$: Subject<GenericCatalog> = new Subject();
     this.genericService.setCatalogID(this.catalogID);
@@ -64,7 +69,7 @@ export class GenericCatalogComponent implements OnInit {
   }
 
   onSave(newValue: GenericCatalog){
-    let _url = this.catalog.listURL ? this.catalog.listURL : '/catalogo/' + this.catalogID;
+    let _url = this.catalog.listURL ? this.catalog.listURL : '/DCG/catalogo/' + this.catalogID;
     if(this.catalog.referenceURL){
       console.log('Save FB');
       this.fbGenericService.save(this.item, newValue);

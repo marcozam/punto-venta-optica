@@ -49,7 +49,7 @@ export class MarcaArmazonComponent implements OnInit {
   onSave(newValue: MarcaArmazon){
     this._marcaService.save(this.item, newValue);
     this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
-    let _url = '/catalogo/' + this.catalogID;
+    let _url = '/DCG/catalogo/' + this.catalogID;
     this.router.navigate([_url]);
   }
 }

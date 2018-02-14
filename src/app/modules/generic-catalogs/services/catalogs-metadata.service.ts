@@ -81,19 +81,19 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
 const categoriaArmazon = new MetaDataCatalog();
 categoriaArmazon.key = 999;
 categoriaArmazon.nombre = 'Categorias de Armazones';
-categoriaArmazon.referenceURL = 'armazones/categorias';
+categoriaArmazon.referenceURL = '/optica/armazones/categorias';
 
 const marcaProducto = new MetaDataCatalog();
 marcaProducto.key = 998;
 marcaProducto.nombre = 'Marca Productos';
 marcaProducto.referenceURL = 'armazones/marcas';
-marcaProducto.detailURL = '/armazon/marca/'
+marcaProducto.detailURL = '/optica/armazon/marca/'
 
 const modeloArmazon = new MetaDataCatalog();
 modeloArmazon.key = 997;
 modeloArmazon.nombre = 'Modelo Armazones';
 modeloArmazon.referenceURL = 'armazones/modelos';
-modeloArmazon.detailURL = '/armazon/modelo/';
+modeloArmazon.detailURL = '/optica/armazon/modelo/';
 
 export const _catalogs: MetaDataCatalog[] = [
   categoriaArmazon,

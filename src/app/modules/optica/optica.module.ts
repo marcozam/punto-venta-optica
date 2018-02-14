@@ -2,32 +2,33 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-//AngularFire
+// AngularFire
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { environment } from 'environments/environment';
 
 import {
-  MatButtonModule, 
-  MatSelectModule, 
-  MatIconModule, 
-  MatInputModule, 
-  MatListModule, 
-  MatFormFieldModule, 
+  MatButtonModule,
+  MatSelectModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatFormFieldModule,
   MatRadioModule,
   MatCheckboxModule,
   MatProgressBarModule,
+  MatTabsModule,
  } from '@angular/material';
 
 import { OpticaRoutingModule } from './optica-routing.module';
 
-//OS Modules
+// OS Modules
 import { BaseModule } from '../base/base.module';
-
-//Services
+import { ProductoModule } from '../producto/producto.module';
+// Services
 import { ExamenService } from './services/examen.service';
 import { ProductosService } from '../producto/services/productos.service';
-//Components
+// Components
 import { ExamenComponent } from './containers/examen/examen.component';
 import { GraduacionComponent } from './components/graduacion/graduacion.component';
 import { OjoComponent } from './components/ojo/ojo.component';
@@ -37,13 +38,9 @@ import { MarcaArmazonComponent } from './components/marca-armazon/marca-armazon.
 import { ModeloArmazonComponent } from './components/modelo-armazon/modelo-armazon.component';
 import { PrecioCategoriaArmazonComponent } from './components/precio-categoria-armazon/precio-categoria-armazon.component';
 import { ArmazonSelectionComponent } from './components/armazon-selection/armazon-selection.component';
-import { OpticaVentaComponent } from './containers/optica-venta/optica-venta.component';
 import { TipoMicaComponent } from './components/tipo-mica/tipo-mica.component';
 import { ModeloAramazonListComponent } from './components/modelo-aramazon-list/modelo-aramazon-list.component';
 import { MedidasArmazonComponent } from './components/medidas-armazon/medidas-armazon.component';
-import { ExamenPresupuestoComponent } from './containers/examen-presupuesto/examen-presupuesto.component';
-//FireBase
-import { AngularFireDatabase } from 'angularfire2/database';
 import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.component';
 
 @NgModule({
@@ -52,24 +49,28 @@ import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.com
     FormsModule,
     ReactiveFormsModule,
     OpticaRoutingModule,
-    //OS Module
+    // OS Module
     BaseModule,
-    //Angular Material
-    MatButtonModule, 
-    MatProgressBarModule,
-    MatSelectModule, 
-    MatIconModule, 
-    MatInputModule, 
+    ProductoModule,
+    // Angular Material
     MatFormFieldModule,
-    MatListModule,
-    MatRadioModule,
+    MatProgressBarModule,
     MatCheckboxModule,
-    //Angular Fire Modules
+    MatSelectModule,
+    MatIconModule,
+    MatRadioModule,
+    MatInputModule,
+    MatButtonModule,
+    /*
+    MatListModule,
+    MatTabsModule,
+    */
+    // Angular Fire Modules
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
   ],
   declarations: [
-    OjoComponent, 
+    OjoComponent,
     ExamenComponent,
     GraduacionComponent,
     PrecioMaterialComponent,
@@ -78,24 +79,22 @@ import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.com
     ModeloArmazonComponent,
     PrecioCategoriaArmazonComponent,
     ArmazonSelectionComponent,
-    OpticaVentaComponent,
     TipoMicaComponent,
     ModeloAramazonListComponent,
     MedidasArmazonComponent,
-    ExamenPresupuestoComponent,
     TipoArmazonComponent
   ],
   providers: [
-    ExamenService, 
+    ExamenService,
     ProductosService,
     AngularFireDatabase
   ],
   exports: [
-    ExamenComponent, 
-    GraduacionComponent, 
-    PrecioCategoriaArmazonComponent, 
-    PrecioMaterialComponent,
-    OpticaVentaComponent
+    ExamenComponent,
+    GraduacionComponent,
+    PrecioCategoriaArmazonComponent,
+    ArmazonSelectionComponent,
+    PrecioMaterialComponent
   ]
 })
 export class OpticaModule { }

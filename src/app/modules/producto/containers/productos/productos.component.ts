@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { SuccessTitle, SuccessMessage, WarningTitle, LeaveWarningMessage } from 'app/modules/base/constants/messages.contants';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { CategoriaProductoService } from '../../services/categoria-producto.service';
 import { ProductosService } from '../../services/productos.service';
 import { CategoriaProductoSumary, Producto } from '../../models/producto.models';
-
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-producto-detail',
@@ -22,18 +21,18 @@ export class ProductosComponent implements OnInit {
 
   loading$: Observable<boolean>;
   loading: boolean;
-  
+
   constructor(
-    private route: ActivatedRoute, 
-    private _service: ProductosService, 
-    private _categoriasService: CategoriaProductoService, 
-    private router: Router, 
-    public dialog: DialogBoxService) { 
+    private route: ActivatedRoute,
+    private _service: ProductosService,
+    private _categoriasService: CategoriaProductoService,
+    private router: Router,
+    public dialog: DialogBoxService) {
     this.product = new Producto('');
     this.loading$ = Observable.merge(this._categoriasService.loading$, this._service.loading$);
   }
 
-  createSubscriptions(){
+  createSubscriptions() {
     this.loading$.subscribe((isLoading: boolean) => {
       this.loading = this._categoriasService.isLoading || this._service.isLoading;
     });
@@ -42,34 +41,36 @@ export class ProductosComponent implements OnInit {
 
   ngOnInit() {
     this.productoID = Number(this.route.snapshot.params['id']);
-    
+
     this.createSubscriptions();
     this._categoriasService.getStandAloneCategories()
 
-    if(this.productoID !== 0){
+    if (this.productoID !== 0) {
       this._service.getByID(this.productoID)
         .subscribe((item: Producto) => this.product = item);
     }
   }
 
-  onCancelar(data: any){
-    if(this.product.hasChanges(data))
-    {
-      this.dialog.openDialog(WarningTitle, LeaveWarningMessage, true, result => { 
-        if(result) this.router.navigate(['/productos']);
+  onCancelar(data: any) {
+    if (this.product.hasChanges(data)) {
+      this.dialog.openDialog(WarningTitle, LeaveWarningMessage, true, result => {
+        if (result) {
+          this.router.navigate(['/productos']);
+        }
       });
+    } else {
+      this.router.navigate(['/productos']);
     }
-    else this.router.navigate(['/productos']);
   }
 
-  onSave(data: Producto){
-    let workingItem = Object.assign(this.product, data);
-    this._service.save(workingItem, 
+  onSave(data: Producto) {
+    const workingItem = Object.assign(this.product, data);
+    this._service.save(workingItem,
       r => {
         this.router.navigate(['/productos']);
         this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
-      }, 
-      ()=>{},
+      },
+      () => {},
       `os_producto_categoria-${workingItem.categoriaProductoID}`)
   }
 }
