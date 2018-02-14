@@ -10,6 +10,11 @@ export class MarcaArmazon extends GenericCatalog {
     }
 }
 
+export class CategoriaArmazon extends GenericCatalog {
+    precio?: number;
+    constructor() { super(); }
+}
+
 export class TipoArmazon extends BaseGenericCatalog {
     @Field('C1') nombre: string;
     @Field('C2') exportKey: number;

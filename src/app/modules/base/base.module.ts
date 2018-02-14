@@ -6,44 +6,44 @@ import {
   MatInputModule,
   MatDatepickerModule,
   MatRadioModule,
-  MatDialogModule, 
-  MatButtonModule, 
-  MatIconModule, 
+  MatDialogModule,
+  MatButtonModule,
+  MatIconModule,
   MatSelectModule,
   MatTooltipModule,
   MatProgressBarModule,
 } from '@angular/material';
 
-//Components
-//Common
+// Components
+// Common
 import { MonthYearSelectorComponent } from './components/month-year-selector/month-year-selector.component';
 import { DateSelectionComponent } from './components/date-selection/date-selection.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
-//Table
+// Table
 import { TableComponent } from './components/table/table.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { FilterComponent } from './components/filter/filter.component';
-//Basic Catalogs
+// Basic Catalogs
 import { PersonaComponent } from './components/persona/persona.component';
 
-//Services
+// Services
+import { PersonasService } from './services/personas.service';
 import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
-import { PersonasService } from './services/personas.service';
-import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
+import { BaseAjaxService } from './services/base-ajax.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
-    //Material
+    // Material
     MatInputModule,
-    MatDatepickerModule, 
+    MatDatepickerModule,
     MatRadioModule,
-    MatDialogModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
     MatSelectModule,
     MatTooltipModule,
     MatProgressBarModule,
@@ -57,10 +57,10 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
     MonthYearSelectorComponent,
     DateSelectionComponent,
   ],
-  entryComponents:[
+  entryComponents: [
     DialogBoxComponent
   ],
-  exports:[
+  exports: [
     TableComponent,
     FilterComponent,
     DialogBoxComponent,
@@ -70,9 +70,10 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
   ],
   providers: [
     PersonasService,
+    // Global Services
     AjaxGuardService,
-    DialogBoxService,
     BaseAjaxService,
+    DialogBoxService,
   ]
 })
 export class BaseModule { }

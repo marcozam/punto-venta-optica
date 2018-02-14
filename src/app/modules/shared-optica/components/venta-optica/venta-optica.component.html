@@ -1,0 +1,32 @@
+<div class="row" *ngIf="loading">
+    <div class="col-md text-center loading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        Cargando información del ultimo examen, por favor espere ...
+    </div>
+</div>
+<div class="row" [class.sr-only]="!loading">
+    <div class="col-xs col-sm-8 col-md-5">
+        <app-graduacion [editable]="false" [pacienteID]="clienteID" (tipoMicaChange)="onMicaChange($event)" (materialChange)="onMicaChange($event)"></app-graduacion>
+    </div>
+    <div class="col-md-3 col-xs flex-container">
+        <div class="sub-container">
+            <div class="sub-titles text-center">
+                Tratamientos
+            </div>
+            <mat-selection-list #tratamientoList dense>
+                <mat-list-option checkboxPosition="before" *ngFor="let item of tratamientos"
+                    [value]="item">
+                    {{ item.tratamiento.nombre }}
+                </mat-list-option>
+            </mat-selection-list>
+        </div>
+    </div>
+    <div class="col-md-4 col-xs flex-container">
+        <div class="sub-container">
+            <div class="sub-titles text-center">
+                Armazon
+            </div>
+            <app-armazon-selection [listaPrecioID]="listaPrecioID" (onChange)="onArmazonChanged($event)" [mostrarMedidas]="esVenta"></app-armazon-selection>
+        </div>
+    </div>
+</div>

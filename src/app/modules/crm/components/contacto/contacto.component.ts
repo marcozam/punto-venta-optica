@@ -16,22 +16,12 @@ import { PersonasService } from 'app/modules/base/services/personas.service';
 })
 export class ContactoComponent implements OnInit {
 
-  datosContacto = {
-    telefono: null,
-    email: null,
-    colonia: null
-  }
-
-  get isNew(): boolean{
-    return this.contactoID ? true : false;
-  }
-
+  datosContacto = { telefono: null, email: null, colonia: null };
+  get isNew(): boolean { return this.contactoID ? true : false; }
   private _contactoID: number;
 
   @Input()
-  get contactoID(): number {
-    return this._contactoID;
-  }
+  get contactoID(): number { return this._contactoID; }
   set contactoID(value: number){
     this._contactoID = value;
     this.getContactData();
@@ -40,12 +30,12 @@ export class ContactoComponent implements OnInit {
   @Input() catalogName: string;
   @Input() initialData: Persona;
 
-  @Output() onChange:EventEmitter<any> = new EventEmitter();
-  @Output() onCancel:EventEmitter<any> = new EventEmitter();
-  
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() onCancel: EventEmitter<any> = new EventEmitter();
+
   contacto: Contacto;
   tiposDatosContacto: TipoDatosContacto[];
-  isChildValid: boolean = false;
+  isChildValid = false;
 
   constructor(
     private _personaService: PersonasService,
@@ -55,39 +45,35 @@ export class ContactoComponent implements OnInit {
 
   ngOnInit() {
     this.contacto = new Contacto();
-    //this._contactoService.getTiposDatoContacto(res=> this.tiposDatosContacto = res);
+    // this._contactoService.getTiposDatoContacto(res=> this.tiposDatosContacto = res);
   }
 
-  getContactData(){
-    if(this.contactoID){
+  getContactData() {
+    if (this.contactoID) {
       this._contactoService.getByID(this.contactoID)
-        .subscribe(item=>{
+        .subscribe(item => {
           this.contacto = item;
           this.initialData = this.contacto.persona;
 
-          this.datosContacto.telefono = item.datos.find(dc=> dc.nombre === 'TELEFONO');
-          this.datosContacto.email = item.datos.find(dc=> dc.nombre === 'EMAIL');
-          this.datosContacto.colonia = item.datos.find(dc=> dc.nombre === 'LOCALIDAD');
+          this.datosContacto.telefono = item.datos.find(dc => dc.nombre === 'TELEFONO');
+          this.datosContacto.email = item.datos.find(dc => dc.nombre === 'EMAIL');
+          this.datosContacto.colonia = item.datos.find(dc => dc.nombre === 'LOCALIDAD');
         });
     }
   }
 
-  onPersonaChanged(event){
+  onPersonaChanged(event) {
     this.isChildValid = event.isValid;
-    if(this.isChildValid){
-      this.contacto.persona = event.data;
-    }
+    if (this.isChildValid) { this.contacto.persona = event.data; }
   }
 
-  cancel(){
-    this.onCancel.emit();
-  }
+  cancel() { this.onCancel.emit(); }
 
-  onSave(data){
-    let datos: DatoContacto[] = [];
-    if(data.telefono){
+  onSave(data) {
+    const datos: DatoContacto[] = [];
+    if (data.telefono) {
       let dcT = this.datosContacto.telefono;
-      if(!dcT){
+      if (!dcT) {
         dcT = new DatoContacto();
         dcT.nombre = 'TELEFONO';
         dcT.tipoContactoID = 1;
@@ -95,9 +81,9 @@ export class ContactoComponent implements OnInit {
       dcT.valor = data.telefono;
       datos.push(dcT);
     }
-    if(data.email){
+    if (data.email) {
       let dcE = this.datosContacto.email;
-      if(!dcE){
+      if (!dcE) {
         dcE = new DatoContacto();
         dcE.nombre = 'EMAIL';
         dcE.tipoContactoID = 3;
@@ -105,9 +91,9 @@ export class ContactoComponent implements OnInit {
       dcE.valor = data.email;
       datos.push(dcE);
     }
-    if(data.colonia){
+    if (data.colonia) {
       let dcC = this.datosContacto.colonia;
-      if(!dcC) {
+      if (!dcC) {
         dcC = new DatoContacto();
         dcC.nombre = 'LOCALIDAD';
         dcC.tipoContactoID = 10;
@@ -116,7 +102,7 @@ export class ContactoComponent implements OnInit {
       datos.push(dcC);
     }
 
-    //TODO: Add contact type
+    // TODO: Add contact type
     this.contacto.tipoID = 1;
     this.contacto.datos = datos;
     this._personaService.save(this.contacto.persona)
@@ -127,8 +113,8 @@ export class ContactoComponent implements OnInit {
       });
   }
 
-  onSaved(data: Contacto){
-    //this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
+  onSaved(data: Contacto) {
+    // this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
     this.onChange.emit({ Data: data, isNew: this.isNew });
   }
 }

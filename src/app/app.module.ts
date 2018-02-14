@@ -1,24 +1,23 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { BrowserModule, Title, DomSanitizer } from '@angular/platform-browser';
 import localeESMX from '@angular/common/locales/es-MX';
 
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
-//Material2 Modules
-import { MatIconRegistry, MatSidenavModule, MatMenuModule, MatToolbarModule, MatListModule, MatIconModule, MatButtonModule } from '@angular/material';
-
-//Material Tokens for Date format
+// Material Modules
+import { MatIconRegistry, MatSidenavModule, MatMenuModule, MatToolbarModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule } from '@angular/material';
+// Material Tokens for Date format
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-
-//OS Componentes
-import { AppComponent } from './app.component';
-
+// Routing
 import { routing } from './app.routing';
+// Componentes
+import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+// OS Modules
+import { BaseModule } from './modules/base/base.module';
 
 registerLocaleData(localeESMX);
 
@@ -33,13 +32,16 @@ registerLocaleData(localeESMX);
     routing,
     BrowserAnimationsModule,
     HttpClientModule,
-    //Angular Material
+    // Angular Material
     MatSidenavModule,
     MatMenuModule,
     MatToolbarModule,
-    MatListModule, 
-    MatIconModule, 
-    MatButtonModule
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    // OS Modules
+    BaseModule
   ],
   providers: [
     Title,
@@ -50,8 +52,8 @@ registerLocaleData(localeESMX);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { 
-  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer){
+export class AppModule {
+  constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
     matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg'));
   }
 }

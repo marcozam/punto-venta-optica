@@ -1,66 +1,66 @@
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 
+// Models
 import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
-import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
+import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 export class Venta {
     private _detalle: DetalleVenta[] = [];
-    
+
     get detalle(): DetalleVenta[]{ return this._detalle; }
 
     pagos: DetallePagos[];
-    comentarios: ComentariosVenta[]
+    comentarios: ComentariosVenta[];
     sumary: SumaryVenta;
 
-    //used to validate products stock
+    // used to validate products stock
     onDetalleChanged: Subject<DetalleVenta[]> = new Subject();
 
-    constructor(){
+    constructor() {
         this.pagos = new Array<DetallePagos>();
         this.comentarios = new Array<ComentariosVenta>();
         this.sumary = new SumaryVenta();
     }
 
-    updateDetalleVenta(items: DetalleVenta[], concat: boolean = true){
-        let changes: DetalleVenta[] = [];
-        //search for changes on list
+    updateDetalleVenta(items: DetalleVenta[], concat: boolean = true) {
+        const changes: DetalleVenta[] = [];
+        // Search for changes on list
         items.forEach(ndv => {
-            let idx = this._detalle.findIndex(dv => ndv.productoVenta.key === dv.productoVenta.key);
-            if(idx >= 0) {
-                if(this._detalle[idx].hasChanges(ndv)) {
+            const idx = this._detalle.findIndex(dv => ndv.productoVenta.key === dv.productoVenta.key);
+            if (idx >= 0) {
+                if (this._detalle[idx].hasChanges(ndv)) {
                     this._detalle[idx] = ndv;
                     changes.push(ndv);
                 }
-            }
-            else {
+            } else {
                 this._detalle.push(ndv);
                 changes.push(ndv);
             }
         });
-        if(!concat) 
+        if (!concat) {
             this._detalle = this._detalle.filter(dv => items.findIndex(ndv => ndv.productoVenta.key === dv.productoVenta.key) >= 0);
+        }
 
         this.updateSubTotal();
-        if(changes.length > 0) this.onDetalleChanged.next(changes);
+        if (changes.length > 0) { this.onDetalleChanged.next(changes); }
     }
 
-    private updateSubTotal(){
-        if(this.detalle.length > 0){
-            let data = this.detalle
-                .map(d=> { return { Importe: d.importeNeto, Descuento: d.descuento }})
-                .reduce((p, c) => { 
+    private updateSubTotal() {
+        if (this.detalle.length > 0) {
+            const data = this.detalle
+                .map(d => ({ Importe: d.importeNeto, Descuento: d.descuento }))
+                .reduce((p, c) => {
                     c.Importe += p.Importe;
                     c.Descuento += p.Descuento;
                     return c;
                 });
             this.sumary.subTotal = data.Importe;
             this.sumary.descuento = data.Descuento;
-        }
-        else {
+        } else {
             this.sumary.subTotal = 0;
             this.sumary.descuento = 0;
         }
@@ -73,27 +73,24 @@ export class Usuario extends GenericCatalog {
 }
 
 export class SumaryVenta extends BaseGenericCatalog {
-    
     cliente: Contacto;
     vendedor: Usuario;
     sucursal?: Sucursal;
     status?: Status;
     subTotal: number;
-    descuento: number = 0;
+    descuento = 0;
     totalPagado: number;
     totalRecibido?: number;
     impuestos: number;
     fecha: Date;
 
     get total(): number {
-        return Math.floor((this.subTotal - this.descuento + this.impuestos)*100)/100;
+        return Math.floor((this.subTotal - this.descuento + this.impuestos) * 100) / 100;
     }
 
-    get saldo(): number {
-        return this.total - this.totalPagado;
-    }
+    get saldo(): number { return this.total - this.totalPagado; }
 
-    constructor(){
+    constructor() {
         super();
         this.key = 0;
         this.cliente = new Contacto();
@@ -117,14 +114,13 @@ export class DetallePagos {
     totalRecibido: number;
     metodoPago: MetodoPago;
     key: number;
-    //ordenVentaID: number;
 }
 
 export class ComentariosVenta {
     key: number;
     productoID: number;
-    //use to group products
-    moduleID?: number = 1;
+    // use to group products
+    moduleID = 1;
 
     constructor(public comentario: string) { }
 }
@@ -132,39 +128,33 @@ export class ComentariosVenta {
 export class DetalleVenta extends BaseGenericCatalog {
     cantidad: number;
     precioUnitario: number;
-    
     promocionID: number;
-    tipoDescuentoID: number = 1;
-    valorDescuento: number = 0;
-    descuento: number = 0;
+    tipoDescuentoID = 1;
+    valorDescuento = 0;
+    descuento = 0;
     comentario: string;
 
-    //use to group products
-    moduleID: number = 1;
-    canBeRemoved?: boolean = true;
+    // use to group products
+    moduleID = 1;
+    canBeRemoved = true;
     canEditCantidad?: boolean;
     canEditPrecio?: boolean;
 
-    get importe(): number {
-        return this.cantidad * (this.precioUnitario - this.descuento);
-    }
-
-    get importeNeto(): number {
-        return this.cantidad * this.precioUnitario;
-    }
-    
     productoVenta: Producto;
 
-    constructor(_producto: Producto, precio?: number){
+    get importe(): number { return this.cantidad * (this.precioUnitario - this.descuento); }
+    get importeNeto(): number { return this.cantidad * this.precioUnitario; }
+
+    constructor(_producto: Producto, precio?: number) {
         super();
         this.productoVenta = _producto;
         this.cantidad = 1;
         this.precioUnitario = precio ? precio : 0;
-        this.keysChanges = ['cantidad', 'precioUnitario', 'descuento']
+        this.keysChanges = ['cantidad', 'precioUnitario', 'descuento'];
     }
 }
 
-//MOVE SOMEWHERE ELSE
+// MOVE SOMEWHERE ELSE
 export class MetodoPago extends BaseGenericCatalog {
     @Field('C1', 30401) nombre: string;
     @Field('C2', 30402) enVenta: boolean;
@@ -172,7 +162,7 @@ export class MetodoPago extends BaseGenericCatalog {
     @Field('C4', 30404) utilizaReferencia: boolean;
     codigo: string;
 
-    constructor(nombre?: string){
+    constructor(nombre?: string) {
         super();
         this.nombre = nombre ? nombre : '';
     }

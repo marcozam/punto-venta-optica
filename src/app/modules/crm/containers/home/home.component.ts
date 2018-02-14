@@ -49,7 +49,7 @@ export class HomeComponent {
   openDialog(_contacto: Contacto, _onClose?: any) {
     const _actions = [
       { name: 'Realizar examen', route: '/optika/examen/' + _contacto.key },
-      { name: 'Generar venta', route: '/ventas/generar/' + _contacto.key },
+      { name: 'Generar venta', route: '/optika/venta/' + _contacto.key },
       /*{ name: 'Historial de Compra', route: '/crm/historial/' + _contacto.key },*/
     ];
 

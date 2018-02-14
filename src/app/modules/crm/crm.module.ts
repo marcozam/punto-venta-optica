@@ -1,38 +1,39 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-//Material
-import { MatInputModule, MatProgressBarModule, MatSelectModule, MatTooltipModule, MatButton, MatButtonModule, 
+// Material
+import { MatInputModule, MatProgressBarModule, MatSelectModule,
+        MatTooltipModule, MatButton, MatButtonModule,
         MatIconModule, MatListModule} from '@angular/material';
-//Routing
+// Routing
 import { CrmRoutingModule } from './crm-routing.module';
-//OSModules
+// OSModules
 import { BaseModule } from 'app/modules/base/base.module';
-//Components
+// Components
 import { ContactoComponent } from './components/contacto/contacto.component';
 import { SearchPersonaComponent } from './components/search-persona/search-persona.component';
 import { DialogActionsComponent } from './components/dialog-actions/dialog-actions.component';
 import { HomeComponent } from './containers/home/home.component';
-//Directives
+// Directives
 import { NameValidatorDirective } from './directives/name-validator.directive';
-//Services
+// Services
+import { ContactoService } from './services/contacto.service';
 import { PersonasService } from 'app/modules/base/services/personas.service';
-import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    //Routing
+    // Routing
     CrmRoutingModule,
-    //OS Module
+    // OS Module
     BaseModule,
-    //Material
+    // Material
     MatButtonModule,
     MatIconModule,
     MatListModule,
-    MatInputModule, 
-    MatProgressBarModule, 
+    MatInputModule,
+    MatProgressBarModule,
     MatSelectModule,
     MatTooltipModule,
   ],
@@ -44,8 +45,8 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
     NameValidatorDirective
   ],
   providers: [
+    ContactoService,
     PersonasService,
-    BaseAjaxService,
   ],
   exports: [
     ContactoComponent,

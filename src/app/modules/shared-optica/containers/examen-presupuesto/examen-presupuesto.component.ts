@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { DecimalPipe, DatePipe } from '@angular/common';
 // Models
 import { VentaOptica } from '../../models/venta-optica';
 import { Contacto } from 'app/modules/crm/models/crm.models';
@@ -16,7 +16,9 @@ import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/ven
   styleUrls: ['./examen-presupuesto.component.scss'],
   providers: [
     ContactoService,
-    VentaOptikaTicketService
+    VentaOptikaTicketService,
+    DecimalPipe,
+    DatePipe
   ]
 })
 export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {

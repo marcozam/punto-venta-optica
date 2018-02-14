@@ -17,24 +17,22 @@ export class ExamenComponent implements OnInit {
   paciente: Contacto;
 
   constructor(
-    private route: ActivatedRoute, 
-    private _route: Router, 
-    private _pacienteService: ContactoService) { 
+    private route: ActivatedRoute,
+    private _route: Router,
+    private _pacienteService: ContactoService) {
       this.paciente = new Contacto();
     }
 
   ngOnInit() {
     this.pacienteID = this.route.snapshot.params['pacienteID'];
-    this._pacienteService.getByID(this.pacienteID)
-      .subscribe(data => this.paciente = data);
+    this._pacienteService.getByID(this.pacienteID).subscribe(data => this.paciente = data);
   }
 
-  onMicaSaved(event: GraduacionEventChange, data){
-    if(event.action === 'venta'){
-      this._route.navigateByUrl('/ventas/' + this.pacienteID)
-    }
-    else if (event.action === 'presupuesto'){
-      this._route.navigateByUrl('/optica/examen/presupuesto/' + this.pacienteID)
+  onMicaSaved(event: GraduacionEventChange, data) {
+    if (event.action === 'venta') {
+      this._route.navigateByUrl('/optika/venta/' + this.pacienteID);
+    } else if (event.action === 'presupuesto') {
+      this._route.navigateByUrl('/optika/presupuesto/' + this.pacienteID);
     }
   }
 }

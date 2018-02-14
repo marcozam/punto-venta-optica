@@ -15,16 +15,14 @@
           {{ _detalle.cantidad | number:'1.0-2' }}
         </span>
         <mat-form-field class="sm" *ngIf="_detalle.canEditCantidad">
-          <input matInput placeholder="" type="number" class="text-center"
+          <input matInput placeholder="" type="number" class="text-center" min="1"
             [ngModel]="_detalle.cantidad" 
             (ngModelChange)="onCantidadChange($event, _detalle)"/>
         </mat-form-field>
       </td>
       <td>
         {{ _detalle.productoVenta.nombre }}
-        <small>
-            {{ _detalle.comentario }}
-        </small>
+        <small>{{ _detalle.comentario }}</small>
       </td>
       <td class="text-right col-numerico">
         $ {{ _detalle.precioUnitario | number:'1.2-2' }}

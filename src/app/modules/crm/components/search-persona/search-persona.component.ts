@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { Observable } from 'rxjs/Observable';
+// Services
 import { ContactoService } from '../../services/contacto.service';
 import { PersonasService } from 'app/modules/base/services/personas.service';
+// Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Persona } from 'app/modules/base/models/base.models';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-search-persona',
@@ -15,12 +16,12 @@ import { Observable } from 'rxjs/Observable';
 export class SearchPersonaComponent implements OnInit {
 
   resultados: Contacto[] = [];
-  triggerSearch: Boolean = false;
-  showAdd:Boolean = false;
   _contacto: Contacto;
-  loading$: Observable<boolean>;
-  isLoading: boolean = false;
   contactoID: number;
+  loading$: Observable<boolean>;
+  isLoading = false;
+  triggerSearch = false;
+  showAdd = false;
 
   @Input() catalogName: string;
   @Output() onChange = new EventEmitter<any>();
@@ -29,41 +30,40 @@ export class SearchPersonaComponent implements OnInit {
     this.loading$ = this._contactoService.loading$;
   }
 
-  createSubscriptions(){
+  createSubscriptions() {
     this.loading$.subscribe((isLoading: boolean) => {
       this.isLoading = this._contactoService.isLoading;
     });
-
     this._contactoService.source$.subscribe(data => this.resultados = data);
-  }  
+  }
 
   ngOnInit() {
     this.createSubscriptions();
   }
 
-  onSearch(_nombre: string){
+  onSearch(_nombre: string) {
     _nombre = _nombre.trim();
-    let _names = _nombre.split(',');
-    if(_names.length >= 2) {
+    const _names = _nombre.split(',');
+    if (_names.length >= 2) {
       this.isLoading = true;
       this._contactoService.getPersonaByName(_names[1], _names[0]);
       this.triggerSearch = true;
     }
   }
 
-  onItemSelected(item: Contacto){
+  onItemSelected(item: Contacto) {
     this.onChange.emit({data: item, exist: true});
   }
 
-  onViewContactClick(item: Contacto){
+  onViewContactClick(item: Contacto) {
     this.contactoID = item.key;
     this.showAdd = true;
   }
 
-  onAddClick(_nombre:string){
-    if(!_nombre) _nombre = ',';
-    let _names = _nombre.split(',');
-    let $persona = new Persona();
+  onAddClick(_nombre: string) {
+    if (!_nombre) { _nombre = ','; }
+    const _names = _nombre.split(',');
+    const $persona = new Persona();
     $persona.nombre = _names[0].trim();
     $persona.apellidoPaterno = _names[1].trim();
     this.showAdd = true;
@@ -71,7 +71,7 @@ export class SearchPersonaComponent implements OnInit {
     this._contacto.persona = $persona;
   }
 
-  personaAdded(data: any){
+  personaAdded(data: any) {
     this.showAdd = false;
     this.onChange.emit({data: data.Data, exist: data.isNew});
   }

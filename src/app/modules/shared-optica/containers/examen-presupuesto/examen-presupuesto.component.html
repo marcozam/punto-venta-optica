@@ -1,7 +1,7 @@
-<app-optica-venta 
+<app-venta-optica
   [clienteID]="clienteID" [listaPrecioID]="listaPrecioID" [esVenta]="false" [detalleVenta]="venta.detalle"
   (onExamenChanged)="onExamenChanged($event)"
-  (onProdutsChanged)="onOpticaVentaChanged($event)"></app-optica-venta>
+  (onProdutsChanged)="onOpticaVentaChanged($event)"></app-venta-optica>
 <div class="text-right buttons-containers">
   <button mat-raised-button color="primary" type="button" [disabled]="loading"
     (click)="print()">

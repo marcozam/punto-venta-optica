@@ -16,8 +16,6 @@ import { ProductosComponent } from './containers/productos/productos.component';
 import { ProductosListComponent } from './containers/productos-list/productos-list.component';
 import { CategoriaProductoComponent } from './components/categoria-producto/categoria-producto.component';
 import { DetallePreciosProductoComponent } from './components/detalle-precios-producto/detalle-precios-producto.component';
-// Services
-import { BaseAjaxService } from './../base/services/base-ajax.service';
 
 @NgModule({
   imports: [
@@ -50,8 +48,6 @@ import { BaseAjaxService } from './../base/services/base-ajax.service';
     ProductosListComponent,
     DetallePreciosProductoComponent,
   ],
-  providers: [
-    BaseAjaxService
-  ]
+  providers: []
 })
 export class ProductoModule { }

@@ -1,4 +1,4 @@
-import { Component, DebugElement, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, DebugElement, ElementRef, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { MatSelectionList } from '@angular/material';
 import { MatDialog } from '@angular/material';
@@ -16,7 +16,6 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 
 @Component({
   selector: 'app-ventas',
@@ -28,48 +27,72 @@ import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/ven
     InventarioService,
     DialogBoxService,
     DialogPagosService,
-    VentaOptikaTicketService
   ]
 })
-export class VentasComponent extends VentaOptica implements OnInit {
-  venta: Venta;
-  clienteID: number;
-  listaPrecioID: number;
-  sucursalID: number;
+export class VentasComponent implements OnInit {
   loading = false;
+  private _venta: Venta;
+  @Output() ventaChange: EventEmitter<Venta> = new EventEmitter();
+  @Input()
+  get venta(): Venta { return this._venta; }
+  set venta(value) {
+    this._venta = value;
+    this.ventaChange.emit(this._venta);
+  }
+
+  private _sucursalID: number;
+  @Output() sucursalIDChange: EventEmitter<number> = new EventEmitter();
+  @Input()
+  get sucursalID(): number { return this._sucursalID; }
+  set sucursalID(value) {
+    this._sucursalID = value;
+    this.sucursalIDChange.emit(this.sucursalID);
+  }
+
+  private _clienteID: number;
+  @Output() clienteIDChange: EventEmitter<number> = new EventEmitter();
+  @Input()
+  get clienteID(): number { return this._clienteID; }
+  set clienteID(value) {
+    this._clienteID = value;
+    this.clienteIDChange.emit(this.clienteID);
+  }
+
+  private _listaPreciosID: number;
+  @Output() listaPreciosIDChange: EventEmitter<number> = new EventEmitter();
+  @Input()
+  get listaPreciosID(): number { return this._listaPreciosID; }
+  set listaPreciosID(value) {
+    this._listaPreciosID = value;
+    this.listaPreciosIDChange.emit(this.listaPreciosID);
+  }
 
   constructor(
     private _contactoService: ContactoService,
     private _ventaService: VentaService,
     private _inventarioService: InventarioService,
-    private _printService: VentaOptikaTicketService,
-    // Optika
-    private _examenService: ExamenService,
     private dialog: DialogBoxService,
     private pagosDialog: DialogPagosService,
     private router: Router,
-    private route: ActivatedRoute) { super(); }
+    private route: ActivatedRoute) { }
 
   @ViewChild('ticketVenta') ticketVenta: ViewContainerRef;
 
   ngOnInit() {
+    // TODO: Agregar loadeder
     // TODO: Obtener la lista de precios de la sucursal
-    this.listaPrecioID = 1;
+    this.listaPreciosID = 1;
     this.sucursalID = 1;
     this.clienteID = this.route.snapshot.params['clienteID'];
     this.nuevaVenta();
-    // TODO: Agregar loadeder
   }
 
   nuevaVenta() {
     this.venta = new Venta();
-
     // Obtiene el paciente
     if (this.clienteID) {
       this._contactoService.getByID(this.clienteID)
-        .subscribe((data: Contacto) => {
-          this.venta.sumary.cliente = data;
-        });
+        .subscribe((data: Contacto) => { this.venta.sumary.cliente = data; });
     }
 
     // Validacion de inventario
@@ -82,9 +105,7 @@ export class VentasComponent extends VentaOptica implements OnInit {
                 'Advertencia',
                 `No hay ${item.productoVenta.nombre} en el inventario. ¿Desea continuar?`,
                 true,
-                res => {
-                  console.log(res ? 'No hacer nada' : 'Remover producto');
-                });
+                res => { console.log(res ? 'No hacer nada' : 'Remover producto'); });
             }
           });
       });
@@ -93,15 +114,7 @@ export class VentasComponent extends VentaOptica implements OnInit {
 
   isVentaInvalid() {
     let rval = true;
-    if (this.venta.detalle.length > 0) {
-      rval = false;
-      if (this.showOptica) {
-        const mica = this.venta.detalle.find(d => d.productoVenta.key === 999999);
-        if (mica) {
-          rval = this.venta.comentarios.filter(c => c.moduleID === 995).length === 0;
-        }
-      }
-    }
+    if (this.venta.detalle.length > 0) { rval = false; }
     return rval;
   }
 
@@ -114,11 +127,7 @@ export class VentasComponent extends VentaOptica implements OnInit {
         });
         this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
           if (newVenta) {
-            // Optika
-            if (this.examen) {
-              this._examenService.saveVentaExamen(newVenta.sumary.key, this.examen.key, this.examen.materialRecomendadoID, this.examen.tipoMicaRecomendadoID)
-                .subscribe(() => this.onVentaSaved());
-            } else { this.onSaveVenta(); }
+            this.onSaveVenta();
           } else {
             this.dialog.openDialog('Error', 'Ocurrio un error al generar la venta', false);
             this.venta.sumary.totalPagado = 0;
@@ -128,13 +137,8 @@ export class VentasComponent extends VentaOptica implements OnInit {
     });
   }
 
-  onVentaSaved() {
-    this._printService.examen = this.examen;
-    this._printService.venta = this.venta;
-    this._printService.esPagoInicial = true;
-    this._printService.print();
-    this.router.navigate(['']);
-  }
+  // Redirect to Home
+  onVentaSaved() { this.router.navigate(['']); }
 
   onProductoAdded(item: DetalleVenta) {
     const currentItem = this.venta.detalle.find(dv => dv.productoVenta.key === item.productoVenta.key);
@@ -147,13 +151,4 @@ export class VentasComponent extends VentaOptica implements OnInit {
   }
 
   onDetalleChanged(value: DetalleVenta[]) { this.venta.updateDetalleVenta(value, false); }
-
-  // Optica
-  ventaMica = false;
-  showOptica = true;
-
-  onExamenChanged(value) {
-    this.showOptica = value ? true :  false;
-    super.onExamenChanged(value);
-  }
 }

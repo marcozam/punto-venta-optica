@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-
+// Models
 import { TipoMica, TratamientoMica, Examen } from '../models/examen.models';
 import { FieldProperty } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
-
+// Services
 import { GenericServiceBase, GenericService } from '../../generic-catalogs/services/generic.service';
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
@@ -14,27 +12,27 @@ export class TipoMicasService extends GenericService<TipoMica> implements Generi
 
   catalogID = 1102;
 
-  constructor(_db: BaseAjaxService) { 
+  constructor(_db: BaseAjaxService) {
     super(_db, 'os_optica_tipo_mica', 480);
   }
 
-  mapList(list: any[]) { 
+  mapList(list: any[]) {
     let iList = super.mapList(list);
     iList = iList.sort((v1, v2) => {
-      if(v1.nombre < v2.nombre) return -1;
-      if(v1.nombre > v2.nombre) return 1;
+      if (v1.nombre < v2.nombre) { return -1; }
+      if (v1.nombre > v2.nombre) { return 1; }
       return 0;
-    })
+    });
     let respond: TipoMica[] = iList.filter(d => d.tipoMica === 1);
     respond = respond.concat(iList.filter(d => d.tipoMica === 0));
     respond = respond.concat(iList.filter(d => d.tipoMica === 2));
     return respond;
   }
 
-  newInstance(){ return new TipoMica(); }
+  newInstance() { return new TipoMica(); }
 
-  getByFBKey(key: string){
-    let fmd: FieldProperty = TipoMica.prototype['keyFB__dbData'];
+  getByFBKey(key: string) {
+    const fmd: FieldProperty = TipoMica.prototype['keyFB__dbData'];
     return this.db.getAllDataFromCatalog(this.catalogID, `${fmd.key},${key}`)
       .map(result => result.map(it => this.mapData(it)));
   }
@@ -43,7 +41,7 @@ export class TipoMicasService extends GenericService<TipoMica> implements Generi
 /*
 @Injectable()
 export class FBTipoMicasService extends FBGenericService<TipoMica> implements GenericServiceBase<TipoMica> {
-  constructor(_db: AngularFireDatabase) { 
+  constructor(_db: AngularFireDatabase) {
     super(_db);
     super.setListRefURL('micas/tipos');
   }
@@ -75,7 +73,7 @@ export class FBTipoMicasService extends FBGenericService<TipoMica> implements Ge
     let _maximoDioptrias: number = 3;
     let _precioDioptria: number = 15;
     let _dioptrias:number = Math.max(
-      Math.abs(examen.ojoDerecho.esfera), 
+      Math.abs(examen.ojoDerecho.esfera),
       Math.abs(examen.ojoIzquierdo.esfera),
       Math.abs(examen.ojoDerecho.cilindro),
       Math.abs(examen.ojoIzquierdo.cilindro),

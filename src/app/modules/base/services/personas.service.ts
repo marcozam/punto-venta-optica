@@ -9,19 +9,21 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @Injectable()
 export class PersonasService extends GenericService<Persona> implements GenericServiceBase<Persona> {
+
     constructor(_db: BaseAjaxService) {
         super(_db);
         this.catalogID = 1;
     }
 
     map2Server(value: Persona) {
-        let fieldsMD = getFields(value);
+        const fieldsMD = getFields(value);
         return fieldsMD.map(fld => {
-            if(fld.propertyName === 'fechaNacimiento')
+            if (fld.propertyName === 'fechaNacimiento') {
                 return `${fld.key},${value[fld.propertyName].toJSON()}`;
-            else return `${fld.key},${value[fld.propertyName]}`;
-        })
-        .join('~');
+            } else {
+                return `${fld.key},${value[fld.propertyName]}`;
+            }
+        }).join('~');
     }
 
     newInstance() { return new Persona(); }

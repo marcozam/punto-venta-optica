@@ -10,22 +10,22 @@ import { ExamenService } from 'app/modules/optica/services/examen.service';
 export class VentaOptikaTicketService extends VentaTicketService {
 
   corteID: number;
-  esPagoInicial: boolean = true;
-  esPresupuesto: boolean = false;
+  esPagoInicial = true;
+  esPresupuesto = false;
   venta: Venta;
   examen: Examen;
 
   constructor(
-    service: VentaService, 
-    _decimal: DecimalPipe, 
+    service: VentaService,
+    _decimal: DecimalPipe,
     _date: DatePipe,
-    private serviceExamen: ExamenService) { 
+    private serviceExamen: ExamenService) {
     super(service, _decimal, _date);
   }
 
-  getServerData(key: number){
+  getServerData(key: number) {
     this.service.getByID(key)
-        .subscribe((data: Venta) => { 
+        .subscribe((data: Venta) => {
             this.venta = data;
             this.serviceExamen.getLastExamen(this.venta.sumary.cliente.key)
               .subscribe((examen: Examen) => {
@@ -35,11 +35,11 @@ export class VentaOptikaTicketService extends VentaTicketService {
         });
   }
 
-  createHeader(){
-    return super.createHeader() + (this.examen ? this.createAditionalContent(): '');
+  createHeader() {
+    return super.createHeader() + (this.examen ? this.createAditionalContent() : '');
   }
 
-  createAditionalContent(){
+  createAditionalContent() {
     return `
       <tr>
         <td style="padding-top: 15px; border-top:dashed 1px #000" colspan="4"></td>
@@ -115,6 +115,6 @@ export class VentaOptikaTicketService extends VentaTicketService {
           ${this.examen.observaciones}
         </td>
       </tr>
-      `
+      `;
   }
 }

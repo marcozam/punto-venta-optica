@@ -1,21 +1,12 @@
 <form #ventaForm="ngForm">
-    <h3>
-        Cliente:
-    </h3>
-    <h4>
-        {{venta.sumary.cliente?.nombre}}
-    </h4>
-    <!--
-    <app-optica-venta *ngIf="showOptica" [clienteID]="clienteID" [listaPrecioID]="listaPrecioID" [detalleVenta]="venta.detalle"
-        (onExamenChanged)="onExamenChanged($event)"
-        (onProdutsChanged)="onOpticaVentaChanged($event)"></app-optica-venta>
-    -->
-
+    <h3> Cliente: </h3>
+    <h4> {{venta.sumary.cliente?.nombre}} </h4>
+    <ng-content></ng-content>
     <div class="sub-container">
         <div class="sub-titles text-center">
             Nuevo Producto
         </div>
-        <app-add-producto [listaPreciosID]="listaPrecioID" (onProdutoAdded)="onProductoAdded($event)"></app-add-producto>
+        <app-add-producto [listaPreciosID]="listaPreciosID" (onProdutoAdded)="onProductoAdded($event)"></app-add-producto>
 
         <div class="sub-titles text-center">
             Productos

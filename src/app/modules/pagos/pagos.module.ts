@@ -1,18 +1,9 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import {
-  MatButtonModule,
-  MatSelectModule,
-  MatIconModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatListModule,
-  MatGridListModule,
-  MatTooltipModule,
-  MatProgressBarModule,
-} from '@angular/material';
+import { MatButtonModule, MatSelectModule, MatIconModule, MatInputModule, MatFormFieldModule,
+        MatListModule, MatGridListModule, MatTooltipModule, MatProgressBarModule } from '@angular/material';
 
 // OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
@@ -65,6 +56,8 @@ import { VentasPendientesEntregaComponent } from './containers/ventas-pendientes
     VentaService,
     ContactoService,
     ExamenService,
+    DecimalPipe,
+    DatePipe,
   ]
 })
 export class PagosModule { }

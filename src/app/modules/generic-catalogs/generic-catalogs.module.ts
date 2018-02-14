@@ -31,8 +31,6 @@ import { GenericCatalogListComponent } from './components/generic-catalog-list/g
 import { DynamicCatalogListComponent } from './components/dynamic-catalog-list/dynamic-catalog-list.component';
 import { DynamicCatalogComponent } from './components/dynamic-catalog/dynamic-catalog.component';
 import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fields/dynamic-catalog-fields.component';
-// Services
-import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @NgModule({
   imports: [

@@ -69,7 +69,7 @@ export class ExamenService extends GenericService<Examen> {
             V22: examen.ojoIzquierdo.cilindro,
             V23: examen.ojoIzquierdo.grados,
             V24: examen.ojoIzquierdo.distanciaInterPupilar ? examen.ojoIzquierdo.distanciaInterPupilar : ''
-        })
+        });
         return this.db.getData(params).map(result => {
             if (result.Table.length > 0) {
                 examen.key = result.Table[0].C0;
@@ -106,7 +106,7 @@ export class ExamenService extends GenericService<Examen> {
             V3: listaPrecioID,
             V4: tipoMicaID,
             V5: materialID
-        })
+        });
         return this.db.getData(params).map(data => {
             if (data.Table.length > 0) {
                 const precio = new MicaPrecio(data.Table[0].C1, materialID, tipoMicaID);
@@ -114,6 +114,6 @@ export class ExamenService extends GenericService<Examen> {
                 return precio;
             }
             return null;
-        })
+        });
       }
 }
