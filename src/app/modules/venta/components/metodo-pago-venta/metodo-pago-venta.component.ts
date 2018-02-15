@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { MetodoPago, DetallePagos, Venta } from 'app/modules/venta/models/venta.models';
 import { MetodosPagoService } from 'app/modules/pagos/services/metodos-pago.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from '@angular/forms';
 
 @Component({

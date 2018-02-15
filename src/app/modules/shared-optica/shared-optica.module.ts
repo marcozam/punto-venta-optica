@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
-import { MatListModule, MatProgressBarModule, MatIconModule, MatTabsModule, MatButtonModule } from '@angular/material';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 // OS Modules
 import { OpticaModule } from '../optica/optica.module';
 import { VentaModule } from '../venta/venta.module';

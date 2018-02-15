@@ -1,7 +1,8 @@
 import { Component, DebugElement, ElementRef, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
 import { Route, ActivatedRoute, Router } from '@angular/router';
-import { MatSelectionList } from '@angular/material';
-import { MatDialog } from '@angular/material';
+// Material
+import { MatSelectionList } from '@angular/material/list';
+import { MatDialog } from '@angular/material/dialog';
 // Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Examen } from 'app/modules/optica/models/examen.models';

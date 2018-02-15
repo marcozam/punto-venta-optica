@@ -1,22 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {
-  MatNativeDateModule,
-  MatInputModule,
-  MatRadioModule,
-  MatDialogModule,
-  MatButtonModule,
-  MatIconModule,
-  MatListModule,
-  MatProgressBarModule,
-  MatSelectModule,
-  MatTooltipModule,
-  MatSlideToggleModule,
-  MatAutocompleteModule
-} from '@angular/material';
+// Material
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 // FireBase
 import { environment } from 'environments/environment';
 import { AngularFireModule, } from 'angularfire2';
@@ -37,8 +35,7 @@ import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fiel
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
-    MatNativeDateModule,
+    // Material
     MatInputModule,
     MatRadioModule,
     MatDialogModule,
@@ -50,8 +47,11 @@ import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fiel
     MatSelectModule,
     MatProgressBarModule,
     MatAutocompleteModule,
+    // Routing
     GenericCatalogsRoutingModule,
+    // OS Modules
     BaseModule,
+    // Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
   ],

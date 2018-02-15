@@ -6,7 +6,13 @@ import { BrowserModule, Title, DomSanitizer } from '@angular/platform-browser';
 import localeESMX from '@angular/common/locales/es-MX';
 
 // Material Modules
-import { MatIconRegistry, MatSidenavModule, MatMenuModule, MatToolbarModule, MatListModule, MatIconModule, MatButtonModule, MatDialogModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 // Material Tokens for Date format
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -39,9 +45,7 @@ registerLocaleData(localeESMX);
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatDialogModule,
-    // OS Modules
-    BaseModule
+    MatDialogModule
   ],
   providers: [
     Title,

@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // Material
-import {
-  MatButtonModule, MatSelectModule, MatIconModule, MatInputModule, MatFormFieldModule,
-  MatTooltipModule, MatCardModule, MatCheckboxModule
- } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Routing
 import { ProductoRoutingModule } from './producto-routing.module';

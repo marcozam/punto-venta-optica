@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSelectionList, MatListOption, fadeInContent } from '@angular/material';
+import { MatSelectionList, MatListOption } from '@angular/material/list';
+
 import { SelectionChange } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 

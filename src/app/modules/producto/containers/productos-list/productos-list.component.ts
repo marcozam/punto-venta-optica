@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 
 import { ProductosService } from '../../services/productos.service';
 import { CategoriaProductoService } from '../../services/categoria-producto.service';
-import { Producto, CategoriaProductoSumary } from  '../../models/producto.models';
+import { Producto, CategoriaProductoSumary } from '../../models/producto.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 import { Observable } from 'rxjs/Observable';
 
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
   providers: [ProductosService, CategoriaProductoService, DialogBoxService]
 })
 export class ProductosListComponent implements OnInit {
-  //productos: Producto[] = [];
+  // productos: Producto[] = [];
   selectedCategory: CategoriaProductoSumary;
   categorias: CategoriaProductoSumary[];
   dataSource: TableSource<Producto>;

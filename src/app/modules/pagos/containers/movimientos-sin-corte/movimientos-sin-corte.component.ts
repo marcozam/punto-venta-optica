@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DecimalPipe, DatePipe } from '@angular/common';
 
 import { environment } from '../../../../../environments/environment';
 
-//Services
+// Services
 import { CorteTicketService } from '../../services/tickets/corte-ticket.service';
 import { CajaService } from '../../services/caja.service';
-//Models
+// Models
 import { MovimientoCaja, CorteCaja } from '../../models/caja.models';
 
 import { RegistrarCorteComponent } from '../../components/registrar-corte/registrar-corte.component';
