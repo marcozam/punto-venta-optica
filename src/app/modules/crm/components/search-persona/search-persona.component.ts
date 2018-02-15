@@ -37,9 +37,7 @@ export class SearchPersonaComponent implements OnInit {
     this._contactoService.source$.subscribe(data => this.resultados = data);
   }
 
-  ngOnInit() {
-    this.createSubscriptions();
-  }
+  ngOnInit() { this.createSubscriptions(); }
 
   onSearch(_nombre: string) {
     _nombre = _nombre.trim();
@@ -51,9 +49,7 @@ export class SearchPersonaComponent implements OnInit {
     }
   }
 
-  onItemSelected(item: Contacto) {
-    this.onChange.emit({data: item, exist: true});
-  }
+  onItemSelected(item: Contacto) { this.onChange.emit({data: item, exist: true}); }
 
   onViewContactClick(item: Contacto) {
     this.contactoID = item.key;

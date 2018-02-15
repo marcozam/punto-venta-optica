@@ -1,0 +1,25 @@
+.not-found-page {
+    background-color: #262432;
+    color: #FFF;
+    font-family: 'Roboto Condensed';
+    background-color: url('../../../assets/image/cloud-icon.svg');
+    padding-left: 50px;
+    display: block;
+    position: relative;
+    height: calc(100vh - 64px);
+    margin: -20px -25px 0 -25px;
+
+    .not-found-title{
+        font-size: 48px;
+        padding: 50px 0;
+    }
+    .not-found-description{
+        font-size: 24px;
+    }
+    .not-found-icon{
+        width: 20%;
+        position: absolute;
+        right: 100px;
+        bottom: 10px;
+    }
+}

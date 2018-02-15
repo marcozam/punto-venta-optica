@@ -20,8 +20,8 @@ const appRoutes: Routes = [
     { path: 'optika', loadChildren: 'app/modules/shared-optica/shared-optica.module#SharedOpticaModule' },
     // It will be nice that this will be dinamic
     { path: '', redirectTo: 'crm/search', pathMatch: 'full' },
-    { path: '404', component: PageNotFoundComponent, data: { title: 'Pagina no encontrada'} },
-    { path: '**', component: PageNotFoundComponent, data: { title: 'Pagina no encontrada'} }
+    { path: '404', component: PageNotFoundComponent, data: { title: ''} },
+    { path: '**', component: PageNotFoundComponent, data: { title: ''} }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

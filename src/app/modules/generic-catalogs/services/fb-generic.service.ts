@@ -50,7 +50,11 @@ export class FBGenericService<T> {
 
     getCatalogList(callback: any, watch?: boolean) {
         const $ref = this.$listRef.snapshotChanges()
-            .map((arr) => this.mapList(arr))
+            .map((arr) => this.mapList(arr).sort((v1, v2) => {
+                if (v1.nombre < v2.nombre) { return -1; }
+                if (v1.nombre > v2.nombre) { return 1; }
+                return 0;
+            }))
             .subscribe(r => {
                 if (!watch) { $ref.unsubscribe(); }
                 callback(r);

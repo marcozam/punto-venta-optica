@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -7,16 +7,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: './dialog-actions.component.html',
   styleUrls: ['./dialog-actions.component.scss']
 })
-export class DialogActionsComponent implements OnInit {
+export class DialogActionsComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogActionsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit() {
-  }
-
-  onClose(){
-    this.dialogRef.close();
-  }
+  onClose() { this.dialogRef.close(); }
 }

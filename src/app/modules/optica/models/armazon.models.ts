@@ -22,13 +22,25 @@ export class TipoArmazon extends BaseGenericCatalog {
     constructor() { super(); }
 }
 
-export class ModeloArmazon extends GenericCatalog {
+export interface IModeloArmazon {
+    key: number;
+    nombre: string;
+    categoria?: GenericCatalog;
+    marca: MarcaArmazon;
+    marcaID?: number;
+    modeloID: number;
+    tipoArmazonID: number;
+    sku?: string;
+}
+
+export class ModeloArmazon extends GenericCatalog implements IModeloArmazon {
     categoria?: GenericCatalog;
     marca: MarcaArmazon;
     marcaID?: number;
     modeloID = 0;
     tipoArmazonID = 0;
     sku?: string;
+
     constructor() {
         super();
         this.marca = new MarcaArmazon();

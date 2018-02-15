@@ -43,10 +43,7 @@ export class ContactoComponent implements OnInit {
     private dialog: DialogBoxService
   ) { }
 
-  ngOnInit() {
-    this.contacto = new Contacto();
-    // this._contactoService.getTiposDatoContacto(res=> this.tiposDatosContacto = res);
-  }
+  ngOnInit() { this.contacto = new Contacto(); }
 
   getContactData() {
     if (this.contactoID) {
@@ -113,8 +110,5 @@ export class ContactoComponent implements OnInit {
       });
   }
 
-  onSaved(data: Contacto) {
-    // this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
-    this.onChange.emit({ Data: data, isNew: this.isNew });
-  }
+  onSaved(data: Contacto) { this.onChange.emit({ Data: data, isNew: this.isNew }); }
 }

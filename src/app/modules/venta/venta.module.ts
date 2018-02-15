@@ -15,7 +15,6 @@ import {
   } from '@angular/material';
 
 // OS Modules
-import { OpticaModule } from '../optica/optica.module';
 import { BaseModule } from 'app/modules/base/base.module';
 // Routing
 import { VentaRoutingModule } from './venta-routing.module';
@@ -47,7 +46,6 @@ import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen
     MatTooltipModule,
     MatProgressBarModule,
     // OS Modules
-    OpticaModule,
     BaseModule,
   ],
   declarations: [

@@ -45,7 +45,15 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         }
     }
 
-    mapList(list: any[]): T[] { return list.map(p => this.mapData(p)); }
+    protected baseSort(list: T[]): T[] {
+        return list.sort((v1, v2) => {
+            if (v1['nombre'] < v2['nombre']) { return -1; }
+            if (v1['nombre'] > v2['nombre']) { return 1; }
+            return 0;
+        });
+    }
+
+    mapList(list: any[]): T[] { return this.baseSort(list.map(p => this.mapData(p))); }
     newInstance(): T | GenericCatalog { return new GenericCatalog(); }
     mapData(data: any): T { return this.mapGenericData(this.newInstance(), data); }
 

@@ -8,7 +8,7 @@ import { GenericService, GenericServiceBase } from '../../generic-catalogs/servi
 import { BaseAjaxService } from '../../base/services/base-ajax.service';
 import { ProductosService } from '../../producto/services/productos.service';
 // Models
-import { MarcaArmazon, ModeloArmazon } from '../models/armazon.models';
+import { MarcaArmazon, ModeloArmazon, IModeloArmazon } from '../models/armazon.models';
 import { Producto } from '../../producto/models/producto.models';
 
 @Injectable()
@@ -60,9 +60,13 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
             ref.orderByChild('marcaID').equalTo(marcaID)
         ).snapshotChanges()
         .map((arr) => {
-            return arr.map(snap => {
-                return this.mapData(snap);
-            });
+            return arr
+                .map(snap => this.mapData(snap))
+                .sort((v1, v2) => {
+                    if (v1.nombre < v2.nombre) { return -1; }
+                    if (v1.nombre > v2.nombre) { return 1; }
+                    return 0;
+                });
         })
         .subscribe(r => {
             callback(r);
@@ -94,24 +98,28 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
     }
 
     save(_currentValue: ModeloArmazon, _newValue: ModeloArmazon, callback) {
-        // if(_currentValue.hasChanges(_newValue))
-        _currentValue = Object.assign(_currentValue, _newValue);
-        _currentValue.marcaID = _currentValue.marca.key;
-        if (!_currentValue.categoria) { _currentValue.categoria = null; }
-        if (!_currentValue.sku) {_currentValue.sku = ''; }
-        const retValue: ModeloArmazon = _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
-        // Add relation to SQL
-        const d2s = `${this._fb_fieldID},${retValue.key}~100011,${retValue.nombre}`;
-        this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
-            retValue.modeloID = r.C0;
-            this.getProduct(retValue.modeloID, (prod: Producto) => {
-                const _producto = this.createProduct(retValue);
-                _producto.key = prod.key;
-                this._productoService.save(_producto, data => {
-                    callback(retValue);
+        if (_currentValue.hasChanges(_newValue)) {
+            _currentValue = Object.assign(_currentValue, _newValue);
+
+            _currentValue.marcaID = _currentValue.marca.key;
+            if (!_currentValue.categoria) { _currentValue.categoria = null; }
+            if (!_currentValue.sku) {_currentValue.sku = ''; }
+            const retValue: ModeloArmazon = _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
+            // Add relation to SQL
+            const d2s = `${this._fb_fieldID},${retValue.key}~100011,${retValue.nombre}`;
+            this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
+                retValue.modeloID = r.C0;
+                // Actualiza el modelo en FB
+                this.updateCatalogItem(retValue);
+                this.getProduct(retValue.modeloID, (prod: Producto) => {
+                    const _producto = this.createProduct(retValue);
+                    _producto.key = prod.key;
+                    this._productoService.save(_producto, data => {
+                        callback(retValue);
+                    });
                 });
             });
-        });
+        }
     }
 
     deleteModelo(modelo: ModeloArmazon, callback) {
