@@ -45,14 +45,6 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         }
     }
 
-    protected baseSort(list: T[]): T[] {
-        return list.sort((v1, v2) => {
-            if (v1['nombre'] < v2['nombre']) { return -1; }
-            if (v1['nombre'] > v2['nombre']) { return 1; }
-            return 0;
-        });
-    }
-
     mapList(list: any[]): T[] { return this.baseSort(list.map(p => this.mapData(p))); }
     newInstance(): T | GenericCatalog { return new GenericCatalog(); }
     mapData(data: any): T { return this.mapGenericData(this.newInstance(), data); }
@@ -121,6 +113,14 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 
     protected startLoading() { if (++this.n_requests > 0 && !this.isLoading) { this.loading$.next(true); }}
     protected finishLoading() { if (--this.n_requests <= 0 && this.isLoading) { this.loading$.next(false); }}
+
+    protected baseSort(list: T[]): T[] {
+        return list.sort((v1, v2) => {
+            if (v1['nombre'] < v2['nombre']) { return -1; }
+            if (v1['nombre'] > v2['nombre']) { return 1; }
+            return 0;
+        });
+    }
 
     protected mapGenericData(item: any, data: any) {
         if (data) {

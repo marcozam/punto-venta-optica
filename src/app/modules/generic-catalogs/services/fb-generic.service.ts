@@ -33,7 +33,7 @@ export class FBGenericService<T> {
 
     protected updateCatalogItem(_catalogItem) {
         _catalogItem.updatedDate = database.ServerValue.TIMESTAMP;
-        this.db.object(this.referenceURL + '/' +  _catalogItem.keyFB ?  _catalogItem.keyFB : _catalogItem.key)
+        this.db.object(this.referenceURL + '/' +  (_catalogItem.keyFB ?  _catalogItem.keyFB : _catalogItem.key))
             .update(_catalogItem);
         return _catalogItem;
     }

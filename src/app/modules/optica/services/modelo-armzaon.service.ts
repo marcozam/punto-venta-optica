@@ -44,6 +44,19 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
         return item;
     }
 
+    map2Server(item: ModeloArmazon): IModeloArmazon {
+        return {
+            key: item.key,
+            nombre: item.nombre,
+            categoria: item.categoria,
+            marca: item.marca,
+            marcaID: item.marcaID,
+            modeloID: item.modeloID,
+            tipoArmazonID: item.tipoArmazonID,
+            sku: item.sku
+        };
+    }
+
     getCatalogItem(id: string, callback) {
         const d2s = `${this._fb_fieldID},${id}`;
         super.getCatalogItem(id, (md: ModeloArmazon) => {
@@ -89,28 +102,31 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
             .subscribe(callback);
     }
 
-    hasChanges(value1: ModeloArmazon, value2: ModeloArmazon) {
-        return value1.nombre !== value2.nombre
-            || value1.marca.key !== value2.marca.key
-            || value1.sku !== value2.sku
-            || value1.tipoArmazonID !== value2.tipoArmazonID
-            || (value1.categoria ? value1.categoria.key !== value2.categoria.key : true);
-    }
-
     save(_currentValue: ModeloArmazon, _newValue: ModeloArmazon, callback) {
         if (_currentValue.hasChanges(_newValue)) {
+            // Asign new data to current data
             _currentValue = Object.assign(_currentValue, _newValue);
 
             _currentValue.marcaID = _currentValue.marca.key;
             if (!_currentValue.categoria) { _currentValue.categoria = null; }
             if (!_currentValue.sku) {_currentValue.sku = ''; }
-            const retValue: ModeloArmazon = _currentValue.key ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
+
+            // Create FB Item
+            const _fbItem = this.map2Server(_currentValue);
+            // Save Modelo on FB
+            const retValue: ModeloArmazon = _fbItem.key ?  this.updateCatalogItem(_fbItem) :  this.addCatalogItem(_fbItem);
+            // Assign key to FB Item
+            _fbItem.key = retValue.key;
+
             // Add relation to SQL
             const d2s = `${this._fb_fieldID},${retValue.key}~100011,${retValue.nombre}`;
             this._osDB.saveDynamicCatalog(d2s, this.catalogID, _currentValue.modeloID, r => {
                 retValue.modeloID = r.C0;
+                _fbItem.modeloID = retValue.modeloID;
+
                 // Actualiza el modelo en FB
-                this.updateCatalogItem(retValue);
+                this.updateCatalogItem(_fbItem);
+
                 this.getProduct(retValue.modeloID, (prod: Producto) => {
                     const _producto = this.createProduct(retValue);
                     _producto.key = prod.key;
@@ -119,6 +135,8 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
                     });
                 });
             });
+        } else {
+            callback(_currentValue);
         }
     }
 

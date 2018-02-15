@@ -1,7 +1,15 @@
 import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
-export class MarcaArmazon extends GenericCatalog {
+export class TipoArmazon extends BaseGenericCatalog {
+    @Field('C1') nombre: string;
+    @Field('C2') exportKey: number;
+
+    constructor() { super(); }
+}
+
+export class MarcaArmazon extends BaseGenericCatalog {
+    nombre: string;
     categoria: GenericCatalog;
 
     constructor() {
@@ -10,15 +18,9 @@ export class MarcaArmazon extends GenericCatalog {
     }
 }
 
-export class CategoriaArmazon extends GenericCatalog {
+export class CategoriaArmazon extends BaseGenericCatalog {
+    nombre: string;
     precio?: number;
-    constructor() { super(); }
-}
-
-export class TipoArmazon extends BaseGenericCatalog {
-    @Field('C1') nombre: string;
-    @Field('C2') exportKey: number;
-
     constructor() { super(); }
 }
 
@@ -26,14 +28,15 @@ export interface IModeloArmazon {
     key: number;
     nombre: string;
     categoria?: GenericCatalog;
-    marca: MarcaArmazon;
+    marca?: MarcaArmazon;
     marcaID?: number;
     modeloID: number;
     tipoArmazonID: number;
     sku?: string;
 }
 
-export class ModeloArmazon extends GenericCatalog implements IModeloArmazon {
+export class ModeloArmazon extends BaseGenericCatalog implements IModeloArmazon {
+    nombre: string;
     categoria?: GenericCatalog;
     marca: MarcaArmazon;
     marcaID?: number;
