@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import { MarcaArmazon } from '../models/armazon.models';
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
-import { GenericService, GenericServiceBase } from '../../generic-catalogs/services/generic.service';
+import { GenericServiceBase } from '../../generic-catalogs/services/generic.service';
 
 @Injectable()
 export class MarcaArmazonService extends FBGenericService<MarcaArmazon> implements GenericServiceBase<MarcaArmazon> {

@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
 import { MovimientoCaja, CorteCaja, DetalleCorteCaja } from '../models/caja.models';
-import { MetodoPago, Usuario } from 'app/modules/venta/models/venta.models';
+import { MetodoPago } from 'app/modules/venta/models/venta.models';
 
 @Injectable()
 export class CajaService extends GenericService<CorteCaja> implements GenericServiceBase<CorteCaja>  {

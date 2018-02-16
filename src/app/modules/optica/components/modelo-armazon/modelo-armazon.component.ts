@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 // Models
 import { MarcaArmazon, ModeloArmazon } from './../../models/armazon.models';
 import { GenericCatalog } from 'app/modules/base/models/base.models';
-import { Producto } from '../../../producto/models/producto.models';
 // Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { ModeloArmazonService } from '../../services/modelo-armzaon.service';
@@ -61,7 +60,7 @@ export class ModeloArmazonComponent implements OnInit {
   }
 
   onSave(newValue: any) {
-    this._modeloService.save(this.item, newValue, (r: ModeloArmazon) => {
+    this._modeloService.save(this.item, newValue, () => {
       this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
       const _url = '/optica/armazon/modelo';
       this.router.navigate([_url]);

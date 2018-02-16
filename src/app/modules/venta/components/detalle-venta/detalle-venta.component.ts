@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { AddDescuentoProductoComponent } from '../../components/add-descuento-producto/add-descuento-producto.component';
@@ -11,14 +11,14 @@ let unique_id: number;
   selector: 'os-detalle-venta',
   templateUrl: './detalle-venta.component.html',
   styleUrls: ['./detalle-venta.component.scss'],
-  host:{
-    'class': 'row'
-  }
+  host: { 'class': 'row' }
 })
-export class DetalleVentaComponent implements OnInit {
-  
-  //2 Way Data Binding
-  _detalleVenta: DetalleVenta[];
+export class DetalleVentaComponent {
+
+  index: number;
+
+  // 2 Way Data Binding
+  private _detalleVenta: DetalleVenta[];
   @Output() detalleVentaChange: EventEmitter<DetalleVenta[]> = new EventEmitter();
   @Input()
   get detalleVenta(): DetalleVenta[] { return this._detalleVenta; }
@@ -28,26 +28,20 @@ export class DetalleVentaComponent implements OnInit {
   }
 
   @Input() sumaryVenta: SumaryVenta;
-  
-  index: number;
 
   constructor(public matDialog: MatDialog) { this.index = unique_id++; }
 
-  ngOnInit() { }
-
   onCantidadChange(cantidad: number, item: DetalleVenta) { item.cantidad = cantidad; }
 
-  onEliminarProducto(detalle: DetalleVenta){
-    this.detalleVenta = this.detalleVenta.filter(dv=> dv.productoVenta.key !== detalle.productoVenta.key);
+  onEliminarProducto(detalle: DetalleVenta) {
+    this.detalleVenta = this.detalleVenta.filter(dv => dv.productoVenta.key !== detalle.productoVenta.key);
   }
 
-  openDescuentoItem(item: DetalleVenta){
-    let copy = Object.assign(new DetalleVenta(item.productoVenta), item);
-    let dialogRef = this.matDialog.open(AddDescuentoProductoComponent, {
-      data: { Detalle: copy }
-    });
+  openDescuentoItem(item: DetalleVenta) {
+    const copy = Object.assign(new DetalleVenta(item.productoVenta), item);
+    const dialogRef = this.matDialog.open(AddDescuentoProductoComponent, { data: { Detalle: copy } });
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.detalleVenta = this.detalleVenta
           .filter(dv => dv.productoVenta.key !== result.Data.productoVenta.key)
           .concat([result.Data]);

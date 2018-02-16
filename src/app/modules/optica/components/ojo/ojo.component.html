@@ -19,7 +19,7 @@
         <mat-form-field>
             <input matInput placeholder="Cilindro" name="cilindro" type="number" step=".25"
                 required min="-20" max="20"
-                #cilindroControl="ngModel" [readonly]="!editable" [ngModel]="ojo?.cilindro" (ngModelChange)="onCilindroChange($event)"/>
+                #cilindroControl="ngModel" [readonly]="!editable" [ngModel]="ojo?.cilindro"/>
                 
             <mat-error *ngIf="cilindroControl.hasError('max') || cilindroControl.hasError('min')">
               El maximo de dioptrías es <strong>20</strong>.

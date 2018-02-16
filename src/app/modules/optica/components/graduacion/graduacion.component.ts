@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 // Services
@@ -6,7 +6,7 @@ import { MaterialMicasService } from './../../services/material-micas.service';
 import { TipoMicasService } from './../../services/tipo-micas.service';
 import { ExamenService } from '../../services/examen.service';
 // Models
-import { Ojo, Examen, MaterialMica, TipoMica } from '../../models/examen.models';
+import { Examen, MaterialMica, TipoMica } from '../../models/examen.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
 
 export type GraduacionNextAction = 'venta' | 'presupuesto';
@@ -51,8 +51,9 @@ export class GraduacionComponent implements OnInit {
   }
 
   createSubscriptions() {
-    this.loading$.subscribe((isLoading: boolean) => this.loading = this._serviceExamen.isLoading
-        || this._tipoService.isLoading || this._materialService.isLoading);
+    this.loading$.subscribe(() => {
+      this.loading = this._serviceExamen.isLoading || this._tipoService.isLoading || this._materialService.isLoading;
+    });
 
     this._materialService.source$.subscribe(data => this.materialesMicas = data);
     this._tipoService.source$.subscribe(data => this.tiposMicas = data);

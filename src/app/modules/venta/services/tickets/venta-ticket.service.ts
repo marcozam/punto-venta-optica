@@ -4,31 +4,27 @@ import { GeneralTicket } from 'app/modules/base/services/tickets/general-ticket'
 import { ImpresionTicketService } from 'app/modules/base/services/tickets/impresion-ticket.service';
 import { Venta } from 'app/modules/venta/models/venta.models';
 import { VentaService } from 'app/modules/venta/services/venta.service';
-import { Examen } from 'app/modules/optica/models/examen.models';
-import { ExamenService } from 'app/modules/optica/services/examen.service';
 
 @Injectable()
 export class VentaTicketService extends ImpresionTicketService implements GeneralTicket {
 
   corteID: number;
-  esPagoInicial: boolean = true;
-  esPresupuesto: boolean = false;
+  esPagoInicial = true;
+  esPresupuesto = false;
   venta: Venta;
 
   constructor(
-    public service: VentaService, 
-    public _decimal: DecimalPipe, 
-    public _date: DatePipe) { 
+    public service: VentaService,
+    public _decimal: DecimalPipe,
+    public _date: DatePipe) {
     super();
   }
 
-  print(){
-    super.print(this, this.venta.sumary.sucursal);
-  }
+  print() { super.print(this, this.venta.sumary.sucursal); }
 
-  getServerData(key: number){
+  getServerData(key: number) {
     this.service.getByID(key)
-        .subscribe((data: Venta) => { 
+        .subscribe((data: Venta) => {
             this.venta = data;
             this.print();
         });
@@ -36,29 +32,29 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
 
   createAditionalContent() { return ''; }
 
-  createComments(){
-    //Agrega comentarios a los productos
-    this.venta.updateDetalleVenta(this.venta.detalle.map(dv=>{
-      let comentarios = this.venta.comentarios.filter(c=> c.productoID === dv.productoVenta.key);
-      if(comentarios.length > 0){
-        dv.comentario = comentarios.map(c=> c.comentario).join('<br/>');
+  createComments() {
+    // Agrega comentarios a los productos
+    this.venta.updateDetalleVenta(this.venta.detalle.map(dv => {
+      const comentarios = this.venta.comentarios.filter(c => c.productoID === dv.productoVenta.key);
+      if (comentarios.length > 0) {
+        dv.comentario = comentarios.map(c => c.comentario).join('<br/>');
       }
       return dv;
     }));
-    //Elimina los comentarios de productos
-    this.venta.comentarios = this.venta.comentarios.filter(c=> c.productoID === 0 || c.productoID === null);
+    // Elimina los comentarios de productos
+    this.venta.comentarios = this.venta.comentarios.filter(c => c.productoID === 0 || c.productoID === null);
     return this.venta.comentarios.map(cm => {
         return `<tr>
           <td colspan="4">
             ${cm.comentario}
           </td>
-        </tr>`
-      })
+        </tr>`;
+      });
   }
 
   createContent() {
-    let comentarios = this.createComments();
-    let content: string[] = []
+    const comentarios = this.createComments();
+    let content: string[] = [];
     content = content.concat(
       this.venta.detalle.map(dPro => {
         return `<tr>
@@ -67,7 +63,7 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
           </td>
           <td colspan="2">
             ${dPro.productoVenta.nombre}
-            ${dPro.comentario ? `<br/><small>(${dPro.comentario})</small>`: ''}
+            ${dPro.comentario ? `<br/><small>(${dPro.comentario})</small>` : ''}
           </td>
           <td class="text-right">
             ${this._decimal.transform(dPro.importe, '1.2-2')}
@@ -75,7 +71,7 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
         </tr>`;
       })
     );
-    if(this.venta.comentarios.length > 0){
+    if (this.venta.comentarios.length > 0) {
       content.push(`<tr>
           <td style="padding-top: 15px; border-top:dashed 1px #000" colspan="4"></td>
         </tr>
@@ -89,7 +85,7 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
     return content.join('');
   }
 
-  createHeader(){
+  createHeader() {
     return `
     <tr>
       <td colspan="4" class="text-center" style="font-size:12pt;">
@@ -120,8 +116,8 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
       </td>
     </tr>
     ${this.venta.sumary.cliente.datos
-        .filter(dc=>dc.tipoContactoID <= 3)
-        .map(dc=>{
+        .filter(dc => dc.tipoContactoID <= 3)
+        .map(dc => {
           return `
           <tr>
             <td>
@@ -134,7 +130,7 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
                 ${dc.valor}
               </small>
             </td>
-          </tr>`
+          </tr>`;
         })
         .join('')}
     <tr>
@@ -151,57 +147,37 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
     </tr>`;
   }
 
-  createDetallePagos(){
+  createDetallePagos() {
     let footer: string [] = [];
-    `<tr>
-      <td style="padding-top:15px; border-bottom:dashed 1px #000" colspan="4"></td>
-    </tr>
-      ${this.venta.pagos.length > 0 ? 
-      `<tr>
-        <th style="padding-top:15px;" colspan="4">SUS PAGOS</th>
-      </tr>` 
-      : ''
-    }`
+    footer.push('<tr><td style="padding-top:15px; border-bottom:dashed 1px #000" colspan="4"></td></tr>');
 
-    let pagos = this.venta.pagos.filter(
-      dPag => {
-        return this.esPagoInicial ? dPag.esPagoInicial : dPag.corteID === this.corteID && !dPag.esPagoInicial;
-      }
-    );
+    if (this.venta.pagos.length > 0) {
+      footer.push('<tr><th style="padding-top:15px;" colspan="4">SUS PAGOS</th></tr>');
+    }
 
-    let totalRecibido: number = pagos.length > 0 ? 
-        pagos.map(p=> p.totalRecibido).reduce((p, c)=> p +c) : 0;
+    const pagos = this.venta.pagos.filter(dPag => this.esPagoInicial ? dPag.esPagoInicial : dPag.corteID === this.corteID && !dPag.esPagoInicial);
+    let totalRecibido: number = pagos.length > 0 ? pagos.map(p => p.totalRecibido).reduce((p, c) => p + c) : 0;
+    let anticipo = 0;
 
-    let anticipo: number = 0;
-
-    if(!this.esPagoInicial){
+    if (!this.esPagoInicial) {
       anticipo = this.venta.pagos
-        .filter(p=> p.esPagoInicial || p.corteID > 0)
-        .map(p=> p.monto)
-        .reduce((p, c)=> p +c);
+        .filter(p => p.esPagoInicial || p.corteID > 0)
+        .map(p => p.monto)
+        .reduce((p, c) => p + c);
 
       footer.push(`<tr>
-          <td colspan="3">
-            Anticipo
-          </td>
-          <td class="text-right">
-            $ ${this._decimal.transform(anticipo, '1.2-2')}
-          </td>
+          <td colspan="3">Anticipo</td>
+          <td class="text-right">$ ${this._decimal.transform(anticipo, '1.2-2')}</td>
         </tr>`);
     }
     totalRecibido += anticipo;
 
     footer = footer.concat(
-      pagos
-      .map( dPag => {
+      pagos.map( dPag => {
         return `<tr>
-          <td colspan="3">
-            ${dPag.metodoPago.nombre}
-          </td>
-          <td class="text-right">
-            $ ${ this._decimal.transform(dPag.totalRecibido, '1.2-2')}
-          </td>
-        </tr>`
+          <td colspan="3">${dPag.metodoPago.nombre}</td>
+          <td class="text-right">$ ${ this._decimal.transform(dPag.totalRecibido, '1.2-2')}</td>
+        </tr>`;
       })
     );
 
@@ -213,8 +189,8 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
       </td>
       <td class="text-right">
         $ ${ this._decimal.transform(
-            this.venta.sumary.total <= this.venta.sumary.totalPagado ? 
-            (totalRecibido - this.venta.sumary.total) : 
+            this.venta.sumary.total <= this.venta.sumary.totalPagado ?
+            (totalRecibido - this.venta.sumary.total) :
             (this.venta.sumary.total - totalRecibido),
             '1.2-2')
         }
@@ -225,7 +201,7 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
   }
 
   createFooter() {
-    let footer: string [] = [];
+    const footer: string [] = [];
     footer.push(`<tr>
           <td style="padding-top: 15px; border-top:dashed 1px #000" colspan="4"></td>
         </tr>
@@ -262,10 +238,8 @@ export class VentaTicketService extends ImpresionTicketService implements Genera
           ${this.venta.detalle.length}
         </td>
       </tr>`);
-      
-      if(!this.esPresupuesto)
-        footer.push(this.createDetallePagos());
-      
+
+      if (!this.esPresupuesto) { footer.push(this.createDetallePagos()); }
       return footer.join('');
   }
 }

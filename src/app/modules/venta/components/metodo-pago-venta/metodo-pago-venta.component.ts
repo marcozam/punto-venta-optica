@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 })
 export class MetodoPagoVentaComponent implements OnInit {
 
-  totalPagado: number = 0;
+  totalPagado = 0;
   metodosPago: MetodoPago[];
   venta: Venta;
   @ViewChild('pagoForm') form: FormControl;
@@ -21,56 +21,50 @@ export class MetodoPagoVentaComponent implements OnInit {
   constructor(
     private _metodoPagoService: MetodosPagoService,
     public dialogRef: MatDialogRef<MetodoPagoVentaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) 
-    { }
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-
-  createSubscriptions(){
+  createSubscriptions() {
     this._metodoPagoService.source$
-      .subscribe(result => { this.metodosPago = result.filter(item => item.enVenta) });
+      .subscribe(result => { this.metodosPago = result.filter(item => item.enVenta); });
   }
 
   ngOnInit() {
     this.createSubscriptions();
     this.venta = this.data.Venta;
-    //Watch for changes 
+    // Watch for changes
     this.form.valueChanges.subscribe(value => {
-      let pagos: DetallePagos[] = this.convertToPagos(value);
+      const pagos: DetallePagos[] = this.convertToPagos(value);
       this.totalPagado = 0;
-      if(pagos.length > 0){
-        this.totalPagado = pagos.map(p=> p.totalRecibido).reduce((p, c) => p + c);
-      }
-    })  
-    
+      if (pagos.length > 0) { this.totalPagado = pagos.map(p => p.totalRecibido).reduce((p, c) => p + c); }
+    });
+
     this._metodoPagoService.getList();
   }
 
-  onContinue(value){
-    let pagos: DetallePagos[] = this.convertToPagos(value);
-    if(this.venta.sumary.saldo < this.totalPagado){
-      let pagoEfectivo = pagos.filter(p=> p.metodoPago.key === 2)[0];
-      if(pagoEfectivo){
+  onContinue(value) {
+    const pagos: DetallePagos[] = this.convertToPagos(value);
+    if (this.venta.sumary.saldo < this.totalPagado) {
+      const pagoEfectivo = pagos.filter(p => p.metodoPago.key === 2)[0];
+      if (pagoEfectivo) {
         pagoEfectivo.monto = pagoEfectivo.totalRecibido - this.totalPagado + this.venta.sumary.saldo;
       }
     }
-    //TODO: Add validation depending on client
+    // TODO: Add validation depending on client
     this.dialogRef.close(pagos);
   }
 
-  onCancelar(){
-    this.dialogRef.close();
-  }
+  onCancelar() { this.dialogRef.close(); }
 
-  convertToPagos(value){
-    let pagos = new Array<DetallePagos>();
-    let keys = Object.keys(value);
-    for (let k of keys){
-      if(value[k] > 0){
-        let dp = new DetallePagos();
+  convertToPagos(value) {
+    const pagos = new Array<DetallePagos>();
+    const keys = Object.keys(value);
+    for (const k of keys){
+      if (value[k] > 0) {
+        const dp = new DetallePagos();
         dp.metodoPago = this.metodosPago.filter(mp => mp.key.toString() === k)[0];
         dp.totalRecibido = value[k];
         dp.monto = value[k];
-        pagos.push(dp)
+        pagos.push(dp);
       }
     }
     return pagos;

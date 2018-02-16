@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 import { TipoMica } from '../../models/examen.models';
 
@@ -15,41 +15,40 @@ import { TipoMicasService } from '../../services/tipo-micas.service';
 })
 export class TipoMicaComponent implements OnInit, OnDestroy {
 
-  catalogID: number = 1102;
+  catalogID = 1102;
   item: TipoMica = new TipoMica();
-  
+
   private loadingSubscription: Subscription;
-  isLoading: boolean = false;
+  isLoading = false;
 
   constructor(
     private _tiposervice: TipoMicasService,
     private router: Router,
     private route: ActivatedRoute,
-    public dialog: DialogBoxService) { 
-      this.loadingSubscription = this._tiposervice.loading$.subscribe(loading=> this.isLoading = loading);
+    public dialog: DialogBoxService) {
+      this.loadingSubscription = this._tiposervice.loading$.subscribe(loading => this.isLoading = loading);
     }
 
   ngOnInit() {
-    let _detailID = this.route.snapshot.params['detailID'];
-    if(_detailID > 0){
-      let $sub = this._tiposervice.getByID(_detailID)
-        .subscribe(item => {
-          this.item = item; 
+    const _detailID = this.route.snapshot.params['detailID'];
+    if (_detailID > 0) {
+      const $sub = this._tiposervice.getByID(_detailID).subscribe(item => {
+          this.item = item;
           $sub.unsubscribe();
         });
     }
   }
 
-  ngOnDestroy(){ this.loadingSubscription.unsubscribe(); }
+  ngOnDestroy() { this.loadingSubscription.unsubscribe(); }
 
-  onSave(newValue: TipoMica){
+  onSave(newValue: TipoMica) {
     newValue.keyFB = this.item.keyFB;
-    let $sub = this._tiposervice.save(newValue, this.item)
-      .subscribe(item=>{
+    const $sub = this._tiposervice.save(newValue, this.item)
+      .subscribe(() => {
         $sub.unsubscribe();
         this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
-        let _url = '/catalogo/' + this.catalogID;
+        const _url = '/DCG/catalogo/' + this.catalogID;
         this.router.navigate([_url]);
-      })
+      });
   }
 }

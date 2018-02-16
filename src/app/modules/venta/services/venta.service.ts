@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
-import { Venta, DetalleVenta, DetallePagos, SumaryVenta, MetodoPago, ComentariosVenta } from '../models/venta.models';
-import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+// Models
+import { Venta, DetalleVenta, DetallePagos, MetodoPago, ComentariosVenta } from '../models/venta.models';
 import { Status } from 'app/modules/base/models/base.models';
 import { Producto } from 'app/modules/producto/models/producto.models';
-
-import { BaseAjaxService } from '../../base/services/base-ajax.service'
+// Services
+import { BaseAjaxService } from '../../base/services/base-ajax.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
-import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
-import { Subject } from 'rxjs';
+import { GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 
 @Injectable()
 export class VentaService implements GenericServiceBase<Venta> {
-    
+
     constructor(
         private db: BaseAjaxService,
         private _contactoService: ContactoService
@@ -143,7 +143,7 @@ export class VentaService implements GenericServiceBase<Venta> {
     }
 
     changeStatus(ID: number, status: number, internal: boolean = false){
-        let params = this.db.createParameter('ECOM0002', 2, { 
+        const params = this.db.createParameter('ECOM0002', 2, { 
             V3: internal ? 1 : 0,
             V4: ID,
             V5: status
@@ -164,7 +164,7 @@ export class VentaService implements GenericServiceBase<Venta> {
             venta.updateDetalleVenta(data.Table1.map( row => this.mapDetalleVentaData(row)));
             venta.pagos = data.Table2.map( row => this.mapDetallePagosData(row));
             venta.comentarios = data.Table3.map( row => this.mapComentariosData(row));
-            //observable$.next(venta);
+            // observable$.next(venta);
             this._contactoService.getByID(venta.sumary.cliente.key)
                 .subscribe((result) => {
                     venta.sumary.cliente = result;

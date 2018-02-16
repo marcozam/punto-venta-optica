@@ -10,7 +10,6 @@ import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base//models/bas
 import { FieldProperty } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 import { MetaDataField } from 'app/modules/generic-catalogs/models/metadata-catalogs.models';
 import { AjaxLocalStorage } from 'app/modules/base/models/request.models';
-import { Producto } from 'app/modules/producto/models/producto.models';
 
 export interface GenericServiceBase<T>{
     save(_newValue: T, _currentValue?: T, callback?);
@@ -87,7 +86,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
     delete(ID: number, storageName?: string): Observable<T> {
         this.startLoading();
         const response = this.db.removeItem(this.catalogID, ID);
-        const $sub = response.subscribe( result => {
+        const $sub = response.subscribe(() => {
             this.setData(this.source.filter((s: T | any) => (s.key ? s.key : s.C0) !== ID), false,  storageName);
             this.finishLoading();
             $sub.unsubscribe();

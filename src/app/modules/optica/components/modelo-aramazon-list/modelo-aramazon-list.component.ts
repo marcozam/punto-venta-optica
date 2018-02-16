@@ -6,14 +6,13 @@ import { TableSource, TableColumn } from 'app/modules/base/models/data-source.mo
 import { ModeloArmazon, MarcaArmazon } from 'app/modules/optica/models/armazon.models';
 // Services
 import { ModeloArmazonService } from 'app/modules/optica/services/modelo-armzaon.service';
-import { CategoriaArmazonService } from 'app/modules/optica/services/categoria-armazon.service';
 import { MarcaArmazonService } from 'app/modules/optica/services/marca-armazon.service';
 
 @Component({
   selector: 'app-modelo-aramazon-list',
   templateUrl: './modelo-aramazon-list.component.html',
   styleUrls: ['./modelo-aramazon-list.component.scss'],
-  providers: [ ModeloArmazonService, CategoriaArmazonService, MarcaArmazonService ]
+  providers: [ ModeloArmazonService, MarcaArmazonService ]
 })
 export class ModeloAramazonListComponent implements OnInit {
 
@@ -25,7 +24,6 @@ export class ModeloAramazonListComponent implements OnInit {
 
   constructor(
     private service: ModeloArmazonService,
-    private _categorias: CategoriaArmazonService,
     private _marca: MarcaArmazonService,
     private router: Router) {
     this.dataSource = new TableSource();
@@ -66,6 +64,7 @@ export class ModeloAramazonListComponent implements OnInit {
   navigate(key: string) { this.router.navigate([`/optica/armazon/modelo/${key}`]); }
 
   delete(item: ModeloArmazon) {
+    console.log(item);
     // this.service.deleteModelo(item, () =>{ })
   }
 }

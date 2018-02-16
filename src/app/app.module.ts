@@ -22,8 +22,6 @@ import { routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-// OS Modules
-import { BaseModule } from './modules/base/base.module';
 
 registerLocaleData(localeESMX);
 

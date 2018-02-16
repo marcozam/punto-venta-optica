@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { Producto, PrecioProducto } from '../models/producto.models';
+import { PrecioProducto } from '../models/producto.models';
 import { BaseAjaxService } from '../../base/services/base-ajax.service';
 
 @Injectable()
 export class ListaPreciosService {
-    private catalogID = 401;
+    // private catalogID = 401;
 
     constructor(private _db: BaseAjaxService) { }
 
@@ -29,7 +29,7 @@ export class ListaPreciosService {
     setPreciosProductos(listaPreciosID: number, precios: PrecioProducto[], callback) {
         const productsData = precios.map(p => `${p.productoID},${p.precio}`);
         const params = this._db.createParameter('ECOM0001', 3, { V3: listaPreciosID, V6: `C0,C1~${productsData.join('~')}` });
-        this._db.getData(params).subscribe(res => { callback(); });
+        this._db.getData(params).subscribe(() => { callback(); });
         // 'C0,C1~';
         // var qProd = 'C0,C1~' + ConvertToCSV(Enumerable.From($scope.allProductos).Select("x => { A: x['C0'], B: x['Precio'] }").ToArray(), ',', '~');
         // var qSuc = Enumerable.From($scope.allSucursales.findAll('Aplica', true)).Select(function (v) { return v.C0 }).ToArray();

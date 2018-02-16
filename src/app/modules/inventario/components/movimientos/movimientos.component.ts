@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { MovimientosInventarioService } from 'app/modules/inventario/services/movimientos-inventario.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';
 

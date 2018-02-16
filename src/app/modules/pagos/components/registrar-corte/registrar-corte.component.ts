@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { DetalleCorteCaja } from '../../models/caja.models';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -7,23 +7,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './registrar-corte.component.html',
   styleUrls: ['./registrar-corte.component.scss']
 })
-export class RegistrarCorteComponent implements OnInit {
+export class RegistrarCorteComponent {
 
   @Input() detalle: DetalleCorteCaja[];
 
   constructor(private dialogRef: MatDialogRef<RegistrarCorteComponent>,
-    @Inject(MAT_DIALOG_DATA) _detalle: DetalleCorteCaja[]) { 
+    @Inject(MAT_DIALOG_DATA) _detalle: DetalleCorteCaja[]) {
       this.detalle = _detalle;
     }
 
-  ngOnInit() {
-  }
+  onContinue() { this.dialogRef.close(true); }
 
-  onContinue(){
-    this.dialogRef.close(true);
-  }
-
-  onCancelar(){
-    this.dialogRef.close(false);
-  }
+  onCancelar() { this.dialogRef.close(false); }
 }

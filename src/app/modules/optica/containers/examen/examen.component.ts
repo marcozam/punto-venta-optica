@@ -28,7 +28,7 @@ export class ExamenComponent implements OnInit {
     this._pacienteService.getByID(this.pacienteID).subscribe(data => this.paciente = data);
   }
 
-  onMicaSaved(event: GraduacionEventChange, data) {
+  onMicaSaved(event: GraduacionEventChange) {
     if (event.action === 'venta') {
       this._route.navigateByUrl('/optika/venta/' + this.pacienteID);
     } else if (event.action === 'presupuesto') {

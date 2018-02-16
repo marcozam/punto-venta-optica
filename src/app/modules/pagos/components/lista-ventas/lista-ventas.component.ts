@@ -1,12 +1,11 @@
 import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { DecimalPipe, DatePipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
 // Services
 import { DialogPagosService } from '../../services/dialog-pagos.service';
 import { VentaService } from 'app/modules/venta/services/venta.service';
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 // Models
-import { Venta, DetallePagos, SumaryVenta } from 'app/modules/venta/models/venta.models';
+import { Venta, DetallePagos } from 'app/modules/venta/models/venta.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 
 @Component({
@@ -72,7 +71,7 @@ export class ListaVentasComponent implements OnInit, AfterViewInit {
     this.pagosDialog.openDialog(venta, (dp: DetallePagos[]) => {
       if (dp.length > 0) {
         this.ventaService.registarPago(Number(venta.sumary.key), dp)
-          .subscribe(result => {
+          .subscribe(() => {
             let totalAbono = dp[0].monto;
             if (dp.length > 1) {
               totalAbono = dp.map(item => item.monto).reduce((p, c) => p + c);

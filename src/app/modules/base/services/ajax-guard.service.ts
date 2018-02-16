@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -36,7 +36,7 @@ export class AjaxGuardService {
         });
         const response: Subject<AjaxRequestResult> = new Subject();
         // Execute on complete
-        response.subscribe((res: AjaxRequestResult) => {
+        response.subscribe(() => {
             const index = queuedConnections.indexOf(post);
             if (index > -1) { queuedConnections.splice(index, 1); }
         });

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFireDatabase, AngularFireObject, AngularFireList, AngularFireAction } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireAction } from 'angularfire2/database';
 import { database } from 'firebase';
 
 import { GenericCatalog } from 'app/modules/base/models/base.models';
-import { GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 
 @Injectable()
-export class FBGenericService<T> {
+export class FBGenericService<T extends GenericCatalog> {
 
     newInstance() { return new GenericCatalog(); }
     mapList(list: any[]) { return list.map(snap => this.mapData(snap)); }
@@ -19,6 +18,8 @@ export class FBGenericService<T> {
         item.nombre = object.nombre;
         return item;
     }
+
+    dummyMethod(item: T) { console.log(item); }
 
     referenceURL: string;
     $listRef: AngularFireList<any>;
@@ -74,6 +75,7 @@ export class FBGenericService<T> {
     deleteCatalogItem(id: string | number) { this.db.object(this.referenceURL + '/' + id).remove(); }
 
     save(_currentValue, _newValue, callback?) {
+        console.log(callback);
         _currentValue = Object.assign(_currentValue, _newValue);
         (_currentValue.keyFB ? _currentValue.keyFB : _currentValue.key) ?  this.updateCatalogItem(_currentValue) :  this.addCatalogItem(_currentValue);
     }

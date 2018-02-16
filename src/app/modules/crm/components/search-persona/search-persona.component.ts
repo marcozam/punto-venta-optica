@@ -31,9 +31,7 @@ export class SearchPersonaComponent implements OnInit {
   }
 
   createSubscriptions() {
-    this.loading$.subscribe((isLoading: boolean) => {
-      this.isLoading = this._contactoService.isLoading;
-    });
+    this.loading$.subscribe(() => { this.isLoading = this._contactoService.isLoading; });
     this._contactoService.source$.subscribe(data => this.resultados = data);
   }
 

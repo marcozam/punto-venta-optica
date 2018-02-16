@@ -1,23 +1,22 @@
-import { 
-  Component, 
-  OnInit, 
-  AfterViewInit, 
-  Input, 
-  Output, 
-  EventEmitter, 
-  ChangeDetectionStrategy, 
-  ChangeDetectorRef, 
-  ContentChildren, 
-  QueryList, 
-  ViewContainerRef,
-  ViewChild
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ContentChildren,
+  QueryList,
 } from '@angular/core';
-
+// Componets
 import { FilterComponent } from 'app/modules/base/components/filter/filter.component';
-import { TableSource, TablePagingSettings, TableColumn, SortDirection } from 'app/modules/base/models/data-source.models';
+// Models
+import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
+// Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { forEach } from '@angular/router/src/utils/collection';
-import { AfterViewChecked } from '@angular/core/src/metadata/lifecycle_hooks';
+
 import { WarningTitle } from 'app/modules/base/constants/messages.contants';
 
 @Component({
@@ -54,7 +53,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   onEditFired: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private dialogService: DialogBoxService, 
+    private dialogService: DialogBoxService,
     private cd: ChangeDetectorRef) {
   }
 

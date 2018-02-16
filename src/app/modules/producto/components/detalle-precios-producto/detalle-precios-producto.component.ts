@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Producto, CategoriaProductoSumary, CategoriaProducto, PrecioProducto } from 'app/modules/producto/models/producto.models';
+import { CategoriaProductoSumary, CategoriaProducto, PrecioProducto } from 'app/modules/producto/models/producto.models';
 import { ProductosService } from 'app/modules/producto/services/productos.service';
 import { ListaPreciosService } from '../../services/lista-precios.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';

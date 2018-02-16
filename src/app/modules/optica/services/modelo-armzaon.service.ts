@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
 // FireBase
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 // Services
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
-import { GenericService, GenericServiceBase } from '../../generic-catalogs/services/generic.service';
+import { GenericServiceBase } from '../../generic-catalogs/services/generic.service';
 import { BaseAjaxService } from '../../base/services/base-ajax.service';
 import { ProductosService } from '../../producto/services/productos.service';
 // Models
-import { MarcaArmazon, ModeloArmazon, IModeloArmazon } from '../models/armazon.models';
+import { ModeloArmazon, IModeloArmazon } from '../models/armazon.models';
 import { Producto } from '../../producto/models/producto.models';
 
 @Injectable()
@@ -130,9 +129,7 @@ export class ModeloArmazonService extends FBGenericService<ModeloArmazon> implem
                 this.getProduct(retValue.modeloID, (prod: Producto) => {
                     const _producto = this.createProduct(retValue);
                     _producto.key = prod.key;
-                    this._productoService.save(_producto, data => {
-                        callback(retValue);
-                    });
+                    this._productoService.save(_producto, () => { callback(retValue); });
                 });
             });
         } else {

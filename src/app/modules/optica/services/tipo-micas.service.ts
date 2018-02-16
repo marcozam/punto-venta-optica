@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 // Models
-import { TipoMica, TratamientoMica, Examen } from '../models/examen.models';
+import { TipoMica } from '../models/examen.models';
 import { FieldProperty } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 // Services
 import { GenericServiceBase, GenericService } from '../../generic-catalogs/services/generic.service';
-import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @Injectable()
@@ -17,12 +16,7 @@ export class TipoMicasService extends GenericService<TipoMica> implements Generi
   }
 
   mapList(list: any[]) {
-    let iList = super.mapList(list);
-    iList = iList.sort((v1, v2) => {
-      if (v1.nombre < v2.nombre) { return -1; }
-      if (v1.nombre > v2.nombre) { return 1; }
-      return 0;
-    });
+    const iList = super.mapList(list);
     let respond: TipoMica[] = iList.filter(d => d.tipoMica === 1);
     respond = respond.concat(iList.filter(d => d.tipoMica === 0));
     respond = respond.concat(iList.filter(d => d.tipoMica === 2));

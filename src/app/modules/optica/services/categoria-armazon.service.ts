@@ -4,7 +4,6 @@ import { AngularFireDatabase, AngularFireAction } from 'angularfire2/database';
 // Service
 import { FBGenericService } from '../../generic-catalogs/services/fb-generic.service';
 // Models
-import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
 import { CategoriaArmazon } from '../models/armazon.models';
 
 @Injectable()
@@ -28,7 +27,10 @@ export class CategoriaArmazonService extends FBGenericService<CategoriaArmazon> 
     getPrecioCategoria(listaPreciosID, categoriaID, callback) {
         const $refPrecio = this.db.object(`armazones/precios/${listaPreciosID}/categorias/${categoriaID}`).snapshotChanges()
         .map(snap => this.mapPrecioData(snap))
-        .subscribe(r => { callback(r); });
+        .subscribe(r => {
+            $refPrecio.unsubscribe();
+            callback(r);
+        });
     }
 
     getPreciosCategorias(listaPreciosID, callback?, watch?: boolean) {

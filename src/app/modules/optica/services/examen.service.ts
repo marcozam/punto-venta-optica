@@ -2,16 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericService } from 'app/modules/generic-catalogs/services/generic.service';
-import { TratamientoMicasService } from './tratamiento-micas.service';
-import { MaterialMicasService } from './material-micas.service';
-import { TipoMicasService } from './tipo-micas.service';
-
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 // Models
-import { GenericCatalog } from 'app/modules/base/models/base.models';
-import { Producto } from '../../producto/models/producto.models';
-import { DetalleVenta } from '../../venta/models/venta.models';
 import { Examen, Ojo, MicaPrecio, TratamientoMicaPrecios } from '../models/examen.models';
 
 @Injectable()

@@ -17,7 +17,6 @@ import { BaseModule } from 'app/modules/base/base.module';
 import { VentaRoutingModule } from './venta-routing.module';
 // Services
 import { VentaService } from 'app/modules/venta/services/venta.service';
-import { ContactoService } from 'app/modules/crm/services/contacto.service';
 // Components
 import { VentasComponent } from './containers/ventas/ventas.component';
 import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.component';
@@ -32,7 +31,7 @@ import { ResumenVentaMesComponent } from './components/resumen-venta-mes/resumen
     CommonModule,
     // Routing
     VentaRoutingModule,
-    // Material2 Modules
+    // Material
     MatButtonModule,
     MatSelectModule,
     MatIconModule,

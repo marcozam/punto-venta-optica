@@ -73,7 +73,7 @@ export class VentaOpticaComponent implements OnInit {
   }
 
   createSubscriptions() {
-    this.loading$.subscribe((isLoading: boolean) => this.loading = this._examenService.isLoading || this._tratamientosService.isLoading);
+    this.loading$.subscribe(() => this.loading = this._examenService.isLoading || this._tratamientosService.isLoading);
     this._tratamientosService.source$.subscribe(data => this.allTratamientos = data);
   }
 

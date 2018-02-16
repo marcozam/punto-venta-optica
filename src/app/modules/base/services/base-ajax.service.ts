@@ -7,10 +7,10 @@ import { environment } from '../../../../environments/environment';
 import { AjaxGuardService } from './ajax-guard.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 // Models
-import { BaseGenericCatalog, GenericCatalog } from 'app/modules/base/models/base.models';
+import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 // Constants
-import { WarningTitle, AuthErrorMessage, ErrorTitle, ErrorMessage, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';
+import { WarningTitle, AuthErrorMessage, ErrorTitle, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';
 
 @Injectable()
 export class BaseAjaxService {
@@ -77,7 +77,7 @@ export class BaseAjaxService {
         if (!this._dialog.isOpen) { this._dialog.openDialog(title, message); }
     }
 
-    getDetailedData<T>(CatalogoID: number, DetailID: any) {
+    getDetailedData<T>(CatalogoID: number, DetailID: any): Observable<T> {
         const params = this.createParameter('DYN0001', 1, { 'V4': CatalogoID, 'V5': DetailID });
         return this.getData(params).map(result => result.Table.length > 0 ? result.Table[0] : null);
     }

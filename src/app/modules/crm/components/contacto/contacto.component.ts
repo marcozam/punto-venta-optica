@@ -5,7 +5,6 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
 
 import { TipoDatosContacto, Contacto, DatoContacto } from 'app/modules/crm/models/crm.models';
 import { Persona } from 'app/modules/base/models/base.models';
-import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { PersonasService } from 'app/modules/base/services/personas.service';
 
 @Component({
@@ -39,8 +38,7 @@ export class ContactoComponent implements OnInit {
 
   constructor(
     private _personaService: PersonasService,
-    private _contactoService: ContactoService,
-    private dialog: DialogBoxService
+    private _contactoService: ContactoService
   ) { }
 
   ngOnInit() { this.contacto = new Contacto(); }

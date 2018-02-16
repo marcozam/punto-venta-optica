@@ -74,7 +74,7 @@ export class DynamicCatalogComponent implements OnInit {
 
   onSave(data: MetaDataCatalog) {
     this._service.save(this.catalog, data)
-      .subscribe(result => {
+      .subscribe(() => {
         this._dialog.openDialog(SuccessTitle, SuccessMessage);
         this.router.navigate(['/DCG']);
       });

@@ -1,18 +1,11 @@
-import { Component, DebugElement, ElementRef, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
-import { Route, ActivatedRoute, Router } from '@angular/router';
-// Material
-import { MatSelectionList } from '@angular/material/list';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 // Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
-import { Examen } from 'app/modules/optica/models/examen.models';
-import { Producto } from 'app/modules/producto/models/producto.models';
-import { VentaOptica } from 'app/modules/shared-optica/models/venta-optica';
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
-import { Venta, DetalleVenta, DetallePagos, MetodoPago } from '../../models/venta.models';
+import { Venta, DetalleVenta, DetallePagos } from '../../models/venta.models';
 // Services
 import { VentaService } from '../../services/venta.service';
-import { ExamenService } from 'app/modules/optica/services/examen.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';

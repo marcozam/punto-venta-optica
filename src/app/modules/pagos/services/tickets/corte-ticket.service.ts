@@ -11,7 +11,7 @@ export class CorteTicketService extends ImpresionTicketService implements Genera
 
     constructor(private _decimal: DecimalPipe, private _date: DatePipe) { super(); }
 
-    getServerData(key: number) { throw new Error('Method not implemented.'); }
+    getServerData(key: number) { throw new Error('Method not implemented.' + key); }
 
     createContent(): string {
         let content: string[] = [];
