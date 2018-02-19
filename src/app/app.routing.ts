@@ -11,6 +11,8 @@ const appRoutes: Routes = [
     { path: 'ventas', loadChildren: 'app/modules/venta/venta.module#VentaModule' },
     { path: 'crm', loadChildren: 'app/modules/crm/crm.module#CRMModule' },
     { path: 'caja', loadChildren: 'app/modules/pagos/pagos.module#PagosModule' },
+    // Reporting
+    { path: 'reporting/ventas', loadChildren: 'app/modules/venta-reporting/venta-reporting.module#VentaReportingModule' },
     // Base
     { path: 'DCG', loadChildren: 'app/modules/generic-catalogs/generic-catalogs.module#GenericCatalogsModule' },
     // BackOffice

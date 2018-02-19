@@ -1,12 +1,12 @@
-import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, TemplateRef, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { DecimalPipe, DatePipe } from '@angular/common';
 // Services
-import { DialogPagosService } from '../../services/dialog-pagos.service';
-import { VentaService } from 'app/modules/venta/services/venta.service';
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
+import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
+import { VentaService } from 'app/modules/venta/services/venta.service';
 // Models
-import { Venta, DetallePagos } from 'app/modules/venta/models/venta.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
+import { Venta, DetallePagos } from 'app/modules/venta/models/venta.models';
 
 @Component({
   selector: 'app-lista-ventas',
@@ -14,13 +14,17 @@ import { TableSource, TableColumn } from 'app/modules/base/models/data-source.mo
   styleUrls: ['./lista-ventas.component.scss'],
   providers: [VentaService, DialogPagosService, VentaOptikaTicketService, DecimalPipe, DatePipe]
 })
-export class ListaVentasComponent implements OnInit, AfterViewInit {
+export class ListaVentasComponent implements AfterViewInit {
 
-  @Input() sucursalID: number;
-  @Input() clienteID = 0;
-  @Input() opcion = '';
+  private _ventasSource: Venta[];
+  @Input()
+  get ventasSource(): Venta[] { return this.ventasSource; }
+  set ventasSource(value) {
+    this._ventasSource = value ? value : [];
+    this.dataSource.updateDataSource(this._ventasSource);
+    this.loading = false;
+  }
 
-  ordenesPendienteEntrega: Venta[];
   dataSource: TableSource<Venta>;
   loading = false;
 
@@ -45,23 +49,6 @@ export class ListaVentasComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  ngOnInit() {
-    this.loading = true;
-    if (this.opcion === 'pendientes-entrega') {
-      this.ventaService.getOrdenesPendientesEntrega(this.sucursalID, this.clienteID)
-        .subscribe(result => {
-          this.dataSource.updateDataSource(result);
-          this.loading = false;
-        });
-    } else if (this.opcion === 'historial') {
-      this.ventaService.getHistorialCompras(this.clienteID)
-        .subscribe(result => {
-          this.dataSource.updateDataSource(result);
-          this.loading = false;
-        });
-    }
-  }
-
   ngAfterViewInit() {
     // Set Template for Actions
     this.dataSource.actionsTemplate = this.actionsTemplate;
@@ -73,9 +60,7 @@ export class ListaVentasComponent implements OnInit, AfterViewInit {
         this.ventaService.registarPago(Number(venta.sumary.key), dp)
           .subscribe(() => {
             let totalAbono = dp[0].monto;
-            if (dp.length > 1) {
-              totalAbono = dp.map(item => item.monto).reduce((p, c) => p + c);
-            }
+            if (dp.length > 1) { totalAbono = dp.map(item => item.monto).reduce((p, c) => p + c); }
             venta.sumary.totalPagado = venta.sumary.totalPagado + totalAbono;
             this._printVentaService.esPagoInicial = false;
             this._printVentaService.corteID = 0;

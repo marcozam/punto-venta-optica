@@ -29,6 +29,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
     source$: Subject<T[]> = new Subject();
     loading$: Subject<boolean> = new Subject();
     isLoading = false;
+    autoSort = true;
     private n_requests = 0;
     protected source: T[] = [];
     protected storage: AjaxLocalStorage<T>;
@@ -44,7 +45,11 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         }
     }
 
-    mapList(list: any[]): T[] { return this.baseSort(list.map(p => this.mapData(p))); }
+    mapList(list: any[]): T[] {
+        let respond = list.map(p => this.mapData(p));
+        if (this.autoSort) { respond = this.baseSort(respond); }
+        return respond;
+    }
     newInstance(): T | GenericCatalog { return new GenericCatalog(); }
     mapData(data: any): T { return this.mapGenericData(this.newInstance(), data); }
 
@@ -115,8 +120,10 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
 
     protected baseSort(list: T[]): T[] {
         return list.sort((v1, v2) => {
-            if (v1['nombre'] < v2['nombre']) { return -1; }
-            if (v1['nombre'] > v2['nombre']) { return 1; }
+            if (v1.hasOwnProperty('nombre')) {
+                if (v1['nombre'] < v2['nombre']) { return -1; }
+                if (v1['nombre'] > v2['nombre']) { return 1; }
+            }
             return 0;
         });
     }

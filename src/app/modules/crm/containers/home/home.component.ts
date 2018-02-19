@@ -8,13 +8,13 @@ import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Venta } from 'app/modules/venta/models/venta.models';
 
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
-import { VentaService } from 'app/modules/venta/services/venta.service';
+import { VentasReportingService } from 'app/modules/venta-reporting/services/ventas-reporting.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [ContactoService, VentaService]
+  providers: [ContactoService, VentasReportingService]
 })
 export class HomeComponent {
 
@@ -23,7 +23,7 @@ export class HomeComponent {
   constructor(
     public dialog: MatDialog,
     private _route: Router,
-    private _ventaService: VentaService,
+    private _ventaService: VentasReportingService,
     private _contactoService: ContactoService) {}
 
   onPersonaChange(item: any) {
@@ -54,7 +54,7 @@ export class HomeComponent {
     ];
 
     if (this.ordenesPendientes.length > 0) {
-      _actions.push({ name: `Ordenes por Entregar (${this.ordenesPendientes.length})`, route: '/venta/entregas/' + _contacto.key });
+      _actions.push({ name: `Ordenes por Entregar (${this.ordenesPendientes.length})`, route: '/caja/entregas/' + _contacto.key });
     }
 
     const dialogRef = this.dialog.open(DialogActionsComponent, {

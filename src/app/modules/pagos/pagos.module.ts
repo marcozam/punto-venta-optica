@@ -14,6 +14,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 // OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
+import { VentaModule } from 'app/modules/venta/venta.module';
+import { VentaReportingModule } from 'app/modules/venta-reporting/venta-reporting.module';
 // Routing
 import { PagosRoutingModule } from './pagos-routing.module';
 // Services
@@ -22,7 +24,6 @@ import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { ExamenService } from 'app/modules/optica/services/examen.service';
 // Components
 import { MovimientosSinCorteComponent } from './containers/movimientos-sin-corte/movimientos-sin-corte.component';
-import { ListaVentasComponent } from './components/lista-ventas/lista-ventas.component';
 import { RegistrarCorteComponent } from './components/registrar-corte/registrar-corte.component';
 import { CorteListComponent } from './components/corte-list/corte-list.component';
 import { MovimientosCajaComponent } from './components/movimientos-caja/movimientos-caja.component';
@@ -46,10 +47,11 @@ import { MetodoPagoVentaComponent } from 'app/modules/venta/components/metodo-pa
     MatProgressBarModule,
     // OS Modules
     BaseModule,
+    VentaModule,
+    VentaReportingModule,
   ],
   declarations: [
     MovimientosSinCorteComponent,
-    ListaVentasComponent,
     RegistrarCorteComponent,
     CorteListComponent,
     MovimientosCajaComponent,
