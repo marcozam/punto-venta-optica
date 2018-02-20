@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 // OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
+import { PagosModule } from '../pagos/pagos.module';
 // Routing
 import { VentaRoutingModule } from './venta-routing.module';
 // Services
@@ -21,7 +22,6 @@ import { VentaService } from 'app/modules/venta/services/venta.service';
 import { VentasComponent } from './containers/ventas/ventas.component';
 import { DetalleVentaComponent } from './components/detalle-venta/detalle-venta.component';
 import { AddProductoComponent } from './components/add-producto/add-producto.component';
-import { MetodoPagoVentaComponent } from './components/metodo-pago-venta/metodo-pago-venta.component';
 import { AddDescuentoProductoComponent } from './components/add-descuento-producto/add-descuento-producto.component';
 
 @NgModule({
@@ -42,12 +42,12 @@ import { AddDescuentoProductoComponent } from './components/add-descuento-produc
     MatProgressBarModule,
     // OS Modules
     BaseModule,
+    PagosModule
   ],
   declarations: [
     VentasComponent,
     DetalleVentaComponent,
     AddProductoComponent,
-    MetodoPagoVentaComponent,
     AddDescuentoProductoComponent,
   ],
   exports: [
@@ -55,7 +55,6 @@ import { AddDescuentoProductoComponent } from './components/add-descuento-produc
     VentaRoutingModule
   ],
   entryComponents: [
-    MetodoPagoVentaComponent,
     AddDescuentoProductoComponent
   ],
   providers: [ VentaService ]

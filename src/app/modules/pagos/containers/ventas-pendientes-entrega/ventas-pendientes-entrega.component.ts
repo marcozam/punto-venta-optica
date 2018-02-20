@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 // Services
-import { VentasReportingService } from 'app/modules/venta-reporting/services/ventas-reporting.service';
+import { VentasReportingService } from 'app/modules/venta-common/services/ventas-reporting.service';
 // Models
 import { Venta } from 'app/modules/venta/models/venta.models';
 

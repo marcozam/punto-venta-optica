@@ -18,13 +18,10 @@
         <td>
           <mat-form-field class="sm">
             <input type="number" [placeholder]="d.metodoPago.nombre" min="0" matInput
-              class="text-right" required
-              [(ngModel)]="d.montoRecibido"/>
+              class="text-right" required [(ngModel)]="d.montoRecibido"/>
           </mat-form-field>
         </td>
-        <td class="text-right">
-          $ {{d.montoEsperado | number : '1.2-2'}}
-        </td>
+        <td class="text-right"> $ {{d.montoEsperado | number : '1.2-2'}} </td>
       </tr>
     </tbody>
   </table>

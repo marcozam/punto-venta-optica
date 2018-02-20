@@ -8,7 +8,7 @@ import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Venta } from 'app/modules/venta/models/venta.models';
 
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
-import { VentasReportingService } from 'app/modules/venta-reporting/services/ventas-reporting.service';
+import { VentasReportingService } from 'app/modules/venta-common/services/ventas-reporting.service';
 
 @Component({
   selector: 'app-home',

@@ -2,7 +2,7 @@ import { Component, TemplateRef, ViewChild, AfterViewInit, Input } from '@angula
 import { DecimalPipe, DatePipe } from '@angular/common';
 // Services
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
-import { DialogPagosService } from 'app/modules/pagos/services/dialog-pagos.service';
+import { DialogPagosService } from 'app/modules/venta-common/services/dialog-pagos.service';
 import { VentaService } from 'app/modules/venta/services/venta.service';
 // Models
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
@@ -56,19 +56,21 @@ export class ListaVentasComponent implements AfterViewInit {
 
   generarPago(venta: Venta) {
     this.pagosDialog.openDialog(venta, (dp: DetallePagos[]) => {
-      if (dp.length > 0) {
-        this.ventaService.registarPago(Number(venta.sumary.key), dp)
-          .subscribe(() => {
-            let totalAbono = dp[0].monto;
-            if (dp.length > 1) { totalAbono = dp.map(item => item.monto).reduce((p, c) => p + c); }
-            venta.sumary.totalPagado = venta.sumary.totalPagado + totalAbono;
-            this._printVentaService.esPagoInicial = false;
-            this._printVentaService.corteID = 0;
-            this._printVentaService.getServerData(Number(venta.sumary.key));
-            if (venta.sumary.saldo === 0 && venta.sumary.status.key === 40203) {
-              this.dataSource.updateDataSource(this.dataSource.data.filter(vta => vta.sumary.key !== venta.sumary.key));
-            } else { this.dataSource.refresh(); }
-          });
+      if (dp) {
+        if (dp.length > 0) {
+          this.ventaService.registarPago(Number(venta.sumary.key), dp)
+            .subscribe(() => {
+              let totalAbono = dp[0].monto;
+              if (dp.length > 1) { totalAbono = dp.map(item => item.monto).reduce((p, c) => p + c); }
+              venta.sumary.totalPagado = venta.sumary.totalPagado + totalAbono;
+              this._printVentaService.esPagoInicial = false;
+              this._printVentaService.corteID = 0;
+              this._printVentaService.getServerData(Number(venta.sumary.key));
+              if (venta.sumary.saldo === 0 && venta.sumary.status.key === 40203) {
+                this.dataSource.updateDataSource(this.dataSource.data.filter(vta => vta.sumary.key !== venta.sumary.key));
+              } else { this.dataSource.refresh(); }
+            });
+        }
       }
     });
   }

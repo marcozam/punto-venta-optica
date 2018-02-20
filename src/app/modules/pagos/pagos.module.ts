@@ -1,21 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+// Material
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatListModule } from '@angular/material/list';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 // OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
-import { VentaModule } from 'app/modules/venta/venta.module';
-import { VentaReportingModule } from 'app/modules/venta-reporting/venta-reporting.module';
+import { VentaCommonModule } from 'app/modules/venta-common/venta-common.module';
 // Routing
 import { PagosRoutingModule } from './pagos-routing.module';
 // Services
@@ -28,27 +22,21 @@ import { RegistrarCorteComponent } from './components/registrar-corte/registrar-
 import { CorteListComponent } from './components/corte-list/corte-list.component';
 import { MovimientosCajaComponent } from './components/movimientos-caja/movimientos-caja.component';
 import { VentasPendientesEntregaComponent } from './containers/ventas-pendientes-entrega/ventas-pendientes-entrega.component';
-import { MetodoPagoVentaComponent } from 'app/modules/venta/components/metodo-pago-venta/metodo-pago-venta.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     PagosRoutingModule,
-    // Material2 Modules
+    // Material
     MatButtonModule,
-    MatSelectModule,
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
-    MatListModule,
-    MatGridListModule,
-    MatTooltipModule,
-    MatProgressBarModule,
+    MatDialogModule,
     // OS Modules
     BaseModule,
-    VentaModule,
-    VentaReportingModule,
+    VentaCommonModule,
   ],
   declarations: [
     MovimientosSinCorteComponent,
@@ -59,7 +47,6 @@ import { MetodoPagoVentaComponent } from 'app/modules/venta/components/metodo-pa
   ],
   entryComponents: [
     RegistrarCorteComponent,
-    MetodoPagoVentaComponent
   ],
   // Used by Ticket Printing
   providers: [
