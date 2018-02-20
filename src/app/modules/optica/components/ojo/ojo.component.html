@@ -6,7 +6,7 @@
         <mat-form-field>
             <input matInput placeholder="Esfera" name="esfera" type="number" step=".25"
                 required min="-20" max="20"
-                #esferaControl="ngModel" [readonly]="!editable" [ngModel]="ojo?.esfera"/>
+                #esferaControl="ngModel" [readonly]="!editable" [(ngModel)]="ojo.esfera"/>
                 
             <mat-error *ngIf="esferaControl.hasError('max') || esferaControl.hasError('min')">
               El maximo de dioptrías es <strong>20</strong>.
@@ -32,7 +32,7 @@
         <mat-form-field>
             <input matInput placeholder="Grados" name="grados" type="number" 
                 [required]="ojoForm.value.cilindro !== 0" min="0" max="180"
-                #gradosControl="ngModel" [readonly]="!editable" [ngModel]="ojo?.grados"/>
+                #gradosControl="ngModel" [readonly]="!editable" [(ngModel)]="ojo.grados"/>
             
             <mat-error *ngIf="gradosControl.hasError('required') || gradosControl.hasError('min')">
               Los grados son <strong>requeridos</strong>.
@@ -44,7 +44,7 @@
         <mat-form-field>
             <input matInput placeholder="Distancia" name="distanciaInterPupilar" type="number" 
                 min="0" required
-                #distanciaControl="ngModel" [readonly]="!editable" [ngModel]="ojo?.distanciaInterPupilar"/>
+                #distanciaControl="ngModel" [readonly]="!editable" [(ngModel)]="ojo.distanciaInterPupilar"/>
             
             <mat-error *ngIf="distanciaControl.hasError('required')">
               La distancia es <strong>requerida</strong>.

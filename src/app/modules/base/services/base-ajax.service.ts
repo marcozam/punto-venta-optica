@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
@@ -16,10 +17,10 @@ import { WarningTitle, AuthErrorMessage, ErrorTitle, InternalServerErrorMessage 
 export class BaseAjaxService {
     online: boolean;
 
-    constructor(private _dialog: DialogBoxService, public guard: AjaxGuardService) {
+    constructor(private _dialog: DialogBoxService, public guard: AjaxGuardService, public snackBar: MatSnackBar) {
         this.guard.online$.subscribe((isOnline) => {
             this.online = isOnline;
-            if (!isOnline) { this.openDialog(ErrorTitle, 'Se perdio la conexion a internet'); }
+            if (!isOnline) { this.snackBar.open('Se perdio la conexion a internet', 'Ignorar', { duration: 3000 }); }
         });
     }
 

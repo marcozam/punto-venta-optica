@@ -6,7 +6,9 @@
 </div>
 <div class="row" [class.sr-only]="!loading">
     <div class="col-xs col-sm-8 col-md-5">
-        <app-graduacion [editable]="false" [pacienteID]="clienteID" (tipoMicaChange)="onMicaChange($event)" (materialChange)="onMicaChange($event)"></app-graduacion>
+        <app-graduacion [editable]="false" [examen]="examen" [paciente]="cliente" 
+            (tipoMicaChange)="onMicaChange($event)" (materialChange)="onMicaChange($event)">
+        </app-graduacion>
     </div>
     <div class="col-md-3 col-xs flex-container">
         <div class="sub-container">

@@ -50,7 +50,7 @@ export class VentaOpticaComponent implements OnInit {
             this.setExamen(examen);
           } else {
             this.dialog.openDialog('Advertencia!!', 'El cliente no cuenta con un examen registrado.', false);
-            this.onExamenChanged.emit(null);
+            // this.onExamenChanged.emit(null);
           }
         });
     }
@@ -61,7 +61,6 @@ export class VentaOpticaComponent implements OnInit {
   @Input() detalleVenta: DetalleVenta[];
 
   @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter<OpticaVentaChangeEvent>();
-  @Output() onExamenChanged: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(MatSelectionList) tratamientoList: MatSelectionList;
 
@@ -100,7 +99,7 @@ export class VentaOpticaComponent implements OnInit {
   setExamen(examen: Examen) {
     this.ultimoExamen = examen;
     this.addMica();
-    this.onExamenChanged.emit(examen);
+    // this.onExamenChanged.emit(examen);
   }
 
   setMicaValues(key: string, value: GenericCatalog) {

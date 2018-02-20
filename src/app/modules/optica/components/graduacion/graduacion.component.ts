@@ -24,19 +24,29 @@ export class GraduacionEventChange {
   providers: [ExamenService, TipoMicasService, MaterialMicasService]
 })
 export class GraduacionComponent implements OnInit {
-  _examen: Examen;
   ojoDerechoValid: Boolean;
   ojoIzquierdoValid: Boolean;
   // Data
   tiposMicas: TipoMica[];
   materialesMicas: MaterialMica[];
-
+  ojoDerechoInvalid: Boolean;
+  ojoIzquierdoInvalid: Boolean;
   loading$: Observable<boolean>;
   loading = false;
 
   @Input() editable = true;
   @Input() pacienteID: number;
   @Input() paciente: Contacto;
+
+  private _examen: Examen;
+  @Output() examenChange: EventEmitter<Examen> = new EventEmitter();
+  @Input()
+  get examen(): Examen { return this._examen; }
+  set examen(value) {
+    this._examen = value;
+    this.examenChange.emit(value);
+  }
+
   @Output() materialChange: EventEmitter<any> = new EventEmitter();
   @Output() tipoMicaChange: EventEmitter<any> = new EventEmitter();
   @Output() onSaved: EventEmitter<GraduacionEventChange> = new EventEmitter();
@@ -110,8 +120,8 @@ export class GraduacionComponent implements OnInit {
 
   savaExamen(value: any) {
     // Gets material based on ID
-    const _material: MaterialMica = this.materialesMicas.filter(_m => _m.key === value.material)[0];
-    const _tipo: TipoMica = this.tiposMicas.filter(_t => _t.key === value.tipoMica)[0];
+    const _material: MaterialMica = this.materialesMicas.find(_m => _m.key === value.material);
+    const _tipo: TipoMica = this.tiposMicas.find(_t => _t.key === value.tipoMica);
 
     this._examen.materialRecomendadoID = _material.key;
     this._examen.materialRecomendado = _material.nombre;
@@ -131,7 +141,7 @@ export class GraduacionComponent implements OnInit {
     this._serviceExamen.saveExamen(this.pacienteID, this._examen)
       .subscribe((examen) => {
         this._examen = examen;
-        this.onSaved.emit(new GraduacionEventChange(this._examen, isBudget ? 'presupuesto' : 'venta'));
+        this.onSaved.emit(new GraduacionEventChange(this.examen, isBudget ? 'presupuesto' : 'venta'));
       });
   }
 

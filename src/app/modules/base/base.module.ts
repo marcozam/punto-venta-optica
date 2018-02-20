@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
 // Common
@@ -45,6 +46,7 @@ import { BaseAjaxService } from './services/base-ajax.service';
     MatSelectModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatSnackBarModule,
   ],
   declarations: [
     TableComponent,

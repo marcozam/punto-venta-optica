@@ -9,19 +9,35 @@ import { Ojo } from '../../models/examen.models';
   styleUrls: ['./ojo.component.scss'],
 })
 export class OjoComponent implements OnInit {
+
   @ViewChild(NgForm) form;
-  @Input() ojo: Ojo;
+
+  _ojo: Ojo;
+  _invalid: Boolean = true;
+
+  @Output() invalidChange = new EventEmitter<Boolean>();
+  @Input()
+  get invalid(): Boolean { return this._invalid; }
+  set invalid(value) {
+    this._invalid = value;
+    this.invalidChange.emit(value);
+  }
+
+  @Output() ojoChange = new EventEmitter<Ojo>();
+  @Input()
+  get ojo(): Ojo { return this._ojo; }
+  set ojo(value) {
+    this._ojo = value;
+    this.ojoChange.emit(value);
+  }
+
   @Input() editable = true;
-  @Output() onChange = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
-    this.form.valueChanges.subscribe((data) => { this.pushChanges(data); });
-  }
-
-  pushChanges(item: any) {
-    this.onChange.emit({ value: item, isValid: this.form.valid });
+    this.form.valueChanges
+      .subscribe(() => this.invalid = this.form.invalid );
   }
 
   gradosHabilitados(value: number| null) {

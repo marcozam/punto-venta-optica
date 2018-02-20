@@ -6,50 +6,46 @@
     </div>
   </div>
   <div class="row" *ngIf="editable">
-    <div class="col-xs">
+    <div class="col-xs col-md-4">
       <div class="sub-container">
         <div class="sub-titles">
             <small>Paciente:</small>
             {{paciente?.nombre}}
         </div>
         <div>
-          <mat-checkbox align="end" name="esReceta" [ngModel]="_examen?.esReceta">
+          <mat-checkbox align="end" name="esReceta" [(ngModel)]="examen.esReceta">
             ¿El paciente presento receta?
           </mat-checkbox>
         </div>
         <mat-form-field>
-          <input matInput placeholder="Oftalmologo" name="oftalmologo" [ngModel]="_examen?.oftalmologo" />
+          <input matInput placeholder="Oftalmologo" name="oftalmologo" [(ngModel)]="examen.oftalmologo" />
         </mat-form-field>
         <mat-form-field>
-          <textarea matInput placeholder="Observaciones" name="observaciones" [ngModel]="_examen?.observaciones"></textarea>
+          <textarea matInput placeholder="Observaciones" name="observaciones" [(ngModel)]="examen.observaciones"></textarea>
         </mat-form-field>
       </div>
     </div>
-  </div>
-  <div class="row">
     <div class="col-xs" *ngIf="!editable">
       <app-graduacion-vista [examen]="_examen"></app-graduacion-vista>
     </div>
-
-    <div class="col-xs col-md-3" *ngIf="editable">
-        <app-ojo [ojo]="_examen?.ojoDerecho" (onChange)="onOjoDerechoChange($event)" [editable]="editable">
-            OD
-        </app-ojo>
+    <div class="col-xs-6 col-md-2" *ngIf="editable">
+      <app-ojo [(ojo)]="_examen.ojoDerecho" [(invalid)]="ojoDerechoInvalid" [editable]="editable">
+        OD
+      </app-ojo>
     </div>
-    <div class="col-xs col-md-3" *ngIf="editable">
-        <app-ojo [ojo]="_examen?.ojoIzquierdo" (onChange)="onOjoIzquierdoChange($event)" [editable]="editable">
-            OI
-        </app-ojo>
+    <div class="col-xs-6 col-md-2" *ngIf="editable">
+      <app-ojo [(ojo)]="_examen.ojoIzquierdo" [(invalid)]="ojoIzquierdoInvalid" [editable]="editable">
+        OI
+      </app-ojo>
     </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-6">
+    <div class="col-xs col-md-2">
       <div class="sub-container">
         <div class="sub-titles text-center">
           Mica
         </div>
         <mat-form-field>
           <mat-select #tipoMicaControl="ngModel" placeholder="Tipo de Mica" name="tipoMica"
-            [ngModel]="_examen?.tipoMicaRecomendadoID" 
+            [ngModel]="_examen.tipoMicaRecomendadoID" 
             (ngModelChange)="onTipoMicaChange($event)">
             <mat-option *ngFor="let tipo of tiposMicas" [value]="tipo.key">
               {{tipo.nombre}}
@@ -58,7 +54,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-select placeholder="Material" name="material"
-            [ngModel]="_examen?.materialRecomendadoID" 
+            [ngModel]="_examen.materialRecomendadoID" 
             (ngModelChange)="onMaterialChange($event)">
             <mat-option *ngFor="let material of materialesMicas" [value]="material.key">
                 {{material.nombre}}
@@ -67,7 +63,7 @@
         </mat-form-field>
         <mat-form-field>
           <input matInput #adicionControl="ngModel" placeholder="Adición" type="number" name="adicion" min="1"
-            [ngModel]="_examen?.adicion" 
+            [ngModel]="_examen.adicion" 
             [required]="esMonofocal(tipoMicaControl.value)" 
             [disabled]="esMonofocal(tipoMicaControl.value)"/>
           <mat-error *ngIf="adicionControl.hasError('required')">
@@ -79,7 +75,7 @@
         </mat-form-field>
         <mat-form-field>
           <input matInput #alturaControl="ngModel" placeholder="Altura" type="number" name="altura" min="0"
-            [ngModel]="_examen?.altura" 
+            [ngModel]="_examen.altura" 
             [required]="esMonofocal(tipoMicaControl.value)" 
             [disabled]="esMonofocal(tipoMicaControl.value)"/>
           <mat-error *ngIf="alturaControl.hasError('required')">
@@ -90,16 +86,16 @@
     </div>
   </div>
   <div *ngIf="editable" class="row">
-    <div class="col-xs text-right buttons-containers">
-      <button mat-raised-button color="accent" type="button"
-        [disabled]="!(ojoIzquierdoValid && ojoDerechoValid && examenForm.valid)"
+    <div class="col-xs col-md-10 text-right buttons-containers">
+      <button mat-raised-button color="accent" type="button" 
+        [disabled]="ojoIzquierdoInvalid || ojoDerechoInvalid || examenForm.invalid"
         (click)="generarPresupuesto(examenForm.value)">
         <mat-icon aria-label="Guardar examen">shop</mat-icon>
         Generar Presupuesto
       </button>
 
-      <button mat-raised-button color="primary" type="button"
-        [disabled]="!(ojoIzquierdoValid && ojoDerechoValid && examenForm.valid)"
+      <button mat-raised-button color="primary" type="button" 
+        [disabled]="ojoIzquierdoInvalid || ojoDerechoInvalid || examenForm.invalid"
         (click)="onSaveExamen(examenForm.value)">
         <mat-icon aria-label="Guardar examen">save</mat-icon>
         Guardar Examen
