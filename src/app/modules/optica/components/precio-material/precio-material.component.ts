@@ -1,15 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TipoMica, MaterialMica, TratamientoMica } from './../../models/examen.models';
-import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { MaterialMicasService } from './../../services/material-micas.service';
-import { TipoMicasService } from './../../services/tipo-micas.service';
-import { TratamientoMicasService } from '../../services/tratamiento-micas.service';
 import { FormGroup, FormControl } from '@angular/forms';
+// Models
+import { TipoMica, MaterialMica, TratamientoMica, MicaPrecio } from '../../models/examen.models';
+// Services
+import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
+import { TipoMicasService } from '../../services/tipo-micas.service';
+import { MaterialMicasService } from '../../services/material-micas.service';
+import { TratamientoMicasService } from '../../services/tratamiento-micas.service';
+// Constants
+import { SuccessTitle } from '../../../base/constants/messages.contants';
 
 class PreciosForm {
   formGroup: FormGroup;
   nombre: string;
-  key: string;
+  key: number;
 }
 
 @Component({
@@ -20,11 +24,12 @@ class PreciosForm {
 })
 export class PrecioMaterialComponent implements OnInit {
   // Data
+  private _selectedMaterial: MaterialMica;
   tiposMicas: TipoMica[];
   materialesMicas: MaterialMica[];
   tratamientosMicas: TratamientoMica[];
   fields: PreciosForm[];
-  precios: any[];
+  precios: MicaPrecio[];
 
   @Input() listaPreciosID: number;
 
@@ -49,44 +54,47 @@ export class PrecioMaterialComponent implements OnInit {
   }
 
   onSave() {
-    const _precios = {};
-    this.fields.forEach( row => {
-      if (row.formGroup.value.precioBase) {
-        if (row.formGroup.value.precioBase >= 0) { _precios[row.key] = row.formGroup.value; }
-      }
+    this._materialService.setPrecios(
+      this.listaPreciosID,
+      this._selectedMaterial.key,
+      this.tratamientosMicas,
+      this.fields.map( row => ({key: row.key, value: row.formGroup.value}))
+    ).subscribe(() => {
+      this.dialog.openDialog(SuccessTitle, 'Los precios para los Materiales se guardaron correctamente.', false);
     });
-    // this._tipoServiceFB.setPrecioMicas(this.listaPreciosID, value.material, _precios);
-    this.dialog.openDialog('Registro exitoso!', 'Los precios para los Materiales se guardaron correctamente.', false);
   }
 
   onMaterialChange(material: MaterialMica) {
-    console.log(material);
-    /*
-    this._tipoServiceFB.getAllMicasPrecios(this.listaPreciosID, material.keyFB, (actualPrice:any[]) => {
-        this.precios = actualPrice;
-        this.createFormGroups();
-      });
-      */
+    this._materialService.getPrecio(this.listaPreciosID, material.key).subscribe(result => {
+      this._selectedMaterial = material;
+      this.precios = result;
+      this.createFormGroups();
+    });
   }
 
   createFormGroups() {
-    const _controls: PreciosForm[] = [];
-    this.tiposMicas.forEach(tipo => _controls.push(this.createGroup(tipo)));
+    let _controls: PreciosForm[] = [];
+    _controls = this.tiposMicas.map(tipo => this.createGroup(tipo));
     this.fields = _controls;
   }
 
   createGroup(tipo: TipoMica): PreciosForm {
     const _item = { precioBase: new FormControl() };
-    this.tratamientosMicas.forEach( tr => _item[tr.keyFB] = new FormControl());
+    this.tratamientosMicas.forEach( tr => _item['tratamiento_' + tr.key] = new FormControl());
 
-    const _fGroup = new FormGroup(_item);
-    const _precio = this.precios.filter(p => p.key === tipo.keyFB)[0];
-    if (_precio) { _fGroup.patchValue(_precio); }
+    // Sets initial values
+    const _precio = this.precios.find(p => p.tipoMicaID === tipo.key);
+    if (_precio) {
+      _item.precioBase.patchValue(_precio.precioBase);
+      _precio.tratamientos.forEach(tr => {
+        _item['tratamiento_' + tr.tratamientoID].patchValue(tr.precio);
+      });
+    }
 
     return {
-      formGroup: _fGroup,
+      formGroup: new FormGroup(_item),
       nombre: tipo.nombre,
-      key: tipo.key.toString()
+      key: tipo.key
     };
   }
 

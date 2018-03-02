@@ -68,9 +68,7 @@ export class Venta {
     }
 }
 
-export class Usuario extends GenericCatalog {
-
-}
+export class Usuario extends GenericCatalog { }
 
 export class SumaryVenta extends BaseGenericCatalog {
     cliente: Contacto;
@@ -84,9 +82,7 @@ export class SumaryVenta extends BaseGenericCatalog {
     impuestos: number;
     fecha: Date;
 
-    get total(): number {
-        return Math.floor((this.subTotal - this.descuento + this.impuestos) * 100) / 100;
-    }
+    get total(): number { return Math.floor((this.subTotal - this.descuento + this.impuestos) * 100) / 100; }
 
     get saldo(): number { return this.total - this.totalPagado; }
 

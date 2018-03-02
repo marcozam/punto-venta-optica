@@ -1,5 +1,7 @@
-<app-ventas [(clienteID)]="clienteID" [(listaPreciosID)]="listaPrecioID" [(venta)]="venta">
-    <app-venta-optica *ngIf="showOptica" [clienteID]="clienteID" [listaPrecioID]="listaPrecioID" 
+<app-ventas [clienteID]="clienteID" [(listaPreciosID)]="listaPrecioID" 
+    [(venta)]="venta" [(cliente)]="paciente"
+    (onVentaSaved)="onSaved($event)">
+    <app-venta-optica *ngIf="showOptica" [paciente]="paciente" [listaPrecioID]="listaPrecioID" 
         [detalleVenta]="venta.detalle"
         (onExamenChanged)="onExamenChanged($event)"
         (onProdutsChanged)="onOpticaVentaChanged($event)"></app-venta-optica>

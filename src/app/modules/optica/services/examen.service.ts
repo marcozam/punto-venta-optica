@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-
+import { Observable } from 'rxjs/Observable';
+// Services
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericService } from 'app/modules/generic-catalogs/services/generic.service';
-
 // Models
 import { Examen, Ojo, MicaPrecio, TratamientoMicaPrecios } from '../models/examen.models';
 
@@ -93,7 +93,7 @@ export class ExamenService extends GenericService<Examen> {
         return _precioBase;
     }
 
-    getPrecio(listaPrecioID: number, tipoMicaID: any, materialID: any) {
+    getPrecio(listaPrecioID: number, materialID: number, tipoMicaID: number): Observable<MicaPrecio> {
         const params = this.db.createParameter('OPTICA_0001', 3, {
             V3: listaPrecioID,
             V4: tipoMicaID,

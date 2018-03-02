@@ -3,7 +3,6 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-/*
 export const environment = {
   production: false,
   webServiceURL: 'http://localhost:54549/api/General/GetData',
@@ -18,7 +17,7 @@ export const environment = {
     messagingSenderId: '798968163214',
   }
 };
-*/
+/*
 export const environment = {
   production: false,
   webServiceURL: 'http://itg.tecnosin.com.mx/api/General/GetData',
@@ -33,3 +32,4 @@ export const environment = {
     messagingSenderId: '2764405610'
   }
 };
+*/

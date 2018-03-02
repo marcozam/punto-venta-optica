@@ -10,43 +10,35 @@
       </mat-form-field>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-xs">
-      <table class="os-table highlight">
-        <thead>
-          <tr>
-            <th colspan="2">
-              Micas/Tratamientos
-            </th>
-            <th *ngFor="let tratamiento of tratamientosMicas" class="tratamiento-col text-center">
-              {{tratamiento.nombre}}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let f of fields" [formGroup]="f.formGroup">
-            <td>
-              <strong>
-                {{f.nombre}}
-              </strong>
-            </td>
-            <td>
-              <mat-form-field class="sm">
-                <span matPrefix>$ &nbsp;</span>
-                <input matInput type="number" step="50" required formControlName="precioBase" />
-              </mat-form-field>
-            </td>
-            <td *ngFor="let tratamiento of tratamientosMicas" class="text-center">
-              <mat-form-field class="sm">
-                <span matPrefix>$ &nbsp;</span>
-                <input matInput type="number" step="50" required formControlName="{{tratamiento.keyFB}}" />
-              </mat-form-field>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col-md-2 precio-mica-header"> MICAS / TRATAMIENTOS </div>
+    <div class="col-md precio-mica-header center-md" *ngFor="let tratamiento of tratamientosMicas">
+      <strong>
+        {{tratamiento.nombre}}
+      </strong>
     </div>
   </div>
+  <div class="row" *ngFor="let f of fields" [formGroup]="f.formGroup">
+    <div class="col-md-1 precio-mica-header">
+      <span>
+        {{f.nombre}}
+      </span>
+    </div>
+    <div class="col-md-1">
+      <mat-form-field class="sm">
+        <span matPrefix>$ &nbsp;</span>
+        <input placeholder="Precio Base" matInput class="text-right" type="number" step="50" required formControlName="precioBase" />
+      </mat-form-field>
+    </div>
+    <div class="col-md center-md" *ngFor="let tratamiento of tratamientosMicas">
+      <mat-form-field class="sm">
+        <span matPrefix>$ &nbsp;</span>
+        <input matInput class="text-right" type="number" step="50" required formControlName="tratamiento_{{tratamiento.key}}"/>
+      </mat-form-field>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-xs text-right buttons-containers">
       <button mat-raised-button color="primary"

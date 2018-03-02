@@ -12,33 +12,29 @@ export class OjoComponent implements OnInit {
 
   @ViewChild(NgForm) form;
 
-  _ojo: Ojo;
   _invalid: Boolean = true;
-
-  @Output() invalidChange = new EventEmitter<Boolean>();
   @Input()
   get invalid(): Boolean { return this._invalid; }
   set invalid(value) {
     this._invalid = value;
     this.invalidChange.emit(value);
   }
+  @Output() invalidChange = new EventEmitter<Boolean>();
 
-  @Output() ojoChange = new EventEmitter<Ojo>();
+  _ojo: Ojo;
   @Input()
   get ojo(): Ojo { return this._ojo; }
   set ojo(value) {
     this._ojo = value;
     this.ojoChange.emit(value);
   }
+  @Output() ojoChange = new EventEmitter<Ojo>();
 
   @Input() editable = true;
 
   constructor() { }
 
-  ngOnInit() {
-    this.form.valueChanges
-      .subscribe(() => this.invalid = this.form.invalid );
-  }
+  ngOnInit() { this.form.valueChanges.subscribe(() => this.invalid = this.form.invalid ); }
 
   gradosHabilitados(value: number| null) {
     if (value) { return (value !== 0); }

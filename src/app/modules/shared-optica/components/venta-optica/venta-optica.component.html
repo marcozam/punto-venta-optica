@@ -6,18 +6,15 @@
 </div>
 <div class="row" [class.sr-only]="!loading">
     <div class="col-xs col-sm-8 col-md-5">
-        <app-graduacion [editable]="false" [examen]="examen" [paciente]="cliente" 
+        <app-graduacion [editable]="false" [examen]="ultimoExamen" [paciente]="paciente" 
             (tipoMicaChange)="onMicaChange($event)" (materialChange)="onMicaChange($event)">
         </app-graduacion>
     </div>
     <div class="col-md-3 col-xs flex-container">
         <div class="sub-container">
-            <div class="sub-titles text-center">
-                Tratamientos
-            </div>
+            <div class="sub-titles text-center"> Tratamientos </div>
             <mat-selection-list #tratamientoList dense>
-                <mat-list-option checkboxPosition="before" *ngFor="let item of tratamientos"
-                    [value]="item">
+                <mat-list-option checkboxPosition="before" *ngFor="let item of tratamientos" [value]="item">
                     {{ item.tratamiento.nombre }}
                 </mat-list-option>
             </mat-selection-list>
@@ -25,9 +22,7 @@
     </div>
     <div class="col-md-4 col-xs flex-container">
         <div class="sub-container">
-            <div class="sub-titles text-center">
-                Armazon
-            </div>
+            <div class="sub-titles text-center"> Armazon </div>
             <app-armazon-selection [listaPrecioID]="listaPrecioID" (onChange)="onArmazonChanged($event)" [mostrarMedidas]="esVenta"></app-armazon-selection>
         </div>
     </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 // Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
@@ -25,41 +25,37 @@ import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 })
 export class VentasComponent implements OnInit {
   loading = false;
+
+  @Input() sucursalID: number;
+  @Input() clienteID: number;
+
+  private _listaPreciosID: number;
+  @Input()
+  get listaPreciosID(): number { return this._listaPreciosID; }
+  set listaPreciosID(value) {
+    this._listaPreciosID = value;
+    this.listaPreciosIDChange.emit(this._listaPreciosID);
+  }
+  @Output() listaPreciosIDChange: EventEmitter<number> = new EventEmitter();
+
   private _venta: Venta;
-  @Output() ventaChange: EventEmitter<Venta> = new EventEmitter();
   @Input()
   get venta(): Venta { return this._venta; }
   set venta(value) {
     this._venta = value;
     this.ventaChange.emit(this._venta);
   }
+  @Output() ventaChange: EventEmitter<Venta> = new EventEmitter();
 
-  private _sucursalID: number;
-  @Output() sucursalIDChange: EventEmitter<number> = new EventEmitter();
   @Input()
-  get sucursalID(): number { return this._sucursalID; }
-  set sucursalID(value) {
-    this._sucursalID = value;
-    this.sucursalIDChange.emit(this.sucursalID);
+  get cliente(): Contacto { return this.venta.sumary.cliente; }
+  set cliente(value) {
+    this.venta.sumary.cliente = value;
+    this.clienteChange.emit(this.venta.sumary.cliente);
   }
+  @Output() clienteChange: EventEmitter<Contacto> = new EventEmitter();
 
-  private _clienteID: number;
-  @Output() clienteIDChange: EventEmitter<number> = new EventEmitter();
-  @Input()
-  get clienteID(): number { return this._clienteID; }
-  set clienteID(value) {
-    this._clienteID = value;
-    this.clienteIDChange.emit(this.clienteID);
-  }
-
-  private _listaPreciosID: number;
-  @Output() listaPreciosIDChange: EventEmitter<number> = new EventEmitter();
-  @Input()
-  get listaPreciosID(): number { return this._listaPreciosID; }
-  set listaPreciosID(value) {
-    this._listaPreciosID = value;
-    this.listaPreciosIDChange.emit(this.listaPreciosID);
-  }
+  @Output() onVentaSaved: EventEmitter<Venta> = new EventEmitter();
 
   constructor(
     private _contactoService: ContactoService,
@@ -67,7 +63,6 @@ export class VentasComponent implements OnInit {
     private _inventarioService: InventarioService,
     private dialog: DialogBoxService,
     private pagosDialog: DialogPagosService,
-    private router: Router,
     private route: ActivatedRoute) { }
 
   @ViewChild('ticketVenta') ticketVenta: ViewContainerRef;
@@ -86,7 +81,9 @@ export class VentasComponent implements OnInit {
     // Obtiene el paciente
     if (this.clienteID) {
       this._contactoService.getByID(this.clienteID)
-        .subscribe((data: Contacto) => { this.venta.sumary.cliente = data; });
+        .subscribe((data: Contacto) => {
+          this.cliente = data;
+        });
     }
 
     // Validacion de inventario
@@ -121,7 +118,7 @@ export class VentasComponent implements OnInit {
         });
         this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
           if (newVenta) {
-            this.onSaveVenta();
+            this.onVentaSaved.emit(newVenta);
           } else {
             this.dialog.openDialog('Error', 'Ocurrio un error al generar la venta', false);
             this.venta.sumary.totalPagado = 0;
@@ -130,9 +127,6 @@ export class VentasComponent implements OnInit {
       }
     });
   }
-
-  // Redirect to Home
-  onVentaSaved() { this.router.navigate(['']); }
 
   onProductoAdded(item: DetalleVenta) {
     const currentItem = this.venta.detalle.find(dv => dv.productoVenta.key === item.productoVenta.key);

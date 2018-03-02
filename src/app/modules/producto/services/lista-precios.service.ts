@@ -30,10 +30,8 @@ export class ListaPreciosService {
         const productsData = precios.map(p => `${p.productoID},${p.precio}`);
         const params = this._db.createParameter('ECOM0001', 3, { V3: listaPreciosID, V6: `C0,C1~${productsData.join('~')}` });
         this._db.getData(params).subscribe(() => { callback(); });
-        // 'C0,C1~';
         // var qProd = 'C0,C1~' + ConvertToCSV(Enumerable.From($scope.allProductos).Select("x => { A: x['C0'], B: x['Precio'] }").ToArray(), ',', '~');
         // var qSuc = Enumerable.From($scope.allSucursales.findAll('Aplica', true)).Select(function (v) { return v.C0 }).ToArray();
-        // ajax({ parameters: createParameter('ECOM0001', 3, { 'V3': $scope.DetailID, 'V6': qProd }), callback: function (res) { console.log(res.Table); }, async: false });
         // ajax({ parameters: createParameter('ECOM0001', 2, { 'V3': $scope.DetailID, 'V6': qSuc.join(',') }), callback: function (res) { console.log(res.Table); $location.
     }
 }

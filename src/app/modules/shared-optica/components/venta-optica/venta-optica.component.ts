@@ -10,6 +10,7 @@ import { Producto } from 'app/modules/producto/models/producto.models';
 import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { DetalleVenta, ComentariosVenta } from 'app/modules/venta/models/venta.models';
 import { Examen, TratamientoMica, TratamientoMicaPrecios } from 'app/modules/optica/models/examen.models';
+import { Contacto } from '../../../crm/models/crm.models';
 // Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { ExamenService } from 'app/modules/optica/services/examen.service';
@@ -38,13 +39,17 @@ export class VentaOpticaComponent implements OnInit {
   tempTratamientos: DetalleVenta[] = [];
   comentariosOptica: ComentariosVenta[] = [];
 
-  private _clienteID: number;
+  @Input() listaPrecioID: number;
+  @Input() esVenta = true;
+  @Input() detalleVenta: DetalleVenta[];
+
+  private _paciente: Contacto;
   @Input()
-  get clienteID(): number { return this._clienteID; }
-  set clienteID(value) {
-    this._clienteID = value;
-    if (this._clienteID) {
-      this._examenService.getLastExamen(this.clienteID)
+  get paciente(): Contacto { return this._paciente; }
+  set paciente(value) {
+    this._paciente = value;
+    if (this._paciente) {
+      this._examenService.getLastExamen(this._paciente.key)
         .subscribe((examen: Examen) => {
           if (examen) {
             this.setExamen(examen);
@@ -55,10 +60,6 @@ export class VentaOpticaComponent implements OnInit {
         });
     }
   }
-
-  @Input() listaPrecioID: number;
-  @Input() esVenta = true;
-  @Input() detalleVenta: DetalleVenta[];
 
   @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter<OpticaVentaChangeEvent>();
 
@@ -118,22 +119,24 @@ export class VentaOpticaComponent implements OnInit {
   }
 
   addMica() {
-    this._examenService.getPrecio(this.listaPrecioID, this.ultimoExamen.tipoMicaRecomendadoID, this.ultimoExamen.materialRecomendadoID)
-      .subscribe((precioMica) => {
-        if (precioMica) {
-          this.setValidTratamientos(precioMica.tratamientos);
-          const comentario = `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`;
-          const _producto: Producto = new Producto('MICA');
-          _producto.key = 999999;
-          this.addVentaDetail(_producto, this._examenService.getPrecioMica(this.ultimoExamen, precioMica), 998, comentario);
-          this.comentariosOptica.push({
-              productoID: _producto.key,
-              comentario: comentario,
-              key: 0,
-              moduleID: 998
-            });
-        } else { console.warn('Combination not allow'); }
-      });
+    if (this.ultimoExamen.key > 0) {
+      this._examenService.getPrecio(this.listaPrecioID, this.ultimoExamen.materialRecomendadoID, this.ultimoExamen.tipoMicaRecomendadoID)
+        .subscribe((precioMica) => {
+          if (precioMica) {
+            this.setValidTratamientos(precioMica.tratamientos);
+            const comentario = `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`;
+            const _producto: Producto = new Producto('MICA');
+            _producto.key = 999999;
+            this.addVentaDetail(_producto, this._examenService.getPrecioMica(this.ultimoExamen, precioMica), 998, comentario);
+            this.comentariosOptica.push({
+                productoID: _producto.key,
+                comentario: comentario,
+                key: 0,
+                moduleID: 998
+              });
+          } else { console.warn('Combination not allow'); }
+        });
+    }
   }
 
   setValidTratamientos(tm: TratamientoMicaPrecios[]) {

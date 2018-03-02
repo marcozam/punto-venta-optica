@@ -1,5 +1,10 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+// Models
+import { Venta } from 'app/modules/venta/models/venta.models';
+import { Contacto } from 'app/modules/crm/models/crm.models';
 import { VentaOptica } from '../../models/venta-optica';
+// Services
+import { ExamenService } from 'app/modules/optica/services/examen.service';
 
 // 999 => Armazon
 // 998 => Mica
@@ -16,10 +21,11 @@ export class OpticaVentaComponent extends VentaOptica implements OnInit {
 
   ventaMica = false;
   showOptica = true;
+  paciente: Contacto;
   @Input() clienteID: number;
   @Input() listaPrecioID: number;
 
-  constructor() { super(); }
+  constructor(private _service: ExamenService) { super(); }
 
   ngOnInit() { }
 
@@ -38,5 +44,14 @@ export class OpticaVentaComponent extends VentaOptica implements OnInit {
   onExamenChanged(value) {
     this.showOptica = value ? true :  false;
     super.onExamenChanged(value);
+  }
+
+  onSaved(venta: Venta) {
+    this._service.saveVentaExamen(venta.sumary.key, this.examen.key,
+      this.examen.materialRecomendadoID, this.examen.tipoMicaRecomendadoID)
+      .subscribe(() => {
+        alert('All saved');
+        // Redirect to home
+      });
   }
 }

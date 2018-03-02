@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 // AngularFire
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { environment } from 'environments/environment';
-
+// Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,9 +14,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+// Routing
 import { OpticaRoutingModule } from './optica-routing.module';
-
 // OS Modules
 import { BaseModule } from '../base/base.module';
 import { ProductoModule } from '../producto/producto.module';
@@ -50,17 +48,13 @@ import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.com
     ProductoModule,
     // Angular Material
     MatFormFieldModule,
+    MatInputModule,
     MatProgressBarModule,
     MatCheckboxModule,
     MatSelectModule,
     MatIconModule,
     MatRadioModule,
-    MatInputModule,
     MatButtonModule,
-    /*
-    MatListModule,
-    MatTabsModule,
-    */
     // Angular Fire Modules
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

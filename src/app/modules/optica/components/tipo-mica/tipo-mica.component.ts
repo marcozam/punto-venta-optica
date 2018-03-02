@@ -7,6 +7,8 @@ import { TipoMica } from '../../models/examen.models';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { TipoMicasService } from '../../services/tipo-micas.service';
 
+import { SuccessTitle, SuccessMessage } from 'app/modules/base/constants/messages.contants';
+
 @Component({
   selector: 'app-tipo-mica',
   templateUrl: './tipo-mica.component.html',
@@ -46,7 +48,7 @@ export class TipoMicaComponent implements OnInit, OnDestroy {
     const $sub = this._tiposervice.save(newValue, this.item)
       .subscribe(() => {
         $sub.unsubscribe();
-        this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
+        this.dialog.openDialog(SuccessTitle, SuccessMessage, false);
         const _url = '/DCG/catalogo/' + this.catalogID;
         this.router.navigate([_url]);
       });
