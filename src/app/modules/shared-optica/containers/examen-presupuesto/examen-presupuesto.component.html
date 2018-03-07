@@ -1,6 +1,6 @@
 <app-venta-optica
   [paciente]="venta.sumary.cliente" [listaPrecioID]="listaPrecioID" [esVenta]="false" [detalleVenta]="venta.detalle"
-  (onExamenChanged)="onExamenChanged($event)"
+  (examenChange)="onExamenChange($event)"
   (onProdutsChanged)="onOpticaVentaChanged($event)"></app-venta-optica>
 <div class="text-right buttons-containers">
   <button mat-raised-button color="primary" type="button" [disabled]="loading"

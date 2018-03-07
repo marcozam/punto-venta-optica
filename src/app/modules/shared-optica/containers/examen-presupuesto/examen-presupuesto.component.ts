@@ -59,5 +59,7 @@ export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {
     this._printService.print();
   }
 
-  onExamenChanged(examen: Examen) { this.loading = examen ? false : true; }
+  onExamenChange(examen: Examen) {
+    this.loading = examen ? false : true;
+  }
 }

@@ -32,7 +32,6 @@ export class VentaOpticaComponent implements OnInit {
   loading$: Observable<boolean>;
   loading = false;
 
-  ultimoExamen: Examen;
   // Tratamientos
   allTratamientos: TratamientoMica[];
   tratamientos: TratamientoMicaPrecios[];
@@ -43,6 +42,16 @@ export class VentaOpticaComponent implements OnInit {
   @Input() esVenta = true;
   @Input() detalleVenta: DetalleVenta[];
 
+  @Input()
+  get examen(): Examen { return this._examen; }
+  set examen(value) {
+    this._examen = value;
+    if (value) { this.addMica(); }
+    this.examenChange.emit(this._examen);
+  }
+  private _examen: Examen;
+  @Output() examenChange: EventEmitter<Examen> = new EventEmitter();
+
   private _paciente: Contacto;
   @Input()
   get paciente(): Contacto { return this._paciente; }
@@ -52,16 +61,16 @@ export class VentaOpticaComponent implements OnInit {
       this._examenService.getLastExamen(this._paciente.key)
         .subscribe((examen: Examen) => {
           if (examen) {
-            this.setExamen(examen);
+            this.examen = examen;
           } else {
             this.dialog.openDialog('Advertencia!!', 'El cliente no cuenta con un examen registrado.', false);
-            // this.onExamenChanged.emit(null);
+            this.examen = null;
           }
         });
     }
   }
 
-  @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter<OpticaVentaChangeEvent>();
+  @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter();
 
   @ViewChild(MatSelectionList) tratamientoList: MatSelectionList;
 
@@ -97,16 +106,10 @@ export class VentaOpticaComponent implements OnInit {
     });
   }
 
-  setExamen(examen: Examen) {
-    this.ultimoExamen = examen;
-    this.addMica();
-    // this.onExamenChanged.emit(examen);
-  }
-
   setMicaValues(key: string, value: GenericCatalog) {
-    if (this.ultimoExamen[`${key}ID`] !== value.key) {
-      this.ultimoExamen[`${key}ID`] = value.key;
-      this.ultimoExamen[key] = value.nombre;
+    if (this.examen[`${key}ID`] !== value.key) {
+      this.examen[`${key}ID`] = value.key;
+      this.examen[key] = value.nombre;
     }
   }
 
@@ -119,15 +122,15 @@ export class VentaOpticaComponent implements OnInit {
   }
 
   addMica() {
-    if (this.ultimoExamen.key > 0) {
-      this._examenService.getPrecio(this.listaPrecioID, this.ultimoExamen.materialRecomendadoID, this.ultimoExamen.tipoMicaRecomendadoID)
+    if (this.examen.key > 0) {
+      this._examenService.getPrecio(this.listaPrecioID, this.examen.materialRecomendadoID, this.examen.tipoMicaRecomendadoID)
         .subscribe((precioMica) => {
           if (precioMica) {
             this.setValidTratamientos(precioMica.tratamientos);
-            const comentario = `${this.ultimoExamen.tipoMicaRecomendado.toUpperCase()} - ${this.ultimoExamen.materialRecomendado.toUpperCase()}`;
+            const comentario = `${this.examen.tipoMicaRecomendado.toUpperCase()} - ${this.examen.materialRecomendado.toUpperCase()}`;
             const _producto: Producto = new Producto('MICA');
             _producto.key = 999999;
-            this.addVentaDetail(_producto, this._examenService.getPrecioMica(this.ultimoExamen, precioMica), 998, comentario);
+            this.addVentaDetail(_producto, this._examenService.getPrecioMica(this.examen, precioMica), 998, comentario);
             this.comentariosOptica.push({
                 productoID: _producto.key,
                 comentario: comentario,

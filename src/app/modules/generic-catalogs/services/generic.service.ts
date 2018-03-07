@@ -82,7 +82,6 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         this.getBaseList(() => {
             const $sub = this.db.getAllDataFromCatalog(this.catalogID)
                 .subscribe((result: any[]) => {
-                    console.log('Ajax Result', result);
                     this.setData(mapData ? this.mapList(result) : result);
                     $sub.unsubscribe();
                 });
@@ -133,9 +132,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
         if (data) {
             if (data.C0) { item.key = data.C0; }
             const fieldsMD = getFields(item);
-            console.log(fieldsMD);
             fieldsMD.forEach(fld => item[fld.propertyName] = data[fld.serverField]);
-            console.log('Mapping', item, data);
         }
         return item;
     }
