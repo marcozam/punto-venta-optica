@@ -29,22 +29,18 @@ import { WarningTitle } from 'app/modules/base/constants/messages.contants';
   ]
 })
 export class TableComponent implements OnInit, AfterViewInit {
-  @Input()
-  dataSource: TableSource<any>;
-  @Input()
-  canEdit: boolean = true;
-  @Input()
-  canDelete: boolean = true;
-  @Input()
-  canAdd: boolean = true;
-  @Input()
-  loading: boolean = false;
+
+  @Input() dataSource: TableSource<any>;
+  @Input() canEdit = true;
+  @Input() canDelete = true;
+  @Input() canAdd = true;
+  @Input() loading = false;
   @ContentChildren(FilterComponent)
   _filters: QueryList<FilterComponent>;
 
-  filterVisible: boolean = false;
+  filterVisible = false;
 
-  //Events
+  // Events
   @Output()
   onAddFired: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -58,43 +54,42 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.dataSource.onDataSourceChange.subscribe(()=>{
+    this.dataSource.onDataSourceChange.subscribe(() => {
       this.cd.detectChanges();
-    })
+    });
   }
 
-  ngAfterViewInit(){
-    this.dataSource.columns.forEach(col=>{
-      let _filter = this._filters.find(f=> f.uniqueID === col.uniqueID);
-      if(_filter){
+  ngAfterViewInit() {
+    this.dataSource.columns.forEach(col => {
+      const _filter = this._filters.find(f => f.uniqueID === col.uniqueID);
+      if (_filter) {
         col.filterTemplate = _filter.template;
       }
     });
   }
 
-  onAdd(){
+  onAdd() {
     this.onAddFired.emit();
   }
 
-  onEdit(item){
+  onEdit(item) {
     this.onEditFired.emit(item);
   }
 
-  onDelete(item){
-    this.dialogService.openDialog(WarningTitle, 
-    `Esta seguro que desea eliminar:.${item.nombre}.No podran revertir sus cambios`, true, (r)=>{
-      if(r){
-        this.onDeleteFired.emit(item);
-      }
+  onDelete(item) {
+    this.dialogService.openDialog(WarningTitle,
+    `Esta seguro que desea eliminar:.${item.nombre}.No podran revertir sus cambios`, true,
+    (r) => {
+      if (r) { this.onDeleteFired.emit(item); }
     });
   }
 
-  toggleFilters(){
+  toggleFilters() {
     this.filterVisible = !this.filterVisible;
   }
 
-  sort(column: TableColumn){
-    if(!this.filterVisible){
+  sort(column: TableColumn) {
+    if (!this.filterVisible) {
       column = this.dataSource.togleSort(column);
       this.dataSource.applySort();
     }

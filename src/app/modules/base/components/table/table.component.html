@@ -43,9 +43,8 @@
         Cargando, por favor espere ...
       </td>
     </tr>
-    <tr>
-      <td *ngIf="dataSource.data?.length === 0 && !loading" 
-        [attr.colspan]="dataSource.columns.length + 1" class="text-center no-data">
+    <tr *ngIf="dataSource.data?.length === 0 && !loading" >
+      <td [attr.colspan]="dataSource.columns.length + 1" class="text-center no-data">
         No hay informacion para mostrar.
       </td>
     </tr>

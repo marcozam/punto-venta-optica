@@ -41,6 +41,7 @@ export class ListaVentasComponent implements AfterViewInit {
     this.dataSource.columns = [
       new TableColumn('Orden', 'orden', item => item.sumary.key),
       new TableColumn('Fecha', 'fecha', item => this._date.transform(item.sumary.fecha, 'dd MMM yyyy HH:mm')),
+      new TableColumn('Status Interno', 'statusInterno', item => item.sumary.statusInterno.nombre),
       new TableColumn('Status', 'status', item => item.sumary.status.nombre),
       new TableColumn('Cliente', 'cliente', item => item.sumary.cliente.nombre),
       new TableColumn('Total Venta', 'total', item => `$ ${this._decimal.transform(item.sumary.total, '1.2-2')}`, true, item => item.sumary.total),

@@ -20,6 +20,7 @@ import { ExamenService } from 'app/modules/optica/services/examen.service';
 import { ListaVentasComponent } from './components/lista-ventas/lista-ventas.component';
 import { MetodoPagoVentaComponent } from './components/metodo-pago-venta/metodo-pago-venta.component';
 import { ResumenVentaMesComponent } from './containers/resumen-venta-mes/resumen-venta-mes.component';
+import { ResumenVentaProductosComponent } from './containers/resumen-venta-productos/resumen-venta-productos.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { ResumenVentaMesComponent } from './containers/resumen-venta-mes/resumen
   declarations: [
     ResumenVentaMesComponent,
     ListaVentasComponent,
-    MetodoPagoVentaComponent
+    MetodoPagoVentaComponent,
+    ResumenVentaProductosComponent
   ],
   exports: [
     ListaVentasComponent

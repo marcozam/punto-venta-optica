@@ -50,7 +50,7 @@ export class HomeComponent {
     const _actions = [
       { name: 'Realizar examen', route: '/optika/examen/' + _contacto.key },
       { name: 'Generar venta', route: '/optika/venta/' + _contacto.key },
-      /*{ name: 'Historial de Compra', route: '/crm/historial/' + _contacto.key },*/
+      { name: 'Historial de Compra', route: '/caja/historial/' + _contacto.key },
     ];
 
     if (this.ordenesPendientes.length > 0) {

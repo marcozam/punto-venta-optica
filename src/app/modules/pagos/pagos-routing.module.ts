@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'movimientos', component: MovimientosSinCorteComponent, data: { title: 'Movimientos sin corte de caja' } },
   { path: 'cortes', component: CorteListComponent, data: { title: 'Cortes de Caja' } },
   { path: 'entregas', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendiente de entrega' }},
-  { path: 'entregas/:clienteID', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendientes' }},
+  { path: 'historial/:clienteID', component: VentasPendientesEntregaComponent, data: { title: 'Ordenes de venta pendientes' }},
 ];
 
 @NgModule({

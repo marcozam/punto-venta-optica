@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
@@ -30,6 +31,7 @@ import { PersonasService } from './services/personas.service';
 import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
 import { BaseAjaxService } from './services/base-ajax.service';
+import { GroupTableComponent } from './components/group-table/group-table.component';
 
 @NgModule({
   imports: [
@@ -38,6 +40,7 @@ import { BaseAjaxService } from './services/base-ajax.service';
     ReactiveFormsModule,
     // Material
     MatInputModule,
+    MatExpansionModule,
     MatDatepickerModule,
     MatRadioModule,
     MatDialogModule,
@@ -56,12 +59,14 @@ import { BaseAjaxService } from './services/base-ajax.service';
     PersonaComponent,
     MonthYearSelectorComponent,
     DateSelectionComponent,
+    GroupTableComponent,
   ],
   entryComponents: [
     DialogBoxComponent
   ],
   exports: [
     TableComponent,
+    GroupTableComponent,
     FilterComponent,
     DialogBoxComponent,
     PersonaComponent,

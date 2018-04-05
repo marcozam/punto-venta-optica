@@ -1,26 +1,35 @@
-import { Subject } from "rxjs/Subject";
-import { TemplateRef } from "@angular/core/src/linker/template_ref";
+import { Subject } from 'rxjs/Subject';
+import { TemplateRef } from '@angular/core/src/linker/template_ref';
 
 export type SortDirection = 'asc' | 'desc' | 'none';
 export type ColumnAlign = 'left' | 'center' | 'right';
+
+export class GroupData {
+    groupCount: number;
+
+    constructor(public key: any, public dataSource: TableSource<any>) {
+        const sumCol = dataSource.columns.find(col => col.sum);
+        this.groupCount = this.dataSource.suma(sumCol);
+    }
+}
 
 export class TableColumn {
     sortDirection: SortDirection = 'none';
     sortOrder: number = -1;
     sum: boolean;
+    group: boolean;
     align: ColumnAlign = 'left';
     filterTemplate?: TemplateRef<any>;
     columnTemplate?: TemplateRef<any>;
 
     constructor(
-        public header: string, 
-        public uniqueID: string, 
-        public description: any,
+        public header: string,
+        public uniqueID: string,
+        public description: Function,
         _suma: boolean = false,
-        public sumTemplate?: any)
-    {
+        public sumTemplate?: any) {
         this.sum = _suma;
-        if(_suma) this.align = 'right';
+        if (_suma) { this.align = 'right'; }
     }
 }
 
@@ -28,67 +37,61 @@ export class TableSource<T> {
     private _data: T[] = [];
     private _filteredData: T[] = [];
 
-    //Method to clear
-    filter: any;
+    // Method to clear
+    filter: Function;
     actionsTemplate?: TemplateRef<any>;
-    onDataSourceChange: Subject<any> = new Subject();
+    onDataSourceChange: Subject<T[]> = new Subject();
+
+    columns: TableColumn[];
+    pagingSettings: TablePagingSettings;
 
     get visibleData(): T[]{
         const sIdx = (this.pagingSettings.currentPage - 1) * this.pagingSettings.itemsPerPage;
         const eIdx = Math.min(((this.pagingSettings.currentPage) * this.pagingSettings.itemsPerPage) - 1, this.pagingSettings.itemsCount);
-        return this._filteredData.filter( (item, idx)=> {
-            if(idx >= sIdx && idx <= eIdx) return item;
+        return this._filteredData.filter( (item, idx) => {
+            if (idx >= sIdx && idx <= eIdx) { return item; }
         });
     }
 
-    get data(): T[] {
-        return this._data;
-    }
+    get data(): T[] { return this._data; }
 
-    get hasFilter(): boolean {
-        return this._filteredData.length < this.data.length;
-    }
-
-    columns: TableColumn[];
-    pagingSettings: TablePagingSettings;
+    get hasFilter(): boolean { return this._filteredData.length < this.data.length; }
 
     constructor() {
         this.columns = [];
         this.pagingSettings = new TablePagingSettings(25, this.data ? this.data.length : 0, 5);
     }
 
-    updateDataSource(data: T[]){
+    updateDataSource(data: T[]) {
         this._data = data;
         this.refresh();
     }
 
-    refresh(){
+    refresh() {
         this.applySort();
         this.applyFilters();
     }
 
-    suma(column: TableColumn){
-        let items = this.data;
-        if(items.length > 1){
+    suma(column: TableColumn) {
+        const items = this.data;
+        if (items.length > 1) {
             return items.map(item => column.sumTemplate(item))
-                .reduce((p, n) => p + n)
-        }
-        else if(items.length > 0) {
-            return column.sumTemplate(items[0])
-        }
-        else return 0;
+                .reduce((p, n) => p + n);
+        } else if (items.length > 0) {
+            return column.sumTemplate(items[0]);
+        } else { return 0; }
     }
 
-    deleteItem(item: T){
-        let idx = this._data.indexOf(item);
+    deleteItem(item: T) {
+        const idx = this._data.indexOf(item);
         this._data.splice(idx, 1);
         this.refresh();
     }
 
-    //Sorting
-    togleSort(column: TableColumn){
+    // Sorting
+    togleSort(column: TableColumn) {
         let newDirection: SortDirection;
-        switch(column.sortDirection){
+        switch (column.sortDirection) {
             case 'none':
                 newDirection = 'desc';
                 break;
@@ -99,68 +102,66 @@ export class TableSource<T> {
                 newDirection = 'none';
                 break;
         }
-        if(newDirection === 'none'){
+        if (newDirection === 'none') {
             column.sortOrder = -1;
         }
         column.sortDirection = newDirection;
         return column;
     }
-    
-    getSortedColumns(){
+
+    getSortedColumns() {
         const sortedColumns = this.columns
-            .filter(c=> c.sortDirection !== 'none')
-            .sort(c=> c.sortOrder);
-        let addedItems: number = 0;
+            .filter(c => c.sortDirection !== 'none')
+            .sort(c => c.sortOrder);
+        let addedItems = 0;
         sortedColumns.forEach((col: TableColumn, idx: number) => {
             col.sortOrder = col.sortOrder < 0 ? (sortedColumns.length - ++addedItems) : idx - addedItems;
-        })
-        return sortedColumns.sort(c=> c.sortOrder);;
+        });
+        return sortedColumns.sort(c => c.sortOrder);
     }
 
-    applySort(){
+    applySort() {
         const sortedColumns = this.getSortedColumns();
         const nSorts = sortedColumns.length;
-        if(nSorts > 0)
-        {
+        if (nSorts > 0) {
             this.data.sort((a, b) => {
                 let retVal = 0, idx = 0;
-                while(retVal === 0 && idx < nSorts){
-                const col = sortedColumns[idx++];
-                const d = col.sortDirection === 'desc' ? 1 : -1;
-                const val1 = col.description(a);
-                const val2 = col.description(b);
-                if(val1 < val2) retVal = -1 * d;
-                if(val1 > val2) retVal = 1 * d;
+                while (retVal === 0 && idx < nSorts) {
+                    const col = sortedColumns[idx++];
+                    const d = col.sortDirection === 'desc' ? 1 : -1;
+                    const val1 = col.description(a);
+                    const val2 = col.description(b);
+                    if (val1 < val2) { retVal = -1 * d; }
+                    if (val1 > val2) { retVal = 1 * d; }
                 }
                 return retVal;
             });
         }
     }
 
-    //Filters
-    cleanFilters(){
+    // Filters
+    cleanFilters() {
         this._filteredData = this.data;
         this.onDataSourceChange.next(this._filteredData);
     }
 
-    applyFilters(){
+    applyFilters() {
         this._filteredData = this.filter ? this.filter() : this.data;
         this.pagingSettings.itemsCount = this._filteredData.length;
-        if(this.pagingSettings.lastPage){
+        if (this.pagingSettings.lastPage) {
             this.pagingSettings.currentPage = this.pagingSettings.totalPages;
         }
         this.onDataSourceChange.next(this._filteredData);
     }
 }
 
-export class TablePagingSettings{
+export class TablePagingSettings {
     currentPage: number;
 
     constructor(
-        public itemsPerPage: number, 
+        public itemsPerPage: number,
         public itemsCount: number,
-        public pagesToShow: number
-    ){
+        public pagesToShow: number) {
         this.currentPage = 1;
     }
 
@@ -169,7 +170,7 @@ export class TablePagingSettings{
     }
 
     get totalPages(): number{
-        return Math.ceil(this.itemsCount/this.itemsPerPage) || 1;
+        return Math.ceil(this.itemsCount / this.itemsPerPage) || 1;
     }
 
     get pages(): number[]{

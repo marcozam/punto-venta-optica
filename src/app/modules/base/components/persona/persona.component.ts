@@ -9,44 +9,44 @@ import { Persona } from 'app/modules/base/models/base.models';
   selector: 'os-persona',
   templateUrl: './persona.component.html',
   styleUrls: ['./persona.component.scss'],
-  providers:[DialogBoxService]
+  providers: [DialogBoxService]
 })
 export class PersonaComponent implements OnInit {
 
   persona: Persona;
 
   @ViewChild('formPersona')
-  form: NgForm
+  form: NgForm;
 
   private _initialData: Persona;
-  @Input() 
+  @Input()
   get initialData(): Persona{
     return this._initialData;
   }
   set initialData(value: Persona) {
     this._initialData = value;
-    if(value) this.persona = value;
+    if (value) { this.persona = value; }
   }
   @Input() ID: number;
   @Input() catalogName: string;
-  @Input() isContact: boolean = true;
+  @Input() isContact = true;
 
-  @Output() onChange:EventEmitter<any> = new EventEmitter();
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
 
-  constructor(
-    private _service: PersonasService,
-  ) { 
+  constructor( private _service: PersonasService) {
     this.persona = new Persona();
     this.catalogName = '';
   }
 
   ngOnInit() {
-    if(this.ID) this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
+    if (this.ID) {
+      this._service.getByID(this.ID).subscribe((data: Persona) => this.persona = data);
+    }
     this.form.valueChanges.subscribe((val) => {
       this.onChange.emit({
         isValid: this.form.valid,
         data: Object.assign(this.persona, val)
       });
-    })
+    });
   }
 }

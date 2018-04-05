@@ -24,7 +24,7 @@ export class VentasPendientesEntregaComponent implements OnInit {
   ngOnInit() {
     this.sucursalID = 1;
     // app-lista-ventas [ventasSource]="listaVentas"
-    if (this.router.url.indexOf('crm/historial') >= 0) { this.opcion = 'historial'; }
+    if (this.router.url.indexOf('historial') >= 0) { this.opcion = 'historial'; }
     const clienteID = this.route.snapshot.params['clienteID'];
     this.clienteID = clienteID ? clienteID : 0;
 

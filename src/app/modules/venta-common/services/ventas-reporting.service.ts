@@ -23,9 +23,13 @@ export class VentasReportingService {
         venta.sumary.impuestos = 0;
         venta.sumary.totalPagado = item.C3;
         venta.sumary.status = new Status();
+        venta.sumary.statusInterno = new Status();
+        // STATUS INTERNO
+        venta.sumary.statusInterno.key = item.R3;
+        venta.sumary.statusInterno.nombre = item.R2;
         // STATUS
-        venta.sumary.status.key = item.R3;
-        venta.sumary.status.nombre = item.R2;
+        venta.sumary.status.key = item.R7;
+        venta.sumary.status.nombre = item.R6;
         // VENDEDOR
         venta.sumary.vendedor.key = item.C5;
         venta.sumary.vendedor.nombre = item.R5;
@@ -56,6 +60,20 @@ export class VentasReportingService {
     getHistorialCompras(clienteID: number) {
         const params = this.db.createParameter('ECOM0003', 4, { V3: clienteID ? clienteID : '' });
         return this.db.getData(params).map(result => this.mapList(result.Table));
+    }
+
+    getProductosVendidos(month: number, year: number, sucursalID: number) {
+        const params = this.db.createParameter('ECOM0003', 8, { V4: sucursalID, V5: year, V6: month });
+        return this.db.getData(params).map(data => {
+            return data.Table.map(row => {
+                return {
+                    categoria: row.C1,
+                    modelo: row.C3,
+                    marca: row.C4,
+                    cantidad: row.C6
+                };
+            });
+        });
     }
 
     getResumenMensual(month: number, year: number, sucursalID: number) {

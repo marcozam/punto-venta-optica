@@ -74,6 +74,7 @@ export class SumaryVenta extends BaseGenericCatalog {
     cliente: Contacto;
     vendedor: Usuario;
     sucursal?: Sucursal;
+    statusInterno?: Status;
     status?: Status;
     subTotal: number;
     descuento = 0;
