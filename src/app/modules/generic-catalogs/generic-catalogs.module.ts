@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 // Material
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -14,11 +13,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
-// FireBase
-import { environment } from 'environments/environment';
-import { AngularFireModule, } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 // OS Modules
 import { BaseModule } from 'app/modules/base/base.module';
 // Routing
@@ -51,9 +45,6 @@ import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fiel
     GenericCatalogsRoutingModule,
     // OS Modules
     BaseModule,
-    // Firebase
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
   ],
   declarations: [
     GenericCatalogComponent,
@@ -62,8 +53,5 @@ import { DynamicCatalogFieldsComponent } from './components/dynamic-catalog-fiel
     DynamicCatalogComponent,
     DynamicCatalogFieldsComponent,
   ],
-  providers: [
-    AngularFireDatabase
-  ]
 })
 export class GenericCatalogsModule { }

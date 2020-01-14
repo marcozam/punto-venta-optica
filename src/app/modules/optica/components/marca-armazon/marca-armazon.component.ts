@@ -5,14 +5,13 @@ import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MarcaArmazon } from '../../models/armazon.models';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-import { FBGenericService } from '../../../generic-catalogs/services/fb-generic.service';
 import { MarcaArmazonService } from './../../services/marca-armazon.service';
 
 @Component({
   selector: 'app-marca-armazon',
   templateUrl: './marca-armazon.component.html',
   styleUrls: ['./marca-armazon.component.scss'],
-  providers: [FBGenericService, MarcaArmazonService, DialogBoxService]
+  providers: [MarcaArmazonService, DialogBoxService]
 })
 export class MarcaArmazonComponent implements OnInit {
 
@@ -21,17 +20,19 @@ export class MarcaArmazonComponent implements OnInit {
   item: MarcaArmazon;
   isLoading: boolean = true;
 
-  constructor(private _categoriaService: FBGenericService<GenericCatalog>, 
+  constructor(
+    // private _categoriaService: FBGenericService<GenericCatalog>,
     private _marcaService: MarcaArmazonService,
     private router: Router,
     private route: ActivatedRoute,
-    public dialog: DialogBoxService) { 
-    _categoriaService.setListRefURL('armazones/categorias');
+    public dialog: DialogBoxService) {
+    // _categoriaService.setListRefURL('armazones/categorias');
     this.item = new MarcaArmazon();
   }
 
   ngOnInit() {
     let _detailID = this.route.snapshot.params['detailID'];
+    /*
     this._categoriaService.getCatalogList((data) => {
       this.categoriaArmazon = data;
       this.isLoading = false;
@@ -44,6 +45,7 @@ export class MarcaArmazonComponent implements OnInit {
         });
       }
     })
+    */
   }
 
   onSave(newValue: MarcaArmazon){

@@ -36,7 +36,7 @@ export class ArmazonSelectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._marca.getCatalogList(marcas => this.marcasArmazon = marcas);
+    // this._marca.getCatalogList(marcas => this.marcasArmazon = marcas);
   }
 
   onArmazonPropioChange(value: boolean) {
@@ -55,9 +55,11 @@ export class ArmazonSelectionComponent implements OnInit {
 
   onMarcaChanged(value: MarcaArmazon) {
     this.marca = value;
+    /*
     this._modeloService.getModelosByMarca(value.key.toString(), (modelos: ModeloArmazon[]) => {
       this.modelosArmazon = modelos;
     });
+    */
   }
 
   medidasChange(value: MedidasArmazon) {
@@ -102,11 +104,13 @@ export class ArmazonSelectionComponent implements OnInit {
       }
     }
 
+    /*
     this._categorias.getPrecioCategoria(this.listaPrecioID, _categoria.key, precio => {
       this._modeloService.getProduct(value.modeloID, product => {
         this.onChange.emit({added: { producto: product, precio: precio.precio }, removed: this.detalle, isComment: false});
         this.detalle = product;
       });
     });
+    */
   }
 }

@@ -18,6 +18,7 @@ export class PrecioCategoriaArmazonComponent implements OnInit {
   constructor(private _categorias: CategoriaArmazonService, public dialog: DialogBoxService) { }
 
   ngOnInit() {
+    /*
     this._categorias.getCatalogList((data: GenericCatalog[]) => {
       this._categorias.getPreciosCategorias(this.listaPreciosID, (result: any[]) => {
         this.categoriaArmazon = data.map(gc => {
@@ -25,6 +26,7 @@ export class PrecioCategoriaArmazonComponent implements OnInit {
         });
       }, true);
     });
+    */
   }
 
   onSaveCategoriaArmazones(precios) {
@@ -33,7 +35,7 @@ export class PrecioCategoriaArmazonComponent implements OnInit {
     _keys.forEach((key) => {
       listaPrecios[key.replace('precio-', '')] = precios[key];
     });
-    this._categorias.setPrecioCategorias(listaPrecios, this.listaPreciosID);
+    // this._categorias.setPrecioCategorias(listaPrecios, this.listaPreciosID);
     this.dialog.openDialog('Registro exitoso!', 'Los precios para las Categorias de Armazon. se guardaron correctamente', false);
   }
 }

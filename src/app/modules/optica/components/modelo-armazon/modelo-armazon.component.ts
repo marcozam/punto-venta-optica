@@ -30,12 +30,13 @@ export class ModeloArmazonComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: DialogBoxService) {
-    _categorias.setListRefURL('armazones/categorias');
+    // _categorias.setListRefURL('armazones/categorias');
     this.item = new ModeloArmazon();
   }
 
   ngOnInit() {
     const _detailID = this.route.snapshot.params['detailID'];
+    /*
     // Obtiene todas las Categorias del Armazon
     this._categorias.getCatalogList((dCat) => {
       this.categoriaArmazon = dCat;
@@ -57,13 +58,16 @@ export class ModeloArmazonComponent implements OnInit {
         }
       });
     });
+    */
   }
 
   onSave(newValue: any) {
+    /*
     this._modeloService.save(this.item, newValue, () => {
       this.dialog.openDialog('Registro exitoso!', 'La informacion se ha guardado con exito.', false);
       const _url = '/optica/armazon/modelo';
       this.router.navigate([_url]);
     });
+    */
   }
 }

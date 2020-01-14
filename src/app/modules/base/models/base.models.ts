@@ -1,4 +1,3 @@
-import { database } from 'firebase';
 import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
 export class BaseGenericCatalog {
@@ -11,9 +10,7 @@ export class BaseGenericCatalog {
     updatedDate?: Object;
     updatedBy?: string;
 
-    constructor() {
-        this.createdDate = database.ServerValue.TIMESTAMP;
-    }
+    constructor() { }
 
     hasChanges(compareWith: any): boolean {
         let response: boolean = this.keysChanges.length === 0;

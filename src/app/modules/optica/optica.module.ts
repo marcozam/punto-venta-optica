@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// AngularFire
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-import { environment } from 'environments/environment';
 // Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -55,9 +51,6 @@ import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.com
     MatIconModule,
     MatRadioModule,
     MatButtonModule,
-    // Angular Fire Modules
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
   ],
   declarations: [
     OjoComponent,
@@ -77,7 +70,6 @@ import { TipoArmazonComponent } from './components/tipo-armazon/tipo-armazon.com
   providers: [
     ExamenService,
     ProductosService,
-    AngularFireDatabase
   ],
   exports: [
     ExamenComponent,

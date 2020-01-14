@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 // Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 import { GenericCatalogService } from 'app/modules/generic-catalogs/services/generic.service';
-import { _catalogs, CatalogsMetadataService } from 'app/modules/generic-catalogs/services/catalogs-metadata.service';
-import { FBGenericService } from 'app/modules/generic-catalogs/services/fb-generic.service';
+import { CatalogsMetadataService } from 'app/modules/generic-catalogs/services/catalogs-metadata.service';
 // Models
 import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
@@ -16,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
   selector: 'app-generic-catalog-list',
   templateUrl: './generic-catalog-list.component.html',
   styleUrls: ['./generic-catalog-list.component.scss'],
-  providers: [GenericCatalogService, CatalogsMetadataService, DialogBoxService, FBGenericService]
+  providers: [GenericCatalogService, CatalogsMetadataService, DialogBoxService]
 })
 export class GenericCatalogListComponent implements OnInit {
   catalogID: any;
@@ -30,7 +29,6 @@ export class GenericCatalogListComponent implements OnInit {
   constructor(
     private _genericService: GenericCatalogService,
     private _metaDataService: CatalogsMetadataService,
-    private fbGenericService: FBGenericService<GenericCatalog>,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: DialogBoxService) {
@@ -44,14 +42,7 @@ export class GenericCatalogListComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.catalogID = Number(params['catalogID']);
       this.cleanData();
-
-      this.workingCatalog = _catalogs.find(c => c.key === this.catalogID);
-      if (this.workingCatalog) {
-        this.dataSource.columns = [ new TableColumn('Nombre', 'nombre', item => item.nombre)];
-        if (this.workingCatalog.detailURL) { this.detailURL = this.workingCatalog.detailURL; }
-        this.fbGenericService.setListRefURL(this.workingCatalog.referenceURL);
-        this.fbGenericService.getCatalogList(fbResult => { this.dataSource.updateDataSource(fbResult); }, true);
-      } else { this.loadCatalogData(); }
+      this.loadCatalogData();
     });
   }
 
@@ -89,9 +80,7 @@ export class GenericCatalogListComponent implements OnInit {
   getFieldValue(item: any, property: string) { return item[property]; }
 
   onDelete(item: GenericCatalog | any) {
-    this.workingCatalog.referenceURL ?
-      this.fbGenericService.deleteCatalogItem(item.key) :
-      this._genericService.delete(Number(item.key ? item.key : item.C0));
+    this._genericService.delete(Number(item.key ? item.key : item.C0));
   }
 
   onEdit(item: GenericCatalog | any) {

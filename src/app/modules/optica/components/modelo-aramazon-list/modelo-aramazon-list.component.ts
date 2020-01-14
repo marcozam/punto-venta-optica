@@ -48,8 +48,10 @@ export class ModeloAramazonListComponent implements OnInit {
   }
 
   ngOnInit() {
+    /*
     this.service.getCatalogList(((res: ModeloArmazon[]) => this.dataSource.updateDataSource(res)));
     this._marca.getCatalogList((res) => this.marcas = res);
+    */
   }
 
   onMarcaChange(marca: MarcaArmazon) {
