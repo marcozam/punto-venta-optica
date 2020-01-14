@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatSelectionList, MatListOption } from '@angular/material/list';
 
 import { SelectionChange } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 // Models
 import { OpticaVentaChangeEvent } from '../../models/optica-venta.models';

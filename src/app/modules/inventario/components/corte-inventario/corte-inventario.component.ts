@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';

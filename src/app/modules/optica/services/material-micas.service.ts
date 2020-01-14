@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { MaterialMica, MicaPrecio, TratamientoMicaPrecios, TratamientoMica } from '../models/examen.models';
 import { GenericService, GenericServiceBase } from '../../generic-catalogs/services/generic.service';

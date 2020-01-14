@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 // Services
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericService } from 'app/modules/generic-catalogs/services/generic.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { ProductosService } from '../../../producto/services/productos.service';
 import { CategoriaProductoService } from '../../../producto/services/categoria-producto.service';

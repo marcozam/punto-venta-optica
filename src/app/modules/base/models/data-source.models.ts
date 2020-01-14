@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { TemplateRef } from '@angular/core/src/linker/template_ref';
 
 export type SortDirection = 'asc' | 'desc' | 'none';

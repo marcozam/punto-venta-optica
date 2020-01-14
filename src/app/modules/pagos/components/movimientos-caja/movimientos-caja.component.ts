@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { DecimalPipe, DatePipe } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { CajaService } from '../../services/caja.service';
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import * as moment from 'moment';
 // Models
 import { Venta, DetalleVenta, DetallePagos, MetodoPago, ComentariosVenta } from '../models/venta.models';
