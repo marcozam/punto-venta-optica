@@ -10,7 +10,7 @@ import { Ojo } from '../../models/examen.models';
 })
 export class OjoComponent implements OnInit {
 
-  @ViewChild(NgForm) form;
+  @ViewChild(NgForm, { static: true }) form;
 
   _invalid: Boolean = true;
   @Input()

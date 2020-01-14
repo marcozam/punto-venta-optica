@@ -10,7 +10,7 @@ export class FilterComponent implements OnInit {
   @Input()
   uniqueID: string;
 
-  @ViewChild('filterTemplate')
+  @ViewChild('filterTemplate', { static: true })
   template: TemplateRef<any>;
 
   constructor() { }

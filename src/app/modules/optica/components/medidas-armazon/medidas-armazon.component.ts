@@ -9,7 +9,7 @@ import { MedidasArmazon } from 'app/modules/optica/models/armazon.models';
 })
 export class MedidasArmazonComponent implements OnInit {
 
-  @ViewChild('medidasForm') form: NgForm;
+  @ViewChild('medidasForm', { static: true }) form: NgForm;
 
   medidas: MedidasArmazon | null;
 

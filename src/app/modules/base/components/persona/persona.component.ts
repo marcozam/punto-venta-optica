@@ -15,7 +15,7 @@ export class PersonaComponent implements OnInit {
 
   persona: Persona;
 
-  @ViewChild('formPersona')
+  @ViewChild('formPersona', { static: true })
   form: NgForm;
 
   private _initialData: Persona;

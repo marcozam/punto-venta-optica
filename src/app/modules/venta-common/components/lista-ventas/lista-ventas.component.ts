@@ -28,7 +28,7 @@ export class ListaVentasComponent implements AfterViewInit {
   dataSource: TableSource<Venta>;
   loading = false;
 
-  @ViewChild('actionsTemplate') actionsTemplate: TemplateRef<any>;
+  @ViewChild('actionsTemplate', { static: true }) actionsTemplate: TemplateRef<any>;
 
   constructor(
     private ventaService: VentaService,

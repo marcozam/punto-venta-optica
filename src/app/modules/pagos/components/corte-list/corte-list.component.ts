@@ -24,7 +24,7 @@ export class CorteListComponent implements OnInit, AfterViewInit {
   loadingDetail = false;
   sucursalID: number;
 
-  @ViewChild('actionsTemplate') actionsTemplate: TemplateRef<any>;
+  @ViewChild('actionsTemplate', { static: true }) actionsTemplate: TemplateRef<any>;
 
   constructor(
     private _service: CajaService,

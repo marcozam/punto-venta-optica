@@ -65,7 +65,7 @@ export class VentasComponent implements OnInit {
     private pagosDialog: DialogPagosService,
     private route: ActivatedRoute) { }
 
-  @ViewChild('ticketVenta') ticketVenta: ViewContainerRef;
+  @ViewChild('ticketVenta', { static: false }) ticketVenta: ViewContainerRef;
 
   ngOnInit() {
     // TODO: Agregar loadeder

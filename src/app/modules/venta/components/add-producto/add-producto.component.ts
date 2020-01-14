@@ -27,8 +27,8 @@ export class AddProductoComponent implements OnInit {
   @Input() listaPreciosID: number;
   @Output() onProdutoAdded: EventEmitter<DetalleVenta> = new EventEmitter<DetalleVenta>();
 
-  @ViewChild('formAddProduct') form: FormControl;
-  @ViewChild('cantidadField') field: ElementRef;
+  @ViewChild('formAddProduct', { static: true }) form: FormControl;
+  @ViewChild('cantidadField', { static: true }) field: ElementRef;
 
   constructor(
     private _productoService: ProductosService,

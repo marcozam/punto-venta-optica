@@ -25,7 +25,7 @@ export class DynamicCatalogComponent implements OnInit {
   tables: MetaDataTable[];
   fieldTypes: GenericCatalog[];
 
-  @ViewChild('dcForm') form: NgForm;
+  @ViewChild('dcForm', { static: true }) form: NgForm;
 
   constructor(
     private _service: CatalogsMetadataService,

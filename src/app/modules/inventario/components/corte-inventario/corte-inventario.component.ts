@@ -29,7 +29,7 @@ export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewIni
   private loading$: Observable<boolean>;
   loading = false;
 
-  @ViewChild('cantidadTemplate') cantidadTemplate: TemplateRef<any>;
+  @ViewChild('cantidadTemplate', { static: true }) cantidadTemplate: TemplateRef<any>;
 
   constructor(
     private _service: InventarioService,

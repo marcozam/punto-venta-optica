@@ -39,7 +39,7 @@ export class MovimientosCajaComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 
-  @ViewChild('actionsTemplate') actionsTemplate: TemplateRef<any>;
+  @ViewChild('actionsTemplate', { static: true }) actionsTemplate: TemplateRef<any>;
 
   constructor(
     private _service: CajaService,

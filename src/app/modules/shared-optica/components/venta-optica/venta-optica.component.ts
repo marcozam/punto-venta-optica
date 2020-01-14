@@ -72,7 +72,7 @@ export class VentaOpticaComponent implements OnInit {
 
   @Output() onProdutsChanged: EventEmitter<OpticaVentaChangeEvent> = new EventEmitter();
 
-  @ViewChild(MatSelectionList) tratamientoList: MatSelectionList;
+  @ViewChild(MatSelectionList, { static: true }) tratamientoList: MatSelectionList;
 
   constructor(
     private _examenService: ExamenService,

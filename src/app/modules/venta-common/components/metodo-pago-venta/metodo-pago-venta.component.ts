@@ -16,7 +16,7 @@ export class MetodoPagoVentaComponent implements OnInit {
   totalPagado = 0;
   metodosPago: MetodoPago[];
   venta: Venta;
-  @ViewChild('pagoForm') form: FormControl;
+  @ViewChild('pagoForm', { static: true }) form: FormControl;
 
   constructor(
     private _metodoPagoService: MetodosPagoService,
