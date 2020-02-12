@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 // Services
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericService } from 'app/modules/generic-catalogs/services/generic.service';
@@ -17,7 +18,7 @@ export class ExamenService extends GenericService<Examen> {
 
     getLastExamen(pacienteID: number) {
         const params = this.db.createParameter('OPTICA_0001', 2, { V3: pacienteID });
-        return this.db.getData(params).map((result) => {
+        return this.db.getData(params).pipe(map((result) => {
             const examen = this.mapData(result.Table.length > 0 ? result.Table[0] : null);
             if (result.Table1.length > 0) {
                 const oD = result.Table1.find((item) => item.C5 === true);
@@ -30,7 +31,7 @@ export class ExamenService extends GenericService<Examen> {
                 }
             }
             return examen;
-        });
+        }));
     }
 
     saveVentaExamen(ventaID: number, examenID: number, materialID: number, tipoMicaID: number) {
@@ -62,12 +63,12 @@ export class ExamenService extends GenericService<Examen> {
             V23: examen.ojoIzquierdo.grados,
             V24: examen.ojoIzquierdo.distanciaInterPupilar ? examen.ojoIzquierdo.distanciaInterPupilar : ''
         });
-        return this.db.getData(params).map(result => {
+        return this.db.getData(params).pipe(map(result => {
             if (result.Table.length > 0) {
                 examen.key = result.Table[0].C0;
             }
             return examen;
-        });
+        }));
     }
 
     getPrecioMica(examen: Examen, precio: MicaPrecio): number {
@@ -99,13 +100,13 @@ export class ExamenService extends GenericService<Examen> {
             V4: tipoMicaID,
             V5: materialID
         });
-        return this.db.getData(params).map(data => {
+        return this.db.getData(params).pipe(map(data => {
             if (data.Table.length > 0) {
                 const precio = new MicaPrecio(data.Table[0].C1, materialID, tipoMicaID);
                 precio.tratamientos = data.Table1.map(item => new TratamientoMicaPrecios(item.C1, item.C2, item.C3));
                 return precio;
             }
             return null;
-        });
+        }));
       }
 }

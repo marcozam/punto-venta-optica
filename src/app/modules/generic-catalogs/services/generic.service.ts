@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { getFields } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 // Services
@@ -67,11 +67,11 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
                 setTimeout(() => item$.next(currentItem), 100);
             } else {
                 return this.db.getDetailedData<T>(this.catalogID, ID)
-                .map((result: any) => {
+                .pipe(map((result: any) => {
                     const response = result ? this.mapData(result) : null;
                     if (response) { this.setData([response], true); }
                     return response;
-                });
+                }));
             }
         }
         item$.subscribe(() => this.finishLoading);
@@ -105,7 +105,7 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
                 this.map2Server(item),
                 this.catalogID,
                 item.key)
-            .map(item => this.mapData(item))
+            .pipe(map(item => this.mapData(item)))
             .subscribe(item => {
                 respond.next(item);
                 $sub.unsubscribe();
@@ -252,7 +252,7 @@ export class GenericCatalogService extends GenericService<GenericCatalog> implem
         const fmd: FieldProperty = GenericCatalog.prototype['keyFB__dbData'];
         const fld =  this.fields.find((_fld) => _fld.nombreCorto === fmd.serverField);
         return this.db.getAllDataFromCatalog(this.catalogID, `${fld.key},${key}`)
-            .map(result => result.map(it => this.mapData(it)));
+            .pipe(map(result => result.map(it => this.mapData(it))));
     }
 
     save(workingItem: GenericCatalog, oldItem: GenericCatalog = null) {
@@ -261,7 +261,7 @@ export class GenericCatalogService extends GenericService<GenericCatalog> implem
                 this.map2Server(item),
                 this.catalogID,
                 item.key)
-            .map(item => this.mapData(item))
+            .pipe(map(item => this.mapData(item)))
             .subscribe(item => {
                 respond.next(item);
                 $sub.unsubscribe();

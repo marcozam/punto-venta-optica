@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
@@ -40,7 +41,7 @@ export class ProductosService extends GenericService<Producto> implements Generi
 
     getProductByDetail(ID: number, categoryID: number) {
         return this.db.getAllDataFromCatalog(this.catalogID, `40202,${categoryID}~40206,${ID}`)
-            .map((result: any) => result.length > 0 ? this.mapData(result[0]) : new Producto(''));
+            .pipe(map((result: any) => result.length > 0 ? this.mapData(result[0]) : new Producto('')));
     }
 
     save(workingItem: Producto, callback, error?, storageName?) {
@@ -54,8 +55,8 @@ export class ProductosService extends GenericService<Producto> implements Generi
                 V8: producto.detalleID ? producto.detalleID : 0
             });
             // TODO
-            this.db.getData(params)
-            .map(result => result.Table.length > 0 ? this.mapData(result.Table[0]) : null)
+            this.db.getData(params).pipe(
+              map(result => result.Table.length > 0 ? this.mapData(result.Table[0]) : null))
             .subscribe((data: Producto) => {
                 if (data) {
                     this.addItem(data, storageName);

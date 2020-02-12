@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatSelectionList, MatListOption } from '@angular/material/list';
 
 import { SelectionChange } from '@angular/cdk/collections';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 // Models
 import { OpticaVentaChangeEvent } from '../../models/optica-venta.models';
@@ -78,7 +78,7 @@ export class VentaOpticaComponent implements OnInit {
     private _examenService: ExamenService,
     private _tratamientosService: TratamientoMicasService,
     private dialog: DialogBoxService) {
-    this.loading$ = Observable.merge(_examenService.loading$, _tratamientosService.loading$);
+    this.loading$ = merge(_examenService.loading$, _tratamientosService.loading$);
   }
 
   createSubscriptions() {

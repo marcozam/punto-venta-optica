@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/Rx';
-import { Subject } from 'rxjs';
-import { Observable } from 'rxjs';
+import { Observable, Subject, merge, of, fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 
@@ -14,10 +13,10 @@ export class AjaxGuardService {
 
     constructor(private _http: HttpClient) {
         // Check if Browser is online
-        this.online$ = Observable.merge(
-            Observable.of(navigator.onLine),
-            Observable.fromEvent(window, 'online').mapTo(true),
-            Observable.fromEvent(window, 'offline').mapTo(false)
+        this.online$ = merge(
+            of(navigator.onLine),
+            fromEvent(window, 'online').pipe(map(() => true)),
+            fromEvent(window, 'offline').pipe(map(() => false))
         );
     }
 

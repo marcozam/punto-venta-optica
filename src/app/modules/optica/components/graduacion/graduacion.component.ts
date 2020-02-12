@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 // Services
 import { MaterialMicasService } from './../../services/material-micas.service';
@@ -57,7 +57,7 @@ export class GraduacionComponent implements OnInit {
     private _materialService: MaterialMicasService) {
     this._examen = new Examen();
     // Observer when app is retriving data
-    this.loading$ = Observable.merge(_serviceExamen.loading$, _tipoService.loading$, _materialService.loading$);
+    this.loading$ = merge(_serviceExamen.loading$, _tipoService.loading$, _materialService.loading$);
   }
 
   createSubscriptions() {

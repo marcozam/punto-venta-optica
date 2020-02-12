@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';
@@ -57,7 +57,7 @@ export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewIni
     this.dataSource.columns[1].sortDirection = 'desc';
 
     // Observer when app is retriving data
-    this.loading$ = Observable.merge(this._categoriaService.loading$, this._service.loading$);
+    this.loading$ = merge(this._categoriaService.loading$, this._service.loading$);
   }
 
   createSubscriptions() {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+// RxJs
+import { map } from 'rxjs/operators';
 // Models
 import { Status } from 'app/modules/base/models/base.models';
 import { MetodoPago, Venta, DetalleVenta } from 'app/modules/venta/models/venta.models';
@@ -54,17 +56,22 @@ export class VentasReportingService {
             V4: sucursalID ? sucursalID : '',
             V8: clienteID ? clienteID : '',
         });
-        return this.db.getData(params).map(result => this.mapList(result.Table));
+        return this.db.getData(params).pipe(
+          map(result => this.mapList(result.Table))
+        );
     }
 
     getHistorialCompras(clienteID: number) {
         const params = this.db.createParameter('ECOM0003', 4, { V3: clienteID ? clienteID : '' });
-        return this.db.getData(params).map(result => this.mapList(result.Table));
+        return this.db.getData(params).pipe(
+          map(result => this.mapList(result.Table))
+        );
     }
 
     getProductosVendidos(month: number, year: number, sucursalID: number) {
         const params = this.db.createParameter('ECOM0003', 8, { V4: sucursalID, V5: year, V6: month });
-        return this.db.getData(params).map(data => {
+        return this.db.getData(params).pipe(
+          map(data => {
             return data.Table.map(row => {
                 return {
                     categoria: row.C1,
@@ -73,12 +80,14 @@ export class VentasReportingService {
                     cantidad: row.C6
                 };
             });
-        });
+        })
+      );
     }
 
     getResumenMensual(month: number, year: number, sucursalID: number) {
         const params = this.db.createParameter('ECOM0003', 1, { V4: sucursalID, V5: year, V6: month });
-        return this.db.getData(params).map(data => {
+        return this.db.getData(params).pipe(
+          map(data => {
             const resumen = new ResumenVenta();
             const _dResume = data.Table[0];
             resumen.totalVenta = _dResume.C1;
@@ -91,17 +100,20 @@ export class VentasReportingService {
             });
             resumen.lista = this.mapList(data.Table2);
             return resumen;
-        });
+        })
+      );
     }
 
     // Exclusivo Optika
     getResumenMensualOptika(month: number, year: number, sucursalID: number) {
-        const params = this.db.createParameter('OPTICA_0001', 10, { V4: sucursalID, V5: year, V6: month });
-        return this.db.getData(params).map(data => {
-            return {
-                oftalmologos: data.Table.map( row => ({nombre: row.C1, noExamenes: row.C2})),
-                armazones: data.Table1.map( row => ({armazon: row.C1, noVentas: row.C2}))
-            };
-        });
+      const params = this.db.createParameter('OPTICA_0001', 10, { V4: sucursalID, V5: year, V6: month });
+      return this.db.getData(params).pipe(
+        map(data => {
+          return {
+            oftalmologos: data.Table.map( row => ({nombre: row.C1, noExamenes: row.C2})),
+            armazones: data.Table1.map( row => ({armazon: row.C1, noVentas: row.C2}))
+          };
+        })
+      );
     }
 }

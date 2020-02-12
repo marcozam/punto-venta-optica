@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 import { ProductosService } from '../../../producto/services/productos.service';
 import { CategoriaProductoService } from '../../../producto/services/categoria-producto.service';
@@ -34,7 +34,7 @@ export class AddProductoComponent implements OnInit {
     private _productoService: ProductosService,
     private _categoriaService: CategoriaProductoService,
     private _listaPreciosService: ListaPreciosService) {
-    this.loading$ = Observable.merge(_productoService.loading$, _categoriaService.loading$);
+    this.loading$ = merge(_productoService.loading$, _categoriaService.loading$);
   }
 
   createSubscriptions() {

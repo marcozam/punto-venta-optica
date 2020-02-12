@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 // Services
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
@@ -77,11 +78,11 @@ export class ContactoService extends GenericService<Contacto> implements Generic
             V4: item.tipoID === 1 ? item.persona.key : item.empresa.key,
             V7: DCA.join('&')
         });
-        return this.db.getData(tParams).map((result: any) => {
+        return this.db.getData(tParams).pipe(map((result: any) => {
             const newItem = this.mapData(result.Table[0]);
             item.key = newItem.key;
             return item;
-        });
+        }));
     }
 
     mapData(object: any): Contacto {

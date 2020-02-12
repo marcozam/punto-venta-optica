@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+// RxJs
+import { map } from 'rxjs/operators';
 import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
-import { Inventario } from 'app/modules/inventario/models/inventario.models';
+import { Inventario } from '../models/inventario.models';
 import { Producto, CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
 
 @Injectable()
@@ -43,10 +45,10 @@ export class InventarioService extends GenericService<Inventario> implements Gen
       'V3': productoID,
       'V4': sucursalID
     });
-    return this.db.getData(params).map(result => {
+    return this.db.getData(params).pipe(map(result => {
       this.finishLoading();
       return result.Table.length > 0 ? this.mapData(result.Table[0]) : {};
-    });
+    }));
   }
 
   getInventarioActual(sucursalID: number) {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { GenericServiceBase, GenericService } from 'app/modules/generic-catalogs/services/generic.service';
@@ -61,7 +62,7 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
 
   getMovimientosCorte(sucursalID: number, corteID: number) {
     const params = this.db.createParameter('ECOM0006', 4, { V4: sucursalID, V5: corteID});
-    return this.db.getData(params).map(result => result.Table.map(row => this.mapDataMovimientos(row)));
+    return this.db.getData(params).pipe(map(result => result.Table.map(row => this.mapDataMovimientos(row))));
   }
 
   deleteMovimientoCaja(item: MovimientoCaja) {
@@ -76,17 +77,17 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
 
   getCortes(sucursalID: number) {
     const params = this.db.createParameter('ECOM0006', 1, { V4: sucursalID});
-    return this.db.getData(params).map(result => this.mapList(result.Table));
+    return this.db.getData(params).pipe(map(result => this.mapList(result.Table)));
   }
 
   getDetalleCorte(corteID: number) {
     const params = this.db.createParameter('ECOM0006', 5, { V5: corteID});
-    return this.db.getData(params).map(result => result.Table.map(row => this.mapDataDetalle(row)));
+    return this.db.getData(params).pipe(map(result => result.Table.map(row => this.mapDataDetalle(row))));
   }
 
   getSummaryCortePendiente(sucursalID: number) {
     const params = this.db.createParameter('ECOM0003', 5, { V3: sucursalID});
-    return this.db.getData(params).map(result => result.Table.map(row => this.mapDataDetalle(row)));
+    return this.db.getData(params).pipe(map(result => result.Table.map(row => this.mapDataDetalle(row))));
   }
 
   save(_currentValue: CorteCaja, _newValue: CorteCaja) {
@@ -97,10 +98,10 @@ export class CajaService extends GenericService<CorteCaja> implements GenericSer
       'V6': this.map2Server(_currentValue)
     });
     return this.db.getData(params)
-      .map(value => {
+      .pipe(map(value => {
         const corte = this.mapData(value.Table[0]);
         corte.detalle = _currentValue.detalle;
         return corte;
-      });
+      }));
   }
 }

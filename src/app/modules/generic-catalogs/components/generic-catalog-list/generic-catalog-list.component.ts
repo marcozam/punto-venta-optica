@@ -9,7 +9,7 @@ import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { MetaDataCatalog, MetaDataField } from '../../models/metadata-catalogs.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
 
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 @Component({
   selector: 'app-generic-catalog-list',
@@ -33,7 +33,7 @@ export class GenericCatalogListComponent implements OnInit {
     private router: Router,
     public dialog: DialogBoxService) {
     // Observer when app is retriving data
-    this.loading$ = Observable.merge(this._metaDataService.loading$, this._genericService.loading$);
+    this.loading$ = merge(this._metaDataService.loading$, this._genericService.loading$);
   }
 
   ngOnInit() {

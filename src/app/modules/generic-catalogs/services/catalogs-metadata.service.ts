@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 import { MetaDataCatalog, MetaDataField, MetaDataTable, MetaDataColumn } from '../models/metadata-catalogs.models';
 
@@ -58,21 +59,21 @@ export class CatalogsMetadataService extends GenericService<MetaDataCatalog> imp
 
   getFieldsList(catalogID: number) {
     return this.db.getAllDataFromCatalog(this.fieldsCatalogID, `${this.fieldFilterID},${catalogID}`)
-      .map(result => result.map(it => this.mapFieldsData(it)));
+      .pipe(map(result => result.map(it => this.mapFieldsData(it))));
   }
 
   getDBTables() {
     return this.db.getData(this.db.createParameter('DYN0003', 1))
-      .map(result => result.Table.map(it => this.mapTablesData(it)));
+      .pipe(map(result => result.Table.map(it => this.mapTablesData(it))));
   }
 
   getDBColumns(tableName: string) {
     return this.db.getData(this.db.createParameter('DYN0003', 2, { V3: tableName}))
-      .map(result => result.Table.map(it => this.mapColumnData(it)));
+      .pipe(map(result => result.Table.map(it => this.mapColumnData(it))));
   }
 
   getFieldTypes() {
     return this.db.getData(this.db.createParameter('DYN0000', 1))
-      .map(result => result.Table.map(it => this.db.mapGeneric(it)));
+      .pipe(map(result => result.Table.map(it => this.db.mapGeneric(it))));
   }
 }

@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { TemplateRef } from '@angular/core/src/linker/template_ref';
+import { TemplateRef } from '@angular/core';
 
 export type SortDirection = 'asc' | 'desc' | 'none';
 export type ColumnAlign = 'left' | 'center' | 'right';

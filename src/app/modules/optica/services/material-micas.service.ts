@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MaterialMica, MicaPrecio, TratamientoMicaPrecios, TratamientoMica } from '../models/examen.models';
 import { GenericService, GenericServiceBase } from '../../generic-catalogs/services/generic.service';
@@ -21,7 +22,7 @@ export class MaterialMicasService extends GenericService<MaterialMica> implement
         V3: listaPrecioID,
         V5: materialID
     });
-    return this.db.getData(params).map(data => {
+    return this.db.getData(params).pipe(map(data => {
       let rValue: MicaPrecio[] = [];
       if (data.Table.length > 0) {
         rValue = data.Table.map(ptm => {
@@ -33,7 +34,7 @@ export class MaterialMicasService extends GenericService<MaterialMica> implement
         });
       }
       return rValue;
-    });
+    }));
   }
 
   setPrecios(listaPrecioID: number, materialID: number, tratamientos: TratamientoMica[], data: {key:  number, value: any}[]) {

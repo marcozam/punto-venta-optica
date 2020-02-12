@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import { SuccessTitle, SuccessMessage, WarningTitle, LeaveWarningMessage } from 'app/modules/base/constants/messages.contants';
 
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
@@ -29,7 +29,7 @@ export class ProductosComponent implements OnInit {
     private router: Router,
     public dialog: DialogBoxService) {
     this.product = new Producto('');
-    this.loading$ = Observable.merge(this._categoriasService.loading$, this._service.loading$);
+    this.loading$ = merge(this._categoriasService.loading$, this._service.loading$);
   }
 
   createSubscriptions() {

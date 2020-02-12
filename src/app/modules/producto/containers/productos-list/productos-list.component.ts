@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 
 // Services
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
@@ -50,7 +50,7 @@ export class ProductosListComponent implements OnInit {
       this.dataSource.columns[1].sortDirection = 'desc';
 
       // Observer when app is retriving data
-      this.loading$ = Observable.merge(this._categoriaService.loading$, this._service.loading$);
+      this.loading$ = merge(this._categoriaService.loading$, this._service.loading$);
   }
 
   createSubscriptions() {
