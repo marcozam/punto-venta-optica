@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -9,7 +9,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(titleService: Title, router: Router) {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -35,4 +35,8 @@ export class AppComponent {
   }
 
   setTitle(pTitle) { this.title = pTitle; }
+
+  ngOnInit() {
+    // TODO: Revisar si ya tiene seteada una sucursal
+  }
 }

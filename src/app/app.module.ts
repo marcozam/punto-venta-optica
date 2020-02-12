@@ -17,10 +17,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 // Routing
-import { routing } from './app.routing';
+import { AppRoutingModule } from './routing/app.routing';
 // Componentes
 import { AppComponent } from './app.component';
-import { LoginComponent } from './modules/auth/components/login/login.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 registerLocaleData(localeESMX);
@@ -28,12 +27,11 @@ registerLocaleData(localeESMX);
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
-    routing,
+    AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     // Angular Material
