@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject, merge, of, fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, merge, of, fromEvent } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 
@@ -30,26 +30,11 @@ export class AjaxGuardService {
     }
 
     getData(url: string, data: any) {
-        const post = this._http.post(url, this.encodeObject(data), {
+        return this._http.post(url, this.encodeObject(data), {
             headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-        });
-        const response: Subject<AjaxRequestResult> = new Subject();
-        // Execute on complete
-        response.subscribe(() => {
-            const index = queuedConnections.indexOf(post);
-            if (index > -1) { queuedConnections.splice(index, 1); }
-        });
-
-        queuedConnections.push(post);
-        post.subscribe((result: any) => {
-                const rr = new AjaxRequestResult(result.Auth ? 'AuthError' : 'Success', result);
-                response.next(rr);
-            },
-            (error: any) => {
-                const rr = new AjaxRequestResult('GeneralError', error);
-                response.next(rr);
-            }
+        }).pipe(
+          map((result: any) => new AjaxRequestResult(result.Auth ? 'AuthError' : 'Success', result)),
+          catchError(error => of(new AjaxRequestResult('GeneralError', error))),
         );
-        return response;
     }
 }

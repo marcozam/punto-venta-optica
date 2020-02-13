@@ -21,7 +21,7 @@ export const environment = {
 export const environment = {
   production: false,
   webServiceURL: 'http://itg.tecnosin.com.mx/api/General/GetData',
-  DBID: 'OPTIKA',
+  DBID: 'OPTIKA_DEV',
   defaultUser: 2,
   firebase: {
     apiKey: 'AIzaSyA9NbiLpT16S2HEf3uz4PdA-t_IYU1srVE',

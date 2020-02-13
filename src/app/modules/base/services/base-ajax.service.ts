@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // RxJs
 import { Subject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
 // Services
@@ -13,12 +13,17 @@ import { GenericCatalog } from 'app/modules/base/models/base.models';
 import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 // Constants
 import { WarningTitle, AuthErrorMessage, ErrorTitle, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';
+import { ApplicationService } from 'app/services';
 
 @Injectable()
 export class BaseAjaxService {
     online: boolean;
 
-    constructor(private _dialog: DialogBoxService, public guard: AjaxGuardService, public snackBar: MatSnackBar) {
+    constructor(
+      private _dialog: DialogBoxService,
+      public guard: AjaxGuardService,
+      public snackBar: MatSnackBar,
+      private applicationService: ApplicationService) {
         this.guard.online$.subscribe((isOnline) => {
             this.online = isOnline;
             if (!isOnline) { this.snackBar.open('Se perdio la conexion a internet', 'Ignorar', { duration: 3000 }); }
@@ -51,28 +56,22 @@ export class BaseAjaxService {
     }
 
     getData(data: any): Observable<any> {
-        const response: Subject<any> = new Subject();
-        if (this.online || !environment.production) {
-            this.guard.getData(environment.webServiceURL, data)
-                .subscribe(
-                    (result: AjaxRequestResult) => {
-                        switch (result.code) {
-                            case 'Success':
-                                response.next(result.data);
-                                break;
-                            case 'AuthError':
-                                this.openDialog(WarningTitle, AuthErrorMessage);
-                                // response.next();
-                                break;
-                            // General Error
-                            default:
-                                this.openDialog(ErrorTitle, InternalServerErrorMessage);
-                                // response.next();
-                                break;
-                        }
-                    });
-        } else { this.openDialog(ErrorTitle, 'No hay conexion'); }
-        return response;
+      if (!this.online) {
+        this.openDialog(ErrorTitle, 'No hay conexion');
+      }
+      return this.guard.getData(environment.webServiceURL, data).pipe(
+        tap((result: AjaxRequestResult) => {
+          switch (result.code) {
+            case 'AuthError':
+                this.openDialog(WarningTitle, AuthErrorMessage);
+                break;
+            // General Error
+            default:
+                this.openDialog(ErrorTitle, InternalServerErrorMessage);
+                break;
+          }
+        })
+      );
     }
 
     private openDialog(title: string, message: string) {
