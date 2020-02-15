@@ -32,6 +32,7 @@ import { DialogBoxService } from './services/dialog-box.service';
 import { AjaxGuardService } from './services/ajax-guard.service';
 import { BaseAjaxService } from './services/base-ajax.service';
 import { GroupTableComponent } from './components/group-table/group-table.component';
+import { ApplicationService } from 'app/services';
 
 @NgModule({
   imports: [
@@ -78,6 +79,7 @@ import { GroupTableComponent } from './components/group-table/group-table.compon
     // Global Services
     AjaxGuardService,
     BaseAjaxService,
+    ApplicationService,
     DialogBoxService,
   ]
 })

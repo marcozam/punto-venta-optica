@@ -14,7 +14,7 @@ export class AuthGuard implements CanLoad {
   constructor(private router: Router) { }
 
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
-    const authenticated = false;
+    const authenticated = true;
     if (!authenticated) {
       this.router.navigate(['auth/login']);
     }
