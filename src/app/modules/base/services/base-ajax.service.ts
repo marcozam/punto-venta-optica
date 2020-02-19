@@ -41,7 +41,7 @@ export class BaseAjaxService {
     createParameter(spName, option, parameters?) {
         const account = { C0: 1, C3: ''};
         // JSON.parse(localStorage.getItem('CuentaActiva')),
-        const user = { C0: environment.defaultUser };
+        const { user } = this.applicationService;
         // JSON.parse(localStorage.getItem('User'));
         const paramsFields = {
             'SP': spName,

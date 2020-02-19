@@ -12,7 +12,7 @@ export class SucursalService extends GenericService<Sucursal> implements Generic
 
     constructor(_db: BaseAjaxService) {
       super(_db);
-      this.catalogID = 1;
+      this.catalogID = 99;
     }
 
     newInstance() { return new Sucursal(); }

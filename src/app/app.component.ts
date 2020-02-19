@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   setTitle(pTitle) { this.title = pTitle; }
 
   ngOnInit() {
+
     // TODO: Revisar si ya tiene seteada una sucursal
   }
 }

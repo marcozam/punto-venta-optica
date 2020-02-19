@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class ApplicationService {
 
-  user: any;
+  user: any = { C0: environment.defaultUser };
   sucursal: any;
+  userId: string;
+  sucursalId: string;
 
   constructor() { }
 
-  login(user: string, password: string) {
-
+  setUser(user: any) {
+    // TODO: Guardar user localstorage
   }
 
-  logout() {
+  setSucursal() {
 
   }
-
-  selectSucursal() {
-
-  }
-
 }

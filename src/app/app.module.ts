@@ -20,6 +20,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { AppRoutingModule } from './routing/app.routing';
 // Componentes
 import { AppComponent } from './app.component';
+import { SucursalSelectionComponent } from './sucursal-selection/sucursal-selection.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 registerLocaleData(localeESMX);
@@ -27,6 +28,7 @@ registerLocaleData(localeESMX);
 @NgModule({
   declarations: [
     AppComponent,
+    SucursalSelectionComponent,
     PageNotFoundComponent
   ],
   imports: [
@@ -49,6 +51,9 @@ registerLocaleData(localeESMX);
     {provide: MAT_DATE_LOCALE, useValue: 'es-MX'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ],
+  entryComponents: [
+    SucursalSelectionComponent,
   ],
   bootstrap: [AppComponent],
 })
