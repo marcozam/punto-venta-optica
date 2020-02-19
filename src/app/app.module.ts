@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 // Material Tokens for Date format
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -22,14 +23,18 @@ import { AppRoutingModule } from './routing/app.routing';
 import { AppComponent } from './app.component';
 import { SucursalSelectionComponent } from './sucursal-selection/sucursal-selection.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DialogBoxComponent } from './modules/base/components/dialog-box/dialog-box.component';
+// Services
+import { SucursalService } from './services/http';
 
 registerLocaleData(localeESMX);
 
 @NgModule({
   declarations: [
     AppComponent,
+    DialogBoxComponent,
+    PageNotFoundComponent,
     SucursalSelectionComponent,
-    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +42,7 @@ registerLocaleData(localeESMX);
     BrowserAnimationsModule,
     HttpClientModule,
     // Angular Material
+    MatSnackBarModule,
     MatSidenavModule,
     MatMenuModule,
     MatToolbarModule,
@@ -47,6 +53,7 @@ registerLocaleData(localeESMX);
   ],
   providers: [
     Title,
+    SucursalService,
     {provide: LOCALE_ID, useValue: 'es-MX'},
     {provide: MAT_DATE_LOCALE, useValue: 'es-MX'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
@@ -54,6 +61,7 @@ registerLocaleData(localeESMX);
   ],
   entryComponents: [
     SucursalSelectionComponent,
+    DialogBoxComponent,
   ],
   bootstrap: [AppComponent],
 })

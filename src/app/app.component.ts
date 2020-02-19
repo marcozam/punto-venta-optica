@@ -1,7 +1,9 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-
+import { MatDialog } from '@angular/material/dialog';
 import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+// Dialog
+import { SucursalSelectionComponent } from './sucursal-selection/sucursal-selection.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import { Title } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  constructor(titleService: Title, router: Router) {
+  constructor(titleService: Title, router: Router, private dialog: MatDialog) {
     router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const title = this.getTitle(router.routerState, router.routerState.root).join('-');
@@ -37,7 +39,10 @@ export class AppComponent implements OnInit {
   setTitle(pTitle) { this.title = pTitle; }
 
   ngOnInit() {
-
+    this.dialog.open(SucursalSelectionComponent, {
+      width: '200px',
+      hasBackdrop: false,
+    });
     // TODO: Revisar si ya tiene seteada una sucursal
   }
 }

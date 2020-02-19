@@ -2,7 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from './../components/dialog-box/dialog-box.component';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DialogBoxService {
   isOpen = false;
   constructor(public dialog: MatDialog) { }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ApplicationService {
 
   user: any = { C0: environment.defaultUser };

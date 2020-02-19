@@ -8,12 +8,11 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 
 @Injectable()
-export class SucursalService extends GenericService<Sucursal> implements GenericServiceBase<Sucursal> {
+export class SucursalService {
 
-    constructor(_db: BaseAjaxService) {
-      super(_db);
-      this.catalogID = 99;
-    }
+  constructor(private db: BaseAjaxService) { }
 
-    newInstance() { return new Sucursal(); }
+  getList() {
+    return this.db.getAllDataFromCatalog(99);
+  }
 }

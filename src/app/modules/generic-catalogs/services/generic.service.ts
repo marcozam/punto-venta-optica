@@ -79,13 +79,13 @@ export abstract class GenericService<T extends BaseGenericCatalog> {
     }
 
     getList(mapData: boolean = true): void {
-        this.getBaseList(() => {
-            const $sub = this.db.getAllDataFromCatalog(this.catalogID)
-                .subscribe((result: any[]) => {
-                    this.setData(mapData ? this.mapList(result) : result);
-                    $sub.unsubscribe();
-                });
-        });
+      this.getBaseList(() => {
+        const $sub = this.db.getAllDataFromCatalog(this.catalogID)
+          .subscribe((result: any[]) => {
+              this.setData(mapData ? this.mapList(result) : result);
+              $sub.unsubscribe();
+          });
+      });
     }
 
     delete(ID: number, storageName?: string): Observable<T> {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // RxJs
 import { Subject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, first } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
 // Services
@@ -15,7 +15,7 @@ import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 import { WarningTitle, AuthErrorMessage, ErrorTitle, InternalServerErrorMessage } from 'app/modules/base/constants/messages.contants';
 import { ApplicationService } from 'app/services';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BaseAjaxService {
     online: boolean;
 
@@ -60,17 +60,22 @@ export class BaseAjaxService {
         this.openDialog(ErrorTitle, 'No hay conexion');
       }
       return this.guard.getData(environment.webServiceURL, data).pipe(
+        first(),
         tap((result: AjaxRequestResult) => {
+          console.log('getData', result);
           switch (result.code) {
             case 'AuthError':
                 this.openDialog(WarningTitle, AuthErrorMessage);
                 break;
             // General Error
+            /*
             default:
                 this.openDialog(ErrorTitle, InternalServerErrorMessage);
                 break;
+            */
           }
-        })
+        }),
+        map(({ data }) => data )
       );
     }
 
@@ -86,15 +91,16 @@ export class BaseAjaxService {
     getAllDataFromCatalog<T>(CatalogoID: number, options?): Observable<T[]> {
         let tOption = { where: '' };
         if (options) {
-            if (typeof(options) === 'string') {
-                tOption.where = 'C0,C1~' + options;
-            } else {
-                tOption = Object.assign(tOption, options);
-                tOption.where = 'C0,C1~' + tOption.where;
-            }
+          if (typeof(options) === 'string') {
+            tOption.where = 'C0,C1~' + options;
+          } else {
+            tOption = Object.assign(tOption, options);
+            tOption.where = 'C0,C1~' + tOption.where;
+          }
         }
-        return this.getData(this.createParameter('DYN0001', 1, { V4: CatalogoID, V98: tOption.where }))
-            .pipe(map(result => result.Table));
+        const params = this.createParameter('DYN0001', 1, { V4: CatalogoID, V98: tOption.where });
+        return this.getData(params)
+          .pipe(map(({ Table }) => Table));
     }
 
     saveDynamicCatalog(DatosCatalogo: string, CatalogoID: number, DetailID: any, callback?) {
