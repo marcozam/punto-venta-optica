@@ -9,10 +9,12 @@ export class ApplicationService {
   userId: string;
   sucursalId: string;
 
-  constructor() { }
+  constructor(private isUsserLogedIn: boolean) { }
 
   setUser(user: any) {
     // TODO: Guardar user localstorage
+    this.isUsserLogedIn = true;
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
   setSucursal() {
