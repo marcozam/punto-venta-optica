@@ -7,6 +7,8 @@ import { AjaxRequestResult } from 'app/modules/base/models/request.models';
 
 const queuedConnections: Observable<Object>[] = [];
 
+// TODO: Remove this service
+
 @Injectable({ providedIn: 'root' })
 export class AjaxGuardService {
     online$: Observable<boolean>;

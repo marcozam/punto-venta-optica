@@ -14,6 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 // Material Tokens for Date format
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -42,6 +44,8 @@ registerLocaleData(localeESMX);
     BrowserAnimationsModule,
     HttpClientModule,
     // Angular Material
+    MatFormFieldModule,
+    MatSelectModule,
     MatSnackBarModule,
     MatSidenavModule,
     MatMenuModule,

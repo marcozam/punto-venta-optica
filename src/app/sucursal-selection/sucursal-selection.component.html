@@ -3,8 +3,14 @@
   Seleccione la sucursal
 </h1>
 <div mat-dialog-content>
-  This is a test
-  {{ sucursales | json }}
+  <mat-form-field>
+    <mat-label>Sucursal</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.C0">
+        {{ sucursal.C1 }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 <div mat-dialog-actions>
 

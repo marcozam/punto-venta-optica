@@ -1,8 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SucursalService } from 'app/services/http';
+import { Sucursal } from 'app/modules/generic-catalogs/models';
 
 @Component({
-  templateUrl: './sucursal-selection.component.html'
+  templateUrl: './sucursal-selection.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SucursalSelectionComponent implements OnInit {
@@ -17,5 +19,9 @@ export class SucursalSelectionComponent implements OnInit {
         console.log('sucursales', list);
         this.sucursales = list;
       });
+  }
+
+  select(sucursal: Sucursal) {
+
   }
 }

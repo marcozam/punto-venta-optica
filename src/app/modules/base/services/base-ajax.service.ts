@@ -62,7 +62,6 @@ export class BaseAjaxService {
       return this.guard.getData(environment.webServiceURL, data).pipe(
         first(),
         tap((result: AjaxRequestResult) => {
-          console.log('getData', result);
           switch (result.code) {
             case 'AuthError':
                 this.openDialog(WarningTitle, AuthErrorMessage);
