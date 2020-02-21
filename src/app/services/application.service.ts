@@ -8,13 +8,20 @@ export class ApplicationService {
   sucursal: any;
   userId: string;
   sucursalId: string;
+  isUsserLogedIn: boolean;
 
-  constructor(private isUsserLogedIn: boolean) { }
+  constructor() {
+    this.isUsserLogedIn = false
+   }
 
   setUser(user: any) {
     // TODO: Guardar user localstorage
     this.isUsserLogedIn = true;
     localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  getUser() {
+    return JSON.parse(localStorage.getItem('currentUser'));
   }
 
   setSucursal() {

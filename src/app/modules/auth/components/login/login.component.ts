@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
+import { ApplicationService } from '../../../../services/application.service';
 
 @Component({
   selector: 'app-login',
@@ -8,20 +9,23 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private loginServive: LoginService) { }
+  constructor(private loginServive: LoginService, private applicationService: ApplicationService) { }
 
-  ngOnInit() {
-    this.loginServive.login('V8', 'V9').subscribe(
-      res => {console.log(res)
-    });
-  }
+  ngOnInit() {}
 
   login(username:string, password:string, event:Event) {
     event.preventDefault();
-    this.loginServive.login(username, password).subscribe(
-      error => { console.error(error);},
-      () => this.navigate());
+    this.loginServive.login(username, password).subscribe(res => {
+      let user = username;
+      this.applicationService.setUser(user);
+    },
+    error => {
+      console.log(error);
+    },
+    () => this.navigate()
+    )
   }
+
   navigate() {
     
   }
