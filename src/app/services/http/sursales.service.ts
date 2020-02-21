@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { getFields } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
+// RxJs
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+// Models
+import { Sucursal } from 'models';
 
-import { GenericService, GenericServiceBase } from 'app/modules/generic-catalogs/services/generic.service';
-
-import { Persona } from 'app/modules/base/models/base.models';
 import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
-import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 
 @Injectable()
 export class SucursalService {
 
   constructor(private db: BaseAjaxService) { }
 
-  getList() {
-    return this.db.getAllDataFromCatalog(99);
+  getList(): Observable<Sucursal[]> {
+    return this.db.getAllDataFromCatalog(99).pipe(
+      map(result => result.map(({C0, C1, C2}) => ({ key: C0, nombre: C1 })))
+    );
   }
 }

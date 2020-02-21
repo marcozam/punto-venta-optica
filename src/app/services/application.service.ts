@@ -1,30 +1,48 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { environment } from 'environments/environment';
+// Models
+import { Sucursal } from 'models';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
 
+  private readonly storageNames = {
+    user: 'currentUser',
+    sucursal: 'currentBranch',
+  };
+
   user: any = { C0: environment.defaultUser };
-  sucursal: any;
-  userId: string;
-  sucursalId: string;
-  isUsserLogedIn: boolean;
+  sucursal: Sucursal;
+
+  isUsserLogedIn: boolean; // TODO: Is it needed?
 
   constructor() {
-    this.isUsserLogedIn = false
-   }
+    this.isUsserLogedIn = false;
+    this.getStoredData('user');
+    this.getStoredData('sucursal');
+  }
+
+  private storeData(name: string, value: any) {
+    const storeName = this.storageNames[name];
+    localStorage.setItem(storeName, JSON.stringify(value));
+    this[name] = value;
+  }
+
+  private getStoredData(name: string) {
+    const storeName = this.storageNames[name];
+    const storeValue = localStorage.getItem(storeName);
+    if (storeValue) {
+      this[name] = JSON.parse(storeValue);
+    }
+  }
 
   setUser(user: any) {
     // TODO: Guardar user localstorage
     this.isUsserLogedIn = true;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.storeData('user', user);
   }
 
-  getUser() {
-    return JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  setSucursal() {
-
+  setSucursal(sucursal: Sucursal) {
+    this.storeData('sucursal', sucursal);
   }
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+// Services
 import { SucursalService } from 'app/services/http';
-import { Sucursal } from 'app/modules/generic-catalogs/models';
+import { ApplicationService } from 'app/services';
+// Models
+import { Sucursal } from 'models';
 
 @Component({
   templateUrl: './sucursal-selection.component.html',
@@ -9,19 +13,24 @@ import { Sucursal } from 'app/modules/generic-catalogs/models';
 
 export class SucursalSelectionComponent implements OnInit {
 
-  sucursales: any[] = [];
+  sucursales: Sucursal[] = [];
 
-  constructor(private sucursalService: SucursalService) {}
+  constructor(private sucursalService: SucursalService,
+    private applicationService: ApplicationService,
+    public dialogRef: MatDialogRef<SucursalSelectionComponent>) {}
 
   ngOnInit() {
     this.sucursalService.getList()
       .subscribe(list => {
-        console.log('sucursales', list);
+        if (list.length === 1) {
+          this.select(list[0]);
+        }
         this.sucursales = list;
       });
   }
 
   select(sucursal: Sucursal) {
-
+    this.applicationService.setSucursal(sucursal);
+    this.dialogRef.close();
   }
 }

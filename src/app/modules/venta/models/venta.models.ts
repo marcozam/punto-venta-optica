@@ -1,10 +1,10 @@
 import { Subject } from 'rxjs';
 
 // Models
+import { Sucursal } from 'models';
 import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
-import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
 
 import { Field } from 'app/modules/generic-catalogs/decorator/dynamic-catalog.decorator';
 
@@ -92,8 +92,10 @@ export class SumaryVenta extends BaseGenericCatalog {
         this.key = 0;
         this.cliente = new Contacto();
         this.cliente.persona = new Persona();
-        this.sucursal = new Sucursal();
-        this.sucursal.nombre = 'MATRIZ';
+        this.sucursal = {
+          key: 0,
+          nombre: 'MATRIZ',
+        };
         this.vendedor = new Usuario();
         this.vendedor.nombre = 'ROCIO GASTELUM';
         this.subTotal = 0;

@@ -1,11 +1,11 @@
 import { GeneralTicket } from 'app/modules/base/services/tickets/general-ticket';
-import { Sucursal } from 'app/modules/generic-catalogs/models/generic-catalogs.models';
+import { Sucursal } from 'models';
 
 export abstract class ImpresionTicketService {
 
   constructor() { }
 
-  private createTicket(header: string, content: string){
+  private createTicket(header: string, content: string) {
     return `<html>
       <head>
         <title>Print tab</title>
@@ -35,7 +35,7 @@ export abstract class ImpresionTicketService {
       </head>
       <body>
         ${header}
-        ${content}  
+        ${content}
       </body>
       <script>
         window.print();

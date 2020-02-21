@@ -1,17 +1,18 @@
-
 <h1 mat-dialog-title>
-  Seleccione la sucursal
+  ¿En que sucursal te encuentras?
 </h1>
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Sucursal</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.C0">
-        {{ sucursal.C1 }}
+    <mat-select #sucursalField>
+      <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
+        {{ sucursal.nombre }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
-<div mat-dialog-actions>
-
+<div mat-dialog-actions class="end-xs">
+  <button mat-raised-button color="primary" (click)="select(sucursalField.value)">
+    Seleccionar
+  </button>
 </div>
