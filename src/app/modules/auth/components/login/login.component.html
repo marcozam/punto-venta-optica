@@ -1,8 +1,14 @@
-<div>
-  <h1>Inicio de sesión</h1>
-    <form class="form">
-      <input type="text" #username placeholder="Nombre de usuario">
-      <input type="text" #password placeholder="Contraseña">
-      <button type="submit" (click)="logIn(username.value, password.value, $event)" id="login-button">Iniciar sesión</button>
+<div class="row center-xs">
+  <div class="col-xs-9 col-sm-6 col-md-3">
+    <h1>Inicio de sesión</h1>
+    <form class="form" (ngSubmit)="logIn(username.value, password.value)">
+      <mat-form-field>
+        <input #username matInput placeholder="Usuario" required autofocus />
+      </mat-form-field>
+      <mat-form-field>
+        <input #password type="password" matInput placeholder="Contraseña" required/>
+      </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">Iniciar sesión</button>
     </form>
+  </div>
 </div>

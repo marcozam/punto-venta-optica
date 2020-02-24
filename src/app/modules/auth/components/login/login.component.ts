@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LoginService } from '../../services/login.service';
-import { ApplicationService } from '../../../../services/application.service';
+import { ApplicationService } from 'app/services';
 import { User } from 'models';
 
 @Component({
@@ -8,19 +8,13 @@ import { User } from 'models';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(private loginServive: LoginService, private applicationService: ApplicationService) { }
 
-  ngOnInit() {}
-
-  logIn(username: User, password: string, event:Event) {
-    // let user = username
-    // this.applicationService.setUser(user);
-    this.loginServive.login(username, password).subscribe();
-  }
-
-  navigate() {
-    
+  logIn(username: User, password: string) {
+    this.loginServive.login(username, password).subscribe(user => {
+      this.applicationService.setUser(user);
+    });
   }
 }
