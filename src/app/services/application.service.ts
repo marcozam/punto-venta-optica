@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { environment } from 'environments/environment';
 // Models
-import { Sucursal } from 'models';
+import { Sucursal, User } from 'models';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationService {
@@ -11,13 +11,10 @@ export class ApplicationService {
     sucursal: 'currentBranch',
   };
 
-  user: any = { C0: environment.defaultUser };
+  user: User;
   sucursal: Sucursal;
 
-  isUsserLogedIn: boolean; // TODO: Is it needed?
-
   constructor() {
-    this.isUsserLogedIn = false;
     this.getStoredData('user');
     this.getStoredData('sucursal');
   }
@@ -36,8 +33,7 @@ export class ApplicationService {
     }
   }
 
-  setUser(user: any) {
-    this.isUsserLogedIn = true;
+  setUser(user: User) {
     this.storeData('user', user);
   }
 
