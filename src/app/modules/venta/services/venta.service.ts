@@ -45,26 +45,21 @@ export class VentaService implements GenericServiceBase<Venta> {
 
   mapData(item: any): Venta {
 
-    const { C0, C1, R2, R3, } = item;
+    const { C0, C1, C2, C3, C4, C5, R1, R2, R3, R4, R5 } = item;
     // TODO: Add Vendedor
-    const venta = new Venta({ key: R3, nombre: R2 }, null);
+    const venta = new Venta({ key: R3, nombre: R2 }, { key: C5, nombre: R5 });
     venta.sumary.key = C0;
-    venta.sumary.sucursal.nombre = item.R2;
-    venta.sumary.fecha = moment(item.C1).toDate();
-    venta.sumary.subTotal = item.C2;
+    venta.sumary.fecha = moment(C1).toDate();
+    venta.sumary.subTotal = C2;
     venta.sumary.impuestos = 0;
-    venta.sumary.totalPagado = item.C3;
+    venta.sumary.totalPagado = C3;
     venta.sumary.status = new Status();
     // STATUS
-    venta.sumary.status.key = item.R3;
-    venta.sumary.status.nombre = item.R2;
-    // VENDEDOR
-    venta.sumary.vendedor.key = item.C5;
-    venta.sumary.vendedor.nombre = item.R5;
+    // venta.sumary.status.key = item.R3;
+    // venta.sumary.status.nombre = item.R2;
     // CLIENTE
-    venta.sumary.cliente.key = item.C4;
-    venta.sumary.cliente.persona.nombre = item.R1;
-
+    venta.sumary.cliente.key = C4;
+    venta.sumary.cliente.persona.nombre = R1;
     return venta;
   }
 

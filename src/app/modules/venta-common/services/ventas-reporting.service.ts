@@ -17,15 +17,8 @@ export class VentasReportingService {
   mapList(list: any[]): Venta[] { return list.map(p => this.mapData(p)); }
 
   mapData(item: any): Venta {
-    const { C0, C1, C2, C3, R2, R3, } = item;
-    // TODO: Add Vendedor
-    const venta = new Venta({
-      key: R3,
-      nombre: R2 }, null);
-
-    venta.sumary.key = C0;
-    venta.sumary.sucursal.nombre = R2;
-
+    const { C0, C1, C2, C3, C4, C5, R1, R2, R3, R4, R5 } = item;
+    const venta = new Venta({ key: R3, nombre: R2 }, { key: C5, nombre: R5 });
     venta.sumary.fecha = moment(C1).toDate();
     venta.sumary.subTotal = C2;
     venta.sumary.impuestos = 0;
@@ -39,11 +32,11 @@ export class VentasReportingService {
     // venta.sumary.status.key = item.R7;
     // venta.sumary.status.nombre = item.R6;
     // VENDEDOR
-    venta.sumary.vendedor.key = item.C5;
-    venta.sumary.vendedor.nombre = item.R5;
+    venta.sumary.vendedor.key = C5;
+    venta.sumary.vendedor.nombre = R5;
     // CLIENTE
-    venta.sumary.cliente.key = item.C4;
-    venta.sumary.cliente.persona.nombre = item.R1;
+    venta.sumary.cliente.key = C4;
+    venta.sumary.cliente.persona.nombre = R1;
     return venta;
   }
 

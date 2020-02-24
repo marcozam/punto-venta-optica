@@ -30,7 +30,9 @@ export class SucursalSelectionComponent implements OnInit {
   }
 
   select(sucursal: Sucursal) {
-    this.applicationService.setSucursal(sucursal);
-    this.dialogRef.close();
+    if (sucursal) {
+      this.applicationService.setSucursal(sucursal);
+      this.dialogRef.close();
+    }
   }
 }
