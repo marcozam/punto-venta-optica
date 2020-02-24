@@ -11,6 +11,6 @@ export class LoginService {
         V7: username,
         V8: password
       });
-      this.db.getData(params);
+      return this.db.getData(params);
     }
 }

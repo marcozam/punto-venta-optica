@@ -1,17 +1,24 @@
+
+import { Sucursal } from 'models';
 import { OpticaVentaChangeEvent } from '../models/optica-venta.models';
 import { Examen } from 'app/modules/optica/models/examen.models';
-import { Venta } from 'app/modules/venta/models/venta.models';
+import { Venta, Usuario } from 'app/modules/venta/models/venta.models';
+import { OnInit } from '@angular/core';
+import { ApplicationService } from 'app/services';
 
-export abstract class VentaOptica {
+export abstract class VentaOptica implements OnInit {
     venta: Venta;
     clienteID: number;
     listaPrecioID: number;
     sucursalID: number;
     examen: Examen;
 
-    constructor() {
-        this.venta = new Venta();
-        this.venta.sumary.key = 0;
+    constructor(private applicationService: ApplicationService) { }
+
+    ngOnInit() {
+      const { sucursal, user } = this.applicationService;
+      this.venta = new Venta(sucursal, user);
+      this.venta.sumary.key = 0;
     }
 
     onOpticaVentaChanged(data: OpticaVentaChangeEvent) {

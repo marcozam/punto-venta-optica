@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { Observable, merge } from 'rxjs';
-
+// Services
+import { ApplicationService } from 'app/services';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';
 import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
-
+// Models
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
 import { CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
 import { TableSource, TableColumn } from 'app/modules/base/models/data-source.models';
@@ -21,7 +22,7 @@ import { TableSource, TableColumn } from 'app/modules/base/models/data-source.mo
 })
 export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  sucursalID: number;
+  sucursalUuid: number;
   categorias: CategoriaProductoSumary[];
   selectedCategory: CategoriaProductoSumary;
   dataSource: TableSource<Inventario>;
@@ -32,6 +33,7 @@ export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('cantidadTemplate', { static: true }) cantidadTemplate: TemplateRef<any>;
 
   constructor(
+    private applicationService: ApplicationService,
     private _service: InventarioService,
     private _categoriaService: CategoriaProductoService,
     private dialog: DialogBoxService
@@ -74,10 +76,10 @@ export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnInit() {
-    this.sucursalID = 1;
+    this.sucursalUuid = this.applicationService.sucursal.key;
     this.createSubscriptions();
     // Get Initial Data
-    this._service.getInventarioActual(this.sucursalID);
+    this._service.getInventarioActual(this.sucursalUuid);
     this._categoriaService.getStockCategories();
   }
 
@@ -116,7 +118,7 @@ export class CorteInventarioComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   onSave() {
-    this._service.realizarCorte(this.sucursalID, this.dataSource.data).subscribe(() => {
+    this._service.realizarCorte(this.sucursalUuid, this.dataSource.data).subscribe(() => {
       localStorage.removeItem('inventario');
       this.dialog.openDialog('Registro exitoso!', 'El corte se ha guardado con exito.', false);
     });

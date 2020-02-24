@@ -49,7 +49,7 @@ export abstract class ImpresionTicketService {
       <thead>
         <tr>
           <th style="font-size:13pt;" colspan="4">
-            <h2>${sucursal.companyName}</h2>
+            <h2>${sucursal.company.name}</h2>
           </th>
         </tr>
         <tr>
@@ -101,8 +101,8 @@ export abstract class ImpresionTicketService {
     </table>`;
   }
 
-  print(service: GeneralTicket, sucursal: Sucursal){
-    let ticket: string = this.createTicket(
+  print(service: GeneralTicket, sucursal: Sucursal) {
+    const ticket: string = this.createTicket(
       this.createTicketHeader(sucursal, service.createHeader()),
       this.createTicketContent(service.createContent(), service.createFooter())
     );

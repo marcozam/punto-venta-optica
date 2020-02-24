@@ -14,7 +14,15 @@ export class SucursalService {
 
   getList(): Observable<Sucursal[]> {
     return this.db.getAllDataFromCatalog(99).pipe(
-      map(result => result.map(({C0, C1, C2}) => ({ key: C0, nombre: C1 })))
+      map(result => result.map(({C0, C1, C2}) => ({
+        key: C0,
+        nombre: C1,
+        domicilioUuid: C2,
+        company: {
+          key: 1,
+          name: 'OPTIKA',
+        }
+      })))
     );
   }
 }

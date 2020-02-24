@@ -1,6 +1,11 @@
+export interface Company {
+  key: number;
+  name: string;
+}
+
 export interface Sucursal {
   key: number;
   nombre: string;
-  companyName?: string;
-  companyUuid?: number;
+  domicilioUuid?: number;
+  company?: Company;
 }

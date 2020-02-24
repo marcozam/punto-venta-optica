@@ -12,108 +12,113 @@ import { BaseAjaxService } from 'app/modules/base/services/base-ajax.service';
 
 @Injectable()
 export class VentasReportingService {
-    constructor(private db: BaseAjaxService) { }
+  constructor(private db: BaseAjaxService) { }
 
-    mapList(list: any[]): Venta[] { return list.map(p => this.mapData(p)); }
+  mapList(list: any[]): Venta[] { return list.map(p => this.mapData(p)); }
 
-    mapData(item: any): Venta {
-        const venta = new Venta();
-        venta.sumary.key = item.C0;
-        venta.sumary.sucursal.nombre = item.R2;
-        venta.sumary.fecha = moment(item.C1).toDate();
-        venta.sumary.subTotal = item.C2;
-        venta.sumary.impuestos = 0;
-        venta.sumary.totalPagado = item.C3;
-        venta.sumary.status = new Status();
-        venta.sumary.statusInterno = new Status();
-        // STATUS INTERNO
-        venta.sumary.statusInterno.key = item.R3;
-        venta.sumary.statusInterno.nombre = item.R2;
-        // STATUS
-        venta.sumary.status.key = item.R7;
-        venta.sumary.status.nombre = item.R6;
-        // VENDEDOR
-        venta.sumary.vendedor.key = item.C5;
-        venta.sumary.vendedor.nombre = item.R5;
-        // CLIENTE
-        venta.sumary.cliente.key = item.C4;
-        venta.sumary.cliente.persona.nombre = item.R1;
+  mapData(item: any): Venta {
+    const { C0, C1, C2, C3, R2, R3, } = item;
+    // TODO: Add Vendedor
+    const venta = new Venta({
+      key: R3,
+      nombre: R2 }, null);
 
-        return venta;
-    }
+    venta.sumary.key = C0;
+    venta.sumary.sucursal.nombre = R2;
 
-    mapDetalleVentaData(item: any): DetalleVenta {
-        const dv = new DetalleVenta(new Producto(item.C2));
-        dv.productoVenta.key =  item.C0;
-        dv.cantidad = item.C1;
-        dv.precioUnitario = item.C3;
-        dv.comentario = item.C10;
-        return dv;
-    }
+    venta.sumary.fecha = moment(C1).toDate();
+    venta.sumary.subTotal = C2;
+    venta.sumary.impuestos = 0;
+    venta.sumary.totalPagado = C3;
+    venta.sumary.status = new Status();
+    venta.sumary.statusInterno = new Status();
+    // STATUS INTERNO
+    // venta.sumary.statusInterno.key = item.R3;
+    // venta.sumary.statusInterno.nombre = item.R2;
+    // STATUS
+    // venta.sumary.status.key = item.R7;
+    // venta.sumary.status.nombre = item.R6;
+    // VENDEDOR
+    venta.sumary.vendedor.key = item.C5;
+    venta.sumary.vendedor.nombre = item.R5;
+    // CLIENTE
+    venta.sumary.cliente.key = item.C4;
+    venta.sumary.cliente.persona.nombre = item.R1;
+    return venta;
+  }
 
-    getOrdenesPendientesEntrega(sucursalID: number, clienteID: number) {
-        const params = this.db.createParameter('ECOM0003', 3, {
-            V4: sucursalID ? sucursalID : '',
-            V8: clienteID ? clienteID : '',
-        });
-        return this.db.getData(params).pipe(
-          map(result => this.mapList(result.Table))
-        );
-    }
+  mapDetalleVentaData(item: any): DetalleVenta {
+      const dv = new DetalleVenta(new Producto(item.C2));
+      dv.productoVenta.key =  item.C0;
+      dv.cantidad = item.C1;
+      dv.precioUnitario = item.C3;
+      dv.comentario = item.C10;
+      return dv;
+  }
 
-    getHistorialCompras(clienteID: number) {
-        const params = this.db.createParameter('ECOM0003', 4, { V3: clienteID ? clienteID : '' });
-        return this.db.getData(params).pipe(
-          map(result => this.mapList(result.Table))
-        );
-    }
-
-    getProductosVendidos(month: number, year: number, sucursalID: number) {
-        const params = this.db.createParameter('ECOM0003', 8, { V4: sucursalID, V5: year, V6: month });
-        return this.db.getData(params).pipe(
-          map(data => {
-            return data.Table.map(row => {
-                return {
-                    categoria: row.C1,
-                    modelo: row.C3,
-                    marca: row.C4,
-                    cantidad: row.C6
-                };
-            });
-        })
+  getOrdenesPendientesEntrega(sucursalID: number, clienteID: number) {
+      const params = this.db.createParameter('ECOM0003', 3, {
+          V4: sucursalID ? sucursalID : '',
+          V8: clienteID ? clienteID : '',
+      });
+      return this.db.getData(params).pipe(
+        map(result => this.mapList(result.Table))
       );
-    }
+  }
 
-    getResumenMensual(month: number, year: number, sucursalID: number) {
-        const params = this.db.createParameter('ECOM0003', 1, { V4: sucursalID, V5: year, V6: month });
-        return this.db.getData(params).pipe(
-          map(data => {
-            const resumen = new ResumenVenta();
-            const _dResume = data.Table[0];
-            resumen.totalVenta = _dResume.C1;
-            resumen.totalPagado = _dResume.C2;
-            resumen.noVentas = _dResume.C3;
-            resumen.ingresos = data.Table1.map(ing => {
-                const mp = new MetodoPago(ing.C1);
-                mp.key = ing.C1;
-                return new Ingresos(mp, ing.C2);
-            });
-            resumen.lista = this.mapList(data.Table2);
-            return resumen;
-        })
+  getHistorialCompras(clienteID: number) {
+      const params = this.db.createParameter('ECOM0003', 4, { V3: clienteID ? clienteID : '' });
+      return this.db.getData(params).pipe(
+        map(result => this.mapList(result.Table))
       );
-    }
+  }
 
-    // Exclusivo Optika
-    getResumenMensualOptika(month: number, year: number, sucursalID: number) {
-      const params = this.db.createParameter('OPTICA_0001', 10, { V4: sucursalID, V5: year, V6: month });
+  getProductosVendidos(month: number, year: number, sucursalID: number) {
+      const params = this.db.createParameter('ECOM0003', 8, { V4: sucursalID, V5: year, V6: month });
       return this.db.getData(params).pipe(
         map(data => {
-          return {
-            oftalmologos: data.Table.map( row => ({nombre: row.C1, noExamenes: row.C2})),
-            armazones: data.Table1.map( row => ({armazon: row.C1, noVentas: row.C2}))
-          };
-        })
-      );
-    }
+          return data.Table.map(row => {
+              return {
+                  categoria: row.C1,
+                  modelo: row.C3,
+                  marca: row.C4,
+                  cantidad: row.C6
+              };
+          });
+      })
+    );
+  }
+
+  getResumenMensual(month: number, year: number, sucursalID: number) {
+      const params = this.db.createParameter('ECOM0003', 1, { V4: sucursalID, V5: year, V6: month });
+      return this.db.getData(params).pipe(
+        map(data => {
+          const resumen = new ResumenVenta();
+          const _dResume = data.Table[0];
+          resumen.totalVenta = _dResume.C1;
+          resumen.totalPagado = _dResume.C2;
+          resumen.noVentas = _dResume.C3;
+          resumen.ingresos = data.Table1.map(ing => {
+              const mp = new MetodoPago(ing.C1);
+              mp.key = ing.C1;
+              return new Ingresos(mp, ing.C2);
+          });
+          resumen.lista = this.mapList(data.Table2);
+          return resumen;
+      })
+    );
+  }
+
+  // Exclusivo Optika
+  getResumenMensualOptika(month: number, year: number, sucursalID: number) {
+    const params = this.db.createParameter('OPTICA_0001', 10, { V4: sucursalID, V5: year, V6: month });
+    return this.db.getData(params).pipe(
+      map(data => {
+        return {
+          oftalmologos: data.Table.map( row => ({nombre: row.C1, noExamenes: row.C2})),
+          armazones: data.Table1.map( row => ({armazon: row.C1, noVentas: row.C2}))
+        };
+      })
+    );
+  }
 }

@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild, ViewContainerRef, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+// RxJs
+import { switchMap } from 'rxjs/operators';
 // Models
 import { Contacto } from 'app/modules/crm/models/crm.models';
 import { Inventario } from 'app/modules/inventario/models/inventario.models';
 import { Venta, DetalleVenta, DetallePagos } from '../../models/venta.models';
 // Services
+import { ApplicationService } from 'app/services';
 import { VentaService } from '../../services/venta.service';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { InventarioService } from 'app/modules/inventario/services/inventario.service';
@@ -25,8 +28,6 @@ import { DialogBoxService } from 'app/modules/base/services/dialog-box.service';
 })
 export class VentasComponent implements OnInit {
   loading = false;
-
-  @Input() sucursalID: number;
   @Input() clienteID: number;
 
   private _listaPreciosID: number;
@@ -58,7 +59,8 @@ export class VentasComponent implements OnInit {
   @Output() onVentaSaved: EventEmitter<Venta> = new EventEmitter();
 
   constructor(
-    private _contactoService: ContactoService,
+    private applicationService: ApplicationService,
+    private contactoService: ContactoService,
     private _ventaService: VentaService,
     private _inventarioService: InventarioService,
     private dialog: DialogBoxService,
@@ -71,25 +73,19 @@ export class VentasComponent implements OnInit {
     // TODO: Agregar loadeder
     // TODO: Obtener la lista de precios de la sucursal
     this.listaPreciosID = 1;
-    this.sucursalID = 1;
-    this.clienteID = this.route.snapshot.params['clienteID'];
-    this.nuevaVenta();
+    this.route.params
+      .pipe(switchMap(({ clienteID }) => this.contactoService.getByID(clienteID)))
+      .subscribe(cliente => this.nuevaVenta(cliente));
   }
 
-  nuevaVenta() {
-    this.venta = new Venta();
-    // Obtiene el paciente
-    if (this.clienteID) {
-      this._contactoService.getByID(this.clienteID)
-        .subscribe((data: Contacto) => {
-          this.cliente = data;
-        });
-    }
-
+  nuevaVenta(cliente: Contacto) {
+    const { sucursal, user } = this.applicationService;
+    this.venta = new Venta(sucursal, user);
+    this.cliente = cliente;
     // Validacion de inventario
     this.venta.onDetalleChanged.subscribe((items: DetalleVenta[]) => {
       items.forEach(item => {
-        this._inventarioService.getInventarioProducto(Number(item.productoVenta.key), this.sucursalID)
+        this._inventarioService.getInventarioProducto(item.productoVenta.key, sucursal.key)
           .subscribe((inv: Inventario) => {
             if (inv.cantidad <= 0) {
               this.dialog.openDialog(
@@ -116,7 +112,7 @@ export class VentasComponent implements OnInit {
           p.esPagoInicial = true;
           return p;
         });
-        this._ventaService.saveVenta(this.venta, this.sucursalID, (newVenta: Venta) => {
+        this._ventaService.saveVenta(this.venta).subscribe(newVenta => {
           if (newVenta) {
             this.onVentaSaved.emit(newVenta);
           } else {

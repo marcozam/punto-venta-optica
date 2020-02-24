@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+// Services
+import { ApplicationService } from 'app/services';
 import { MovimientosInventarioService } from 'app/modules/inventario/services/movimientos-inventario.service';
 import { CategoriaProductoService } from 'app/modules/producto/services/categoria-producto.service';
-
-import { MovimientoInventario, TipoMovimientoInventario } from 'app/modules/inventario/models/inventario.models';
+// Models
+import { MovimientoInventario, TipoMovimientoInventario } from 'models/inventario';
 import { CategoriaProductoSumary } from 'app/modules/producto/models/producto.models';
 import { OSPeriodo } from 'app/modules/base/models/time-frame.models';
 import { periodos } from 'app/modules/base/constants/date-time.constants';
@@ -11,31 +13,33 @@ import { periodos } from 'app/modules/base/constants/date-time.constants';
   selector: 'app-movimientos',
   templateUrl: './movimientos.component.html',
   styleUrls: ['./movimientos.component.scss'],
-  providers: [MovimientosInventarioService, CategoriaProductoService]
+  providers: [ MovimientosInventarioService, CategoriaProductoService ],
 })
 export class MovimientosComponent implements OnInit {
 
-  sucursalID: number;
+  sucursalUuid: number;
   movimientos: MovimientoInventario[];
   movimientosFull: MovimientoInventario[];
   categorias: CategoriaProductoSumary[];
-  tipoMovimientos: TipoMovimientoInventario[]
+  tipoMovimientos: TipoMovimientoInventario[];
 
-  //TODO: Add table component with filters
-  //Filter Options
-  showFilters: boolean = false;
+  // TODO: Add table component with filters
+  // Filter Options
+  showFilters = false;
   selectedCategory: CategoriaProductoSumary;
   selectedTipoMovimiento: TipoMovimientoInventario;
 
   _periodos: OSPeriodo[];
 
-  constructor(private service: MovimientosInventarioService,
+  constructor(
+    private applicationService: ApplicationService,
+    private service: MovimientosInventarioService,
     private _categoriaService: CategoriaProductoService
   ) {
     this._periodos = periodos;
   }
 
-  createSubscriptions(){
+  createSubscriptions() {
     /*
     this.loading$.subscribe((isLoading: boolean) => {
       this.loading = this._categoriaService.isLoading || this._service.isLoading;
@@ -45,45 +49,42 @@ export class MovimientosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sucursalID = 1;
+    this.sucursalUuid = this.applicationService.sucursal.key;
     this._categoriaService.getStockCategories();
-    this.service.getTipoMovimientos(res=> this.tipoMovimientos = res);
+    this.service.getTipoMovimientos()
+      .subscribe(res => this.tipoMovimientos = res);
   }
 
-  onCategoriaChange(categoria: CategoriaProductoSumary){
+  onCategoriaChange(categoria: CategoriaProductoSumary) {
     this.selectedCategory = categoria;
-    if(categoria.nombre === 'All'){
+    if (categoria.nombre === 'All') {
       this.selectedCategory = null;
     }
     this.applyFilters();
   }
 
-  onTipoMovimientoChange(tipo: TipoMovimientoInventario){
+  onTipoMovimientoChange(tipo: TipoMovimientoInventario) {
     this.selectedTipoMovimiento = tipo;
-    if(tipo.nombre === 'All') this.selectedTipoMovimiento = null;
+    if (tipo.nombre === 'All') {
+      this.selectedTipoMovimiento = null;
+    }
     this.applyFilters();
   }
 
-  onRangoChanged(option: OSPeriodo){
-    let _periodo = option.getTimeFrame();
-
-    this.service.getMovimientos(
-      this.sucursalID,
-      _periodo.start, 
-      _periodo.end, 
-      (res: MovimientoInventario[])=> {
-        this.movimientos = this.movimientosFull = res;
-      });
+  onRangoChanged(option: OSPeriodo) {
+    const { start, end } = option.getTimeFrame();
+    this.service.getMovimientos(this.sucursalUuid, start, end)
+      .subscribe(res => this.movimientos = this.movimientosFull = res);
   }
 
-  applyFilters(){
+  applyFilters() {
     this.movimientos = this.movimientosFull.filter(mi => {
       return (this.selectedCategory ? mi.producto.categoriaProductoID === this.selectedCategory.key : true)
         && (this.selectedTipoMovimiento ? mi.tipoMovimiento.key === this.selectedTipoMovimiento.key: true);
     });
   }
 
-  toggleFilters(){
-    this.showFilters = !this.showFilters
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

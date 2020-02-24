@@ -5,6 +5,7 @@ import { Contacto } from 'app/modules/crm/models/crm.models';
 import { VentaOptica } from '../../models/venta-optica';
 // Services
 import { ExamenService } from 'app/modules/optica/services/examen.service';
+import { ApplicationService } from 'app/services';
 
 // 999 => Armazon
 // 998 => Mica
@@ -25,9 +26,11 @@ export class OpticaVentaComponent extends VentaOptica implements OnInit {
   @Input() clienteID: number;
   @Input() listaPrecioID: number;
 
-  constructor(private _service: ExamenService) { super(); }
-
-  ngOnInit() { }
+  constructor(
+    applicationService: ApplicationService,
+    private _service: ExamenService) {
+    super(applicationService);
+  }
 
   isVentaInvalid() {
     let rval = true;

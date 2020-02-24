@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DecimalPipe, DatePipe } from '@angular/common';
+// RxJs
+import { switchMap } from 'rxjs/operators';
 // Models
 import { VentaOptica } from '../../models/venta-optica';
-import { Contacto } from 'app/modules/crm/models/crm.models';
-import { Venta } from 'app/modules/venta/models/venta.models';
+import { Venta, Usuario } from 'app/modules/venta/models/venta.models';
 import { Examen } from 'app/modules/optica/models/examen.models';
 // Services
+import { ApplicationService } from 'app/services';
 import { ContactoService } from 'app/modules/crm/services/contacto.service';
 import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/venta-optika-ticket.service';
 
@@ -19,37 +21,34 @@ import { VentaOptikaTicketService } from 'app/modules/venta/services/tickets/ven
     VentaOptikaTicketService,
     DecimalPipe,
     DatePipe
-  ]
+  ],
 })
 export class ExamenPresupuestoComponent extends VentaOptica implements OnInit {
 
   listaPrecioID: number;
-  sucursalID: number;
   clienteID: number;
   venta: Venta;
   loading = true;
+  vendeor: Usuario;
+
 
   constructor(
-    private _contactoService: ContactoService,
+    applicationService: ApplicationService,
+    private contactoService: ContactoService,
     private _printService: VentaOptikaTicketService,
     private route: ActivatedRoute) {
-    super();
+    super(applicationService);
   }
 
   ngOnInit() {
     this.listaPrecioID = 1;
-    this.sucursalID = 1;
-    this.clienteID = this.route.snapshot.params['pacienteID'];
-
-    this.venta = new Venta();
-
-    // Obtiene el paciente
-    if (this.clienteID) {
-      this._contactoService.getByID(this.clienteID)
-        .subscribe((data: Contacto) => {
-          this.venta.sumary.cliente = data;
-        });
-    }
+    this.route.params
+      .pipe(
+        switchMap(({ pacienteID }) => this.contactoService.getByID(pacienteID)))
+      .subscribe(data => {
+        super.ngOnInit();
+        this.venta.sumary.cliente = data;
+      });
   }
 
   print() {

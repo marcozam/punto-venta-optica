@@ -20,10 +20,10 @@ export class Venta {
     // used to validate products stock
     onDetalleChanged: Subject<DetalleVenta[]> = new Subject();
 
-    constructor() {
+    constructor(sucursal: Sucursal, vendedor: Usuario) {
         this.pagos = new Array<DetallePagos>();
         this.comentarios = new Array<ComentariosVenta>();
-        this.sumary = new SumaryVenta();
+        this.sumary = new SumaryVenta(sucursal, vendedor);
     }
 
     updateDetalleVenta(items: DetalleVenta[], concat: boolean = true) {
@@ -87,17 +87,13 @@ export class SumaryVenta extends BaseGenericCatalog {
 
     get saldo(): number { return this.total - this.totalPagado; }
 
-    constructor() {
+    constructor(sucursal: Sucursal, vendedor: Usuario) {
         super();
         this.key = 0;
         this.cliente = new Contacto();
         this.cliente.persona = new Persona();
-        this.sucursal = {
-          key: 0,
-          nombre: 'MATRIZ',
-        };
-        this.vendedor = new Usuario();
-        this.vendedor.nombre = 'ROCIO GASTELUM';
+        this.sucursal = sucursal;
+        this.vendedor = vendedor;
         this.subTotal = 0;
         this.impuestos = 0;
         this.totalPagado = 0;
@@ -120,7 +116,6 @@ export class ComentariosVenta {
     productoID: number;
     // use to group products
     moduleID = 1;
-
     constructor(public comentario: string) { }
 }
 

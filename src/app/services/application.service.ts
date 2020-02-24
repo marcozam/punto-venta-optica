@@ -37,7 +37,6 @@ export class ApplicationService {
   }
 
   setUser(user: any) {
-    // TODO: Guardar user localstorage
     this.isUsserLogedIn = true;
     this.storeData('user', user);
   }
