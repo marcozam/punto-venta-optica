@@ -48,7 +48,7 @@ export class BaseAjaxService {
             'DBID': environment.DBID,
             'V0': option,
             'V1': (account ? account.C0 : 0),
-            'V2': (user ? user.C0 : 0)
+            'V2': (user ? user.key : 0)
         };
         let retStr = this.jsonToString(paramsFields);
         if (parameters) { retStr += this.jsonToString(parameters); }

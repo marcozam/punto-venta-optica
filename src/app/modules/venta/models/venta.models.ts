@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 
 // Models
-import { Sucursal } from 'models';
+import { Sucursal, User } from 'models';
 import { BaseGenericCatalog,  GenericCatalog,  Persona, Status } from 'app/modules/base/models/base.models';
 import { Producto } from '../../producto/models/producto.models';
 import { Contacto } from 'app/modules/crm/models/crm.models';
@@ -20,7 +20,7 @@ export class Venta {
     // used to validate products stock
     onDetalleChanged: Subject<DetalleVenta[]> = new Subject();
 
-    constructor(sucursal: Sucursal, vendedor: Usuario) {
+    constructor(sucursal: Sucursal, vendedor: User) {
         this.pagos = new Array<DetallePagos>();
         this.comentarios = new Array<ComentariosVenta>();
         this.sumary = new SumaryVenta(sucursal, vendedor);
@@ -72,7 +72,7 @@ export class Usuario extends GenericCatalog { }
 
 export class SumaryVenta extends BaseGenericCatalog {
     cliente: Contacto;
-    vendedor: Usuario;
+    vendedor: User;
     sucursal?: Sucursal;
     statusInterno?: Status;
     status?: Status;
@@ -87,7 +87,7 @@ export class SumaryVenta extends BaseGenericCatalog {
 
     get saldo(): number { return this.total - this.totalPagado; }
 
-    constructor(sucursal: Sucursal, vendedor: Usuario) {
+    constructor(sucursal: Sucursal, vendedor: User) {
         super();
         this.key = 0;
         this.cliente = new Contacto();
